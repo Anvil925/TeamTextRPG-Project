@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
+    public enum Jobs
+    {
+        WARRIOR,
+        WIZARD,
+        THIEF
+    }
+
     public class Character
     {
         public int LV { get; set; }
@@ -21,7 +28,7 @@ namespace TeamTRPG_Project
         public float MAX_HP { get; set; }
         public int gold { get; set; }
 
-        public string job { get; set; } //string or enum //maybe change
+        public Jobs job { get; set; }
         public List<Item> items { get; set; }
 
         public Character(string name)
@@ -40,7 +47,9 @@ namespace TeamTRPG_Project
 
             gold = 1500;
 
-            job = "전사";
+            job = Jobs.WARRIOR;
+
+            items = new List<Item>();
         }
 
         public void ShowInfo()
@@ -51,6 +60,27 @@ namespace TeamTRPG_Project
             Console.WriteLine("방어력 : {0} {1}", DEF + itemDEF, (itemDEF > 0) ? $"(+{itemDEF})" : "");
             Console.WriteLine("체 력 : {0} / {1}", HP, MAX_HP);
             Console.WriteLine("GOLD : {0}", gold);
+        }
+
+        public void GetItem(Item item)
+        {
+            items.Add(item);
+        }
+        
+        void EquipItem(Item item)
+        {
+            item.IsEquip = !item.IsEquip;
+
+            if(item.IsEquip)
+            {
+                itemATK += item.ATK;
+                itemDEF += item.DEF;
+            } 
+            else
+            {
+                itemATK -= item.ATK;
+                itemDEF -= item.DEF;
+            }
         }
 
     }
