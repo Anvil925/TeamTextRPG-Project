@@ -29,7 +29,7 @@ namespace TeamTRPG_Project
         public int gold { get; set; }
 
         public Jobs job { get; set; }
-        public List<Item> items { get; set; }
+        public List<Item> inventory { get; set; }
 
         public Character(string name)
         {
@@ -49,7 +49,7 @@ namespace TeamTRPG_Project
 
             job = Jobs.WARRIOR;
 
-            items = new List<Item>();
+            inventory = new List<Item>();
         }
 
         public void ShowInfo()
@@ -64,10 +64,10 @@ namespace TeamTRPG_Project
 
         public void GetItem(Item item)
         {
-            items.Add(item);
+            inventory.Add(item);
         }
         
-        void EquipItem(Item item)
+        public void EquipItem(Item item)
         {
             item.IsEquip = !item.IsEquip;
 
@@ -82,6 +82,9 @@ namespace TeamTRPG_Project
                 itemDEF -= item.DEF;
             }
         }
+
+        
+
 
     }
 }
