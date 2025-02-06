@@ -28,6 +28,8 @@
             
             GameManager gm = new GameManager();
             gm.MainScreen();
+            Character ch = new Character("test");
+            ch.ShowInfo();
         }
 
     }
