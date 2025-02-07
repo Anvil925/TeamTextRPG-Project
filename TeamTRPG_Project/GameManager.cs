@@ -16,14 +16,12 @@ namespace TeamTRPG_Project
         public GameManager(string name)
         {
             Player = new Character(name);
+            dungeon = new Dungeon(); // Dungeon 객체 초기화
             Dungeon.SetPlayer(Player); // 던전에 플레이어 정보 전달
+            Dungeon.SetGameManager(this); // Dungeon에 GameManager 정보 전달
             ItemList = new List<Item>();
-            {
-                
-            };
-
-
         }
+
 
         public void DoungeonScene()
         {
