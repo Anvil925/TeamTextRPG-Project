@@ -1,6 +1,6 @@
 using System;
 using TeamTRPG_Project;
-public class Monster 
+public class Monster
 {
     public string Name { get; private set; } // 몬스터 이름
     public float HP { get; private set; } // 체력
@@ -19,16 +19,16 @@ public class Monster
         LV = lv; // 레벨 설정
         EXP = exp; // 경험치 설정
         GroupID = groupID; // 그룹 ID 설정
-    } 
+    }
 
     public void TakeDamage(int damage)
     {
-        int actualDamage = Math.Max(damage - (int)DEF, 1); 
+        int actualDamage = Math.Max(damage - (int)DEF, 1);
         HP -= actualDamage;
-        Console.WriteLine($"{Name}) {actualDamage} 의 피해를 입었습니다!( 남은 체력{HP})"); 
+        Console.WriteLine($"{Name}) {actualDamage} 의 피해를 입었습니다!( 남은 체력{HP})");
     }
 
-    public bool IsDead() 
+    public bool IsDead()
     {
         return HP <= 0;
 
@@ -36,7 +36,7 @@ public class Monster
 
     public override string ToString() // 문자열 반환 메서드 재정의
     {
-        return $"[Lv.{LV}] {Name} - HP: {HP}, ATK: {ATK}, DEF: {DEF}"; // 몬스터 정보 반환
+        return $"[경력:{LV}연차] {Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}"; // 몬스터 정보 반환
     }
 
     public void AttackPlayer(Character player) // 플레이어를 공격하는 메서드
@@ -109,4 +109,7 @@ public class Monster
         int index = rand.Next(filteredList.Count); // 필터링된 몬스터 중 랜덤 인덱스 선택
         return filteredList[index]; // 선택된 몬스터 반환
     }
+    
+
+   
 }

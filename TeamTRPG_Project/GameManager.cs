@@ -13,19 +13,19 @@ namespace TeamTRPG_Project
         List<Item> ItemList;
         Shop shop = new Shop();
 
+
+        Dungeon dungeon;
         public GameManager(string name)
         {
             Player = new Character(name);
+            dungeon = new Dungeon(); // Dungeon 객체 초기화
             Dungeon.SetPlayer(Player); // 던전에 플레이어 정보 전달
+            Dungeon.SetGameManager(this); // Dungeon에 GameManager 정보 전달
             ItemList = new List<Item>();
-            {
-
-            };
-
-
         }
 
-        public void DungeonScene()
+
+        public void DoungeonScene()
         {
             Console.Clear();
             ConsoleUtility.ColorWrite("던전 종류", ConsoleColor.Magenta);
@@ -57,7 +57,7 @@ namespace TeamTRPG_Project
             Console.WriteLine("1. 상태 보기");
             Console.WriteLine("2. 인벤토리");
             Console.WriteLine("3. 상점");
-            Console.WriteLine("4. 업무시작");
+            Console.WriteLine("4. 출근하기");
             Console.WriteLine("5. 회복아이템");
             Console.WriteLine();
 
@@ -176,8 +176,8 @@ namespace TeamTRPG_Project
             for (int i = 0; i < Player.inventory.Count; i++)
             {
                 //인벤토리 아이템들 중에서 이미 장착중이고(&&) 아이템 타입이 같고(&&) inventory[i]와 select가 다를경우, 해당 장비 해제
-                if (Player.inventory[i].IsEquip && (Player.inventory[i].ItemType == select.ItemType) && (Player.inventory[i] != select))
-                    Player.UnEquip(Player.inventory[i]);
+                //if (Player.inventory[i].IsEquip && (Player.inventory[i].ItemType == select.ItemType) && (Player.inventory[i] != select))
+                //    //Player.UnEquip(Player.inventory[i]);
             }
 
             //아이템 장착
