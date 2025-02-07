@@ -67,6 +67,7 @@ namespace TeamTRPG_Project
             items.Add(item);
         }
         
+        /*
         void EquipItem(Item item)
         {
             item.IsEquip = !item.IsEquip;
@@ -82,6 +83,22 @@ namespace TeamTRPG_Project
                 itemDEF -= item.DEF;
             }
         }
+        */ //Gamemanager가 인벤토리 관리하면 제거
+
+        void EquipItem(Item item)
+        {
+            item.IsEquip = true;
+            itemATK += item.ATK;
+            itemDEF += item.DEF;
+        }
+
+        void UnEquip(Item item)
+        {
+            item.IsEquip = false;
+            itemATK -= item.ATK;
+            itemDEF -= item.DEF;
+        }
+
 
     }
 }
