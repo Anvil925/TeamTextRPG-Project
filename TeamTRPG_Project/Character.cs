@@ -45,7 +45,7 @@ namespace TeamTRPG_Project
 
         Random rd = new Random();
 
-        public Character(string name)
+        public Character(string name, Jobs job = Jobs.INTERN)
         {
             LV = 1;
             EXP = 0;
@@ -67,7 +67,7 @@ namespace TeamTRPG_Project
 
             gold = 1500;
 
-            job = Jobs.INTERN;
+            this.job = job;
 
             inventory = new List<Item>();
             equipment = new List<Item>();
@@ -89,6 +89,11 @@ namespace TeamTRPG_Project
             foreach (Item item in equipment)
                 Console.WriteLine(item.ShowInfo());
 
+        }
+
+        public override string ToString()
+        {
+            return $"경력.{LV} {name} ({job})\n멘탈 {HP}/{MAXHP}";
         }
 
         public void ShowInventory()
@@ -150,33 +155,38 @@ namespace TeamTRPG_Project
 
         public void GetExp(int exp)
         {
+            int prevEXP = EXP;
             EXP += exp;
             if (LV < MAXLV && EXP > LVGuage[LV]) //최대 레벨이 아니고 경험치 넘었을 때
             {
                 LVUp();
             }
+            Console.WriteLine("EXP {0} -> {1}", prevEXP, EXP);
         }
 
         private void LVUp()
         {
-            EXP -= LVGuage[LV];
+            //경험치 초기화를 할 경우 아래 코드 주석 제거
+            //EXP -= LVGuage[LV];
             LV++;
 
             ATK += 0.5f;
             DEF += 1.0f;
             HP = MAX_HP; //레벨업시 풀피
+            Console.WriteLine("경력이 {0}으로 올랐습니다.", LV);
         }
 
         public float takeDamage(float damage)   //공격 받을 때
         {
-
+            float prev_HP = HP;
             if (rd.NextDouble() > avoid) //회피 실패
             {
                 HP -= damage;
-                if (HP < 0)
+                if (HP < 0f)
                 {
-                    HP = 0;
+                    HP = 0f;
                 }
+                Console.WriteLine("멘탈 {0:F0} -> {1:F0}", prev_HP, HP);
             }
             else
             {
@@ -202,6 +212,15 @@ namespace TeamTRPG_Project
 
             return damage;
         }
-
+        
+        public float UsePotion(Potion potion)
+        {
+            float prevHP = HP;
+            HP += potion.REC;
+            if(HP > MAX_HP)
+                HP = MAX_HP;
+            Console.WriteLine("멘탈 회복 {0:F0} -> {1:F0}", prevHP, HP);
+            return HP;
+        }
     }
 }
