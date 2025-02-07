@@ -1,6 +1,7 @@
 using System;
+using System.Linq;
 using TeamTRPG_Project;
-public class Monster 
+public class Monster
 {
     public string Name { get; private set; } // 몬스터 이름
     public float HP { get; private set; } // 체력
@@ -9,6 +10,7 @@ public class Monster
     public int LV { get; private set; } // 레벨
     public int EXP { get; private set; } //  몬스터 경험치 추가
     public int GroupID { get; private set; } // 그룹 ID
+
 
     public Monster(string name, float hp, float atk, float def, int lv, int exp, int groupID) // 생성자
     {
@@ -19,14 +21,9 @@ public class Monster
         LV = lv; // 레벨 설정
         EXP = exp; // 경험치 설정
         GroupID = groupID; // 그룹 ID 설정
-    } 
-
-    public void TakeDamage(int damage)
-    {
-        int actualDamage = Math.Max(damage - (int)DEF, 1); 
-        HP -= actualDamage;
-        Console.WriteLine($"{Name}) {actualDamage} 의 피해를 입었습니다!( 남은 체력{HP})"); 
     }
+
+
     public void TakeDamage(int damage) // 피해를 입는 메서드
     {
         int actualDamage = Math.Max(1, damage - (int)DEF); // 최소 1 이상의 피해 보장
@@ -109,4 +106,52 @@ public class Monster
         int index = rand.Next(filteredList.Count); // 필터링된 몬스터 중 랜덤 인덱스 선택
         return filteredList[index]; // 선택된 몬스터 반환
     }
+
+    public static void SummonMonste(int groupID)
+    {
+        Console.Clear();
+        Random rand = new Random();
+        int rd = rand.Next(1, 5); // 1 ~ 4마리 몬스터 랜덤 소환
+        List<Monster> field = new List<Monster>(); // 소환된 몬스터들을 저장할 리스트 초기화
+
+        // 그룹 ID에 맞는 몬스터를 소환하여 field 리스트에 추가
+        for (int i = 0; i < rd; i++)
+        {
+            // 랜덤으로 몬스터 소환
+            Monster summonedMonster = GetRandomMonsterByGroup(groupID);
+
+            if (summonedMonster != null)
+            {
+                field.Add(summonedMonster); // 소환된 몬스터를 field에 추가
+            }
+        }
+
+        // 소환된 몬스터 출력
+        Console.WriteLine($"{rd}마리의 몬스터가 소환되었습니다!");
+        foreach (var monster in field)
+        {
+            Console.WriteLine(monster.ToString()); // 몬스터 정보 출력
+        }
+
+        Console.WriteLine("1.공격\n2.스킬\n\n0.도망가기");
+        
+        int input = ConsoleUtility.GetInput(0, 2);
+        switch(input)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+
+            
+        }
+
+
+
+    }
+
+
+
 }

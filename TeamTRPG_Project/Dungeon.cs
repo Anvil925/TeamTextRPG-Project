@@ -12,20 +12,23 @@ namespace TeamTRPG_Project
     
     internal class Dungeon
     {
-        Monster monster;
+        //Monster monster;
 
+        //List<Monster> field;
 
+        //List<Monster> MonsterList;
         static Character Player;
 
-        public static void SetPlayer(Character player)
+        public static void SetPlayer(Character player )
         {
             Player = player;
-
+            
         }
 
-        
 
-        public static void StartWork()
+
+
+        public void StartWork()
         {
             ConsoleUtility.ColorWrite("업무 시작", ConsoleColor.Magenta);
             Console.WriteLine("1.꼰대 차장의 오점뭐?");
@@ -38,7 +41,7 @@ namespace TeamTRPG_Project
                 case 0:
                     break;
                 case 1:
-
+                    StartWork_1();
                     break;
                 case 2:
                     
@@ -52,7 +55,9 @@ namespace TeamTRPG_Project
         }
 
 
-        public static void PromotionBattle()
+
+
+        public  void PromotionBattle()
         {
             ConsoleUtility.ColorWrite("승진시험", ConsoleColor.Magenta);
             Console.WriteLine("1.흡연실 - 승진을 원하는 동료");
@@ -85,6 +90,15 @@ namespace TeamTRPG_Project
             }
         }
 
+
+        public void StartWork_1()
+        {
+            Console.WriteLine("[Battle]");
+            Monster.SummonMonste(1);
+
+
+            
+        }
 
 
     }
