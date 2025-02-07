@@ -12,7 +12,7 @@ namespace TeamTRPG_Project
         Character Player;
         List<Item> ItemList;
 
-
+        Dungeon dungeon;
         public GameManager(string name)
         {
             Player = new Character(name);
