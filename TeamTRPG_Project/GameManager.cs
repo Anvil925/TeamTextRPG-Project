@@ -12,6 +12,7 @@ namespace TeamTRPG_Project
         Character Player;
         List<Item> ItemList;
         List<Item> inventory = new List<Item>();
+        Dungeon Dungeon;
 
         public GameManager(string name)
         {
@@ -24,6 +25,29 @@ namespace TeamTRPG_Project
 
         }
 
+        public void DoungeonScene()
+        {
+            Console.Clear();
+            ConsoleUtility.ColorWrite("던전 종류", ConsoleColor.Magenta);
+            Console.WriteLine();
+            Console.WriteLine("1. 업무시작\n\n2. 승진시험\n\n0.나가기");
+            int input = ConsoleUtility.GetInput(0, 2);
+            switch (input)
+            {
+                case 0:
+                    MainScreen();
+                    break;
+                case 1:
+                    Dungeon.StartWork();
+                    break;
+                case 2:
+                    Dungeon.PromotionBattle();
+                    break;
+
+            }
+            MainScreen();
+
+        }
         public void MainScreen()
         {
             Console.Clear();
@@ -54,7 +78,7 @@ namespace TeamTRPG_Project
                     ShopScreen();
                     break;
                 case 4:
-                    //던전
+                    DoungeonScene();
                     break;
                 case 5:
                     //포션
@@ -178,7 +202,7 @@ namespace TeamTRPG_Project
             //초기에 설정한 아이템리스트들을 전부 표기
             for (int i = 0; i < ItemList.Count; i++)
             {
-                Console.WriteLine($"- {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
+                //Console.WriteLine($"- {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
             }
 
             Console.WriteLine();
@@ -211,7 +235,7 @@ namespace TeamTRPG_Project
 
             for (int i = 0; i < ItemList.Count; i++)
             {
-                Console.WriteLine($"- {i + 1}. {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
+               // Console.WriteLine($"- {i + 1}. {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
             }
 
             Console.WriteLine();
