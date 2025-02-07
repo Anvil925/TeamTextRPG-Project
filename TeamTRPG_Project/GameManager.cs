@@ -11,7 +11,7 @@ namespace TeamTRPG_Project
     {
         Character Player;
         List<Item> ItemList;
-        List<Item> inventory = new List<Item>();
+
 
         public GameManager(string name)
         {
@@ -19,7 +19,7 @@ namespace TeamTRPG_Project
             Dungeon.SetPlayer(Player); // 던전에 플레이어 정보 전달
             ItemList = new List<Item>();
             {
-                ///아이템 정보
+                
             };
 
 
@@ -51,13 +51,13 @@ namespace TeamTRPG_Project
         public void MainScreen()
         {
             Console.Clear();
-            Console.WriteLine($"스파르타 마을에 오신 player.name 환영합니다.");
+            Console.WriteLine($"스파르타 회사에 오신 {Player.name} 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("1. 상태 보기");
             Console.WriteLine("2. 인벤토리");
             Console.WriteLine("3. 상점");
-            Console.WriteLine("4. 던전");
+            Console.WriteLine("4. 업무시작");
             Console.WriteLine("5. 회복아이템");
             Console.WriteLine();
 
@@ -116,9 +116,9 @@ namespace TeamTRPG_Project
             Console.WriteLine("[아이템 목록]");
 
             // inventory에 있는 item들에 대한 출력
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < Player.inventory.Count; i++)
             {
-                Console.WriteLine(inventory[i].ShowInfo());
+                //Console.WriteLine(Player.inventory[i].ItemDisplay());
             }
 
             Console.WriteLine();
@@ -148,16 +148,16 @@ namespace TeamTRPG_Project
             Console.WriteLine("[아이템 목록]");
 
             // inventory에 있는 item들에 대한 출력
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < Player.inventory.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {inventory[i].ShowInfo()}");
+              //  Console.WriteLine($"{i + 1}. {Player.inventory[i].ItemDisplay()}");
             }
 
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
             Console.WriteLine();
 
-            int input = ConsoleUtility.GetInput(0, inventory.Count); //입력값의 제한이 소지한 아이템의 갯수만큼 증가
+            int input = ConsoleUtility.GetInput(0, Player.inventory.Count); //입력값의 제한이 소지한 아이템의 갯수만큼 증가
             switch (input)
             {
                 case 0:
@@ -171,13 +171,13 @@ namespace TeamTRPG_Project
 
         public void Equip(int input) //아이템 장착
         {
-            Item select = inventory[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
+            Item select = Player.inventory[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
 
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < Player.inventory.Count; i++)
             {
                 //인벤토리 아이템들 중에서 이미 장착중이고(&&) 아이템 타입이 같고(&&) inventory[i]와 select가 다를경우, 해당 장비 해제
-                if (inventory[i].IsEquip && (inventory[i].ItemType == select.ItemType) && (inventory[i] != select))
-                    Player.UnEquip(inventory[i]);
+                if (Player.inventory[i].IsEquip && (Player.inventory[i].ItemType == select.ItemType) && (Player.inventory[i] != select))
+                    Player.UnEquip(Player.inventory[i]);
             }
 
             //아이템 장착
@@ -200,10 +200,10 @@ namespace TeamTRPG_Project
             Console.WriteLine("[아이템 목록]");
 
             //초기에 설정한 아이템리스트들을 전부 표기
-            for (int i = 0; i < ItemList.Count; i++)
-            {
-                //Console.WriteLine($"- {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
-            }
+            //for (int i = 0; i < ItemList.Count; i++)
+            //{
+            //    Console.WriteLine($"- {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
+            //}
 
             Console.WriteLine();
             Console.WriteLine("1. 아이템 구매");
@@ -233,10 +233,10 @@ namespace TeamTRPG_Project
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
 
-            for (int i = 0; i < ItemList.Count; i++)
-            {
-               // Console.WriteLine($"- {i + 1}. {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
-            }
+            //for (int i = 0; i < ItemList.Count; i++)
+            //{
+            //    Console.WriteLine($"- {i + 1}. {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
+            //}
 
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
@@ -256,7 +256,7 @@ namespace TeamTRPG_Project
                 default:
                     Item select = ItemList[input - 1];
 
-                    if (inventory.Contains(select))
+                    if (Player.inventory.Contains(select))
                         BuyScreen(false, true); //아이템이 이미 보유중이라는 메세지 표기
                     else
                         Buy(select); //아이템 구매 시도
@@ -271,7 +271,7 @@ namespace TeamTRPG_Project
             {
                 Player.gold -= item.Price;
                 item.IsPurchase = true;
-                inventory.Add(item);
+                Player.inventory.Add(item);
                 BuyScreen();
             }
             else //골드가 부족할때
