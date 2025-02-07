@@ -1,12 +1,12 @@
-using System;
+using System; 
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+using System.Collections.Generic; 
+using System.Linq; 
+using System.Security.Cryptography.X509Certificates; 
+using System.Text; 
 using System.Threading.Tasks;
 
-namespace TeamTRPG_Project
+namespace TeamTRPG_Project 
 {
     internal class Dungeon
     {
@@ -19,6 +19,7 @@ namespace TeamTRPG_Project
         }
         public static void StartWork()
         {
+            ConsoleUtility.Loading();
             Console.Clear();
             ConsoleUtility.ColorWrite("어떤 업무를 해야할까?", ConsoleColor.Magenta);
             Console.WriteLine("1.꼰대 차장의 오점뭐?");
@@ -37,10 +38,10 @@ namespace TeamTRPG_Project
                 case 3:
                     break;
             }
-            
         }
         public static void PromotionBattle()
         {
+            ConsoleUtility.Loading();
             Console.Clear();
             ConsoleUtility.ColorWrite("승진은 어려운 법!", ConsoleColor.Magenta);
             Console.WriteLine("1.흡연실 - 승진을 원하는 동료");
@@ -69,19 +70,22 @@ namespace TeamTRPG_Project
         }
         public static void PromotionBattle1()
         {
+            ConsoleUtility.Loading();
             Console.Clear();
             ConsoleUtility.ColorWrite("담배냄새가 자욱하다...", ConsoleColor.Magenta);
-            // 승진시험 첫 번째 단계에서 싸울 몬스터를 불러옵니다.
-            Monster monster = Monster.GetRandomMonsterByGroup(1); // 1은 승진시험의 첫 번째 단계
-            if (monster != null)
+            // 몬스터 여러 마리 생성
+            List<Monster> monsters = new List<Monster>();
+            int numberOfMonsters = 3;  // 예시로 3마리 몬스터 생성
+            for (int i = 0; i < numberOfMonsters; i++)
             {
-                Console.WriteLine($"{monster.Name} (이)가 나타났습니다!");
-                // 몬스터와의 전투 시작
-            }
-            else
-            {
-                Console.WriteLine("승진시험에서 몬스터가 나타나지 않았습니다.");
-            }
+                Monster monster = Monster.GetRandomMonsterByGroup(1); // 몬스터 그룹 1에서 랜덤 몬스터 불러오기
+                if (monster != null)
+                {
+                    monsters.Add(monster);
+                    Console.WriteLine($"{monster.Name} (이)가 나타났습니다!");
+                    ConsoleUtility.ColorWrite(monster.ToString(), ConsoleColor.Cyan);
+                }
+            }            
             while (true)
             {
                 Console.WriteLine("1. 공격");
