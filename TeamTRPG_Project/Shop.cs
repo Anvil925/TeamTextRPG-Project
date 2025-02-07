@@ -90,7 +90,19 @@ namespace TeamTRPG_Project
         }
         private void buy(Item item)
         {
-
+            //골드가 충분할때 
+            if (character.gold >= item.Price)
+            {
+                character.gold -= item.Price;
+                item.IsPurchase = true;
+                character.inventory.Add(item);
+                buyScreen();
+            }
+            else //골드가 부족할때
+            {
+                buyScreen(true, false); //골드가 부족하다는 메세지 표기
+            }
         }
+    }
     }
 }
