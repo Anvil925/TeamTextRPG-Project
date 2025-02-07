@@ -62,7 +62,7 @@ namespace TeamTRPG_Project
             Console.WriteLine("GOLD : {0}", gold);
         }
 
-        public void GetItem(Item item)
+        public void Inventory(Item item)
         {
             inventory.Add(item);
         }
