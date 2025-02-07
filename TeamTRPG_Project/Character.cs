@@ -45,7 +45,7 @@ namespace TeamTRPG_Project
 
         Random rd = new Random();
 
-        public Character(string name)
+        public Character(string name, Jobs job = Jobs.INTERN)
         {
             LV = 1;
             EXP = 0;
@@ -67,7 +67,7 @@ namespace TeamTRPG_Project
 
             gold = 1500;
 
-            job = Jobs.INTERN;
+            this.job = job;
 
             inventory = new List<Item>();
             equipment = new List<Item>();
