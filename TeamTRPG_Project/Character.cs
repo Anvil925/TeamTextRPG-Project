@@ -93,7 +93,7 @@ namespace TeamTRPG_Project
 
         public override string ToString()
         {
-            return $"경력.{LV} {name} ({job})\n멘탈 {HP}/{MAXHP}";
+            return $"경력.{LV} {name} ({job})\n멘탈 {HP}/{MAX_HP}";
         }
 
         public void ShowInventory()
@@ -220,6 +220,7 @@ namespace TeamTRPG_Project
             if(HP > MAX_HP)
                 HP = MAX_HP;
             Console.WriteLine("멘탈 회복 {0:F0} -> {1:F0}", prevHP, HP);
+            inventory.Remove(potion);
             return HP;
         }
     }
