@@ -1,26 +1,31 @@
 using System; 
 public class Monster 
 {
-    public string Name { get; private set; } 
-    public float HP { get; private set; } 
-    public float ATK { get; private set; } 
-    public float DEF { get; private set; } 
-    public int LV { get; private set; } 
+    public string Name { get; private set; } // 몬스터 이름
+    public float HP { get; private set; } // 체력
+    public float ATK { get; private set; } // 공격력
+    public float DEF { get; private set; } // 방어력
+    public int LV { get; private set; } // 레벨
+    public int EXP { get; private set; } //  몬스터 경험치 추가
 
-    public Monster(string name, float hp, float atk, float def, int lv) 
+    public int GroupID { get; private set; } // 그룹 ID
+
+    public Monster(string name, float hp, float atk, float def, int lv, int exp, int groupID) // 생성자
     {
-        Name = name; 
-        HP = hp; 
-        ATK = atk; 
-        DEF = def; 
-        LV = lv; 
+        Name = name; // 이름 설정
+        HP = hp; // 체력 설정
+        ATK = atk; // 공격력 설정
+        DEF = def; // 방어력 설정
+        LV = lv; // 레벨 설정
+        EXP = exp; // 경험치 설정
+        GroupID = groupID; // 그룹 ID 설정
     } 
 
     public void TakeDamage(int damage)
     {
         int actualDamage = Math.Max(damage - (int)DEF, 1); 
         HP -= actualDamage;
-        Console.WriteLine($"{Name}) {actualDamage} ���� ü��: {HP})"); 
+        Console.WriteLine($"{Name}) {actualDamage} 의 피해를 입었습니다!( 남은 체력{HP})"); 
     }
 
     public bool IsDead() 
@@ -42,12 +47,12 @@ public class Monster
 
     public static List<Monster> MonsterList = new List<Monster> // 몬스터 리스트
     {
-        new Monster("승진을 원하는 동료", 30, 5, 2, 1, 1),  // 그룹 1 (흡연실)
-        new Monster("무능한 간부", 50, 8, 4, 2, 2),    // 그룹 2 (탕비실)
-        new Monster("고집불통 팀장", 35, 6, 2, 2, 3), // 그룹 3 (이름 미정)
-        new Monster("꼰대차장", 150, 20, 10, 5, 4), // 그룹 4 (이름 미정)
-        new Monster("파일", 150, 20, 10, 5, 5),  // 그룹 4 (이름 미정)
-        new Monster("서버실", 150, 20, 10, 5, 6),  // 그룹 4 (이름 미정)
+        new Monster("승진을 원하는 동료", 30, 5, 2, 1, 1, 1),  // 그룹 1 (흡연실)
+        new Monster("무능한 간부", 50, 8, 4, 2, 2, 2),    // 그룹 2 (탕비실)
+        new Monster("고집불통 팀장", 35, 6, 2, 2, 3, 3), // 그룹 3 (이름 미정)
+        new Monster("꼰대차장", 150, 20, 10, 5, 4, 4), // 그룹 4 (이름 미정)
+        new Monster("파일", 150, 20, 10, 5, 5, 5),  // 그룹 4 (이름 미정)
+        new Monster("서버실", 150, 20, 10, 5, 6, 6),  // 그룹 4 (이름 미정)
     };
 
     public static Monster GetRandomMonsterByGroup(int groupID) // 그룹 ID에 따른 랜덤 몬스터 반환 메서드
