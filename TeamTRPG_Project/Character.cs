@@ -74,7 +74,7 @@ namespace TeamTRPG_Project
         public void ShowInfo()
         {
             Console.WriteLine("Lv : {0:D2}", LV);
-            Console.WriteLine("EXP : {0} / {1}", EXP, LVGuage[LV]);
+            Console.WriteLine("EXP : {0} / {1}", EXP, (LV < MAXLV)?LVGuage[LV] : "00");
             Console.WriteLine("{0} ( {1} )", name, job);
             Console.WriteLine("정치력 : {0} {1}", ATK + itemATK, (itemATK > 0) ? $"(+{itemATK})" : "");
             Console.WriteLine("아부력 : {0} {1}", DEF + itemDEF, (itemDEF > 0) ? $"(+{itemDEF})" : "");
