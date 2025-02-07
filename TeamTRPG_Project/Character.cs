@@ -29,7 +29,7 @@ namespace TeamTRPG_Project
         public int gold { get; set; }
 
         public Jobs job { get; set; }
-        public List<Item> items { get; set; }
+        public List<Item> inventory { get; set; }
 
         public Character(string name)
         {
@@ -49,7 +49,7 @@ namespace TeamTRPG_Project
 
             job = Jobs.WARRIOR;
 
-            items = new List<Item>();
+            inventory = new List<Item>();
         }
 
         public void ShowInfo()
@@ -64,24 +64,37 @@ namespace TeamTRPG_Project
 
         public void GetItem(Item item)
         {
-            items.Add(item);
+            inventory.Add(item);
         }
         
-        void EquipItem(Item item)
-        {
-            item.IsEquip = !item.IsEquip;
 
-            if(item.IsEquip)
+        //Gamemanager가 인벤토리 관리하면 제거
+
+        public void EquipItem(Item item)
+        {
+            if (item.IsEquip)
             {
-                itemATK += item.ATK;
-                itemDEF += item.DEF;
-            } 
+                UnEquip(item);
+            }
             else
             {
-                itemATK -= item.ATK;
-                itemDEF -= item.DEF;
+                item.IsEquip = true;
+                itemATK += item.ATK;
+                itemDEF += item.DEF;
             }
         }
+
+        public void UnEquip(Item item)
+        {
+            
+            item.IsEquip = false;
+            itemATK -= item.ATK;
+            itemDEF -= item.DEF;
+        }
+
+
+        
+
 
     }
 }
