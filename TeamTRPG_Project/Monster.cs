@@ -37,12 +37,11 @@ public class Monster // 몬스터 클래스
         return $"[Lv.{LV}] {Name} - HP: {HP}, ATK: {ATK}, DEF: {DEF}"; // 몬스터 정보 반환
     }
 
-    // Character.cs 에서 수정 후 사용
-    // public void AttackPlayer(Character player)
-    // {
-    //     Console.WriteLine($"{Name}이(가) {player.Name}을(를) 공격합니다!");
-    //     player.TakeDamage(ATK);
-    // }
+    public void AttackPlayer(Character player) // 플레이어를 공격하는 메서드
+    {
+        Console.WriteLine($"{Name}이(가) {player.name}을(를) 공격합니다!"); // 공격 메시지 출력
+        player.takeDamage(ATK); // 플레이어에게 공격력만큼 피해 입힘
+    }
 
     public static List<Monster> MonsterList = new List<Monster> // 몬스터 리스트
     {
