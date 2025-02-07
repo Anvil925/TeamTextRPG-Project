@@ -109,46 +109,7 @@ public class Monster
         int index = rand.Next(filteredList.Count); // 필터링된 몬스터 중 랜덤 인덱스 선택
         return filteredList[index]; // 선택된 몬스터 반환
     }
-    public static void SummonMonste(int groupID)
-    {
-        Console.Clear();
-        Random rand = new Random();
-        int rd = rand.Next(1, 5); // 1 ~ 4마리 몬스터 랜덤 소환
-        List<Monster> field = new List<Monster>(); // 소환된 몬스터들을 저장할 리스트 초기화
+    
 
-        // 그룹 ID에 맞는 몬스터를 소환하여 field 리스트에 추가
-        for (int i = 0; i < rd; i++)
-        {
-            // 랜덤으로 몬스터 소환
-            Monster summonedMonster = GetRandomMonsterByGroup(groupID);
-
-            if (summonedMonster != null)
-            {
-                field.Add(summonedMonster); // 소환된 몬스터를 field에 추가
-            }
-        }
-
-        // 소환된 몬스터 출력
-        Console.WriteLine($"{rd}마리의 몬스터가 소환되었습니다!");
-        foreach (var monster in field)
-        {
-            Console.WriteLine(monster.ToString()); // 몬스터 정보 출력
-        }
-
-        Console.WriteLine("1.공격\n2.스킬\n\n0.도망가기");
-
-        int input = ConsoleUtility.GetInput(0, 2);
-        switch (input)
-        {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-
-
-        }
-
-    }
+   
 }
