@@ -28,7 +28,7 @@ namespace TeamTRPG_Project
 
 
 
-        public void StartWork()
+        public static void StartWork()
         {
             ConsoleUtility.ColorWrite("업무 시작", ConsoleColor.Magenta);
             Console.WriteLine("1.꼰대 차장의 오점뭐?");
@@ -57,7 +57,7 @@ namespace TeamTRPG_Project
 
 
 
-        public  void PromotionBattle()
+        public  static void PromotionBattle()
         {
             ConsoleUtility.ColorWrite("승진시험", ConsoleColor.Magenta);
             Console.WriteLine("1.흡연실 - 승진을 원하는 동료");
@@ -91,7 +91,7 @@ namespace TeamTRPG_Project
         }
 
 
-        public void StartWork_1()
+        public static void StartWork_1()
         {
             Console.WriteLine("[Battle]");
             Monster.SummonMonste(1);
