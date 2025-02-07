@@ -1,71 +1,40 @@
-using System; // Console.WriteLine, Math.Max, Math.Min ì‚¬ìš©ì„ ìœ„í•´ ì¶”ê°€
-using TeamTRPG_Project; // Character í´ë˜ìŠ¤ ì‚¬ìš©ì„ ìœ„í•´ ì¶”ê°€
-
-public class Monster // ëª¬ìŠ¤í„° í´ë˜ìŠ¤
-{
-    public string Name { get; private set; } // ëª¬ìŠ¤í„° ì´ë¦„
-    public float HP { get; private set; } // ì²´ë ¥
-    public float ATK { get; private set; } // ê³µê²©ë ¥
-    public float DEF { get; private set; } // ë°©ì–´ë ¥
-    public int LV { get; private set; } // ë ˆë²¨
-    public int GroupID { get; private set; } // ê·¸ë£¹ ID
-
-    public Monster(string name, float hp, float atk, float def, int lv, int groupID) // ìƒì„±ì
-    {
-        Name = name; // ì´ë¦„ ì„¤ì •
-        HP = hp; // ì²´ë ¥ ì„¤ì •
-        ATK = atk; // ê³µê²©ë ¥ ì„¤ì •
-        DEF = def; // ë°©ì–´ë ¥ ì„¤ì •
-        LV = lv; // ë ˆë²¨ ì„¤ì •
-        GroupID = groupID; // ê·¸ë£¹ ID ì„¤ì •
-    } 
-
-    public void TakeDamage(int damage) // í”¼í•´ë¥¼ ì…ëŠ” ë©”ì„œë“œ
-    {
-        int actualDamage = Math.Max(1, damage - (int)DEF); // ìµœì†Œ 1 ì´ìƒì˜ í”¼í•´ ë³´ì¥
-        HP = Math.Max(0, HP - actualDamage); // ì²´ë ¥ì´ 0 ì´í•˜ë¡œ ë‚´ë ¤ê°€ì§€ ì•Šë„ë¡ ì²˜ë¦¬
-        Console.WriteLine($"{Name}ì´(ê°€) {actualDamage}ì˜ í”¼í•´ë¥¼ ì…ì—ˆìŠµë‹ˆë‹¤! (ë‚¨ì€ ì²´ë ¥: {HP})"); // í”¼í•´ ì¶œë ¥
+using System; // Console.WriteLine, Math.Max, Math.Min »ç¿ëÀ» À§ÇØ Ãß°¡
+using TeamTRPG_Project; // Character Å¬·¡½º »ç¿ëÀ» À§ÇØ Ãß°¡
+public class Monster // ¸ó½ºÅÍ Å¬·¡½º
+{    public string Name { get; private set; } // ¸ó½ºÅÍ ÀÌ¸§
+    public float HP { get; private set; } // Ã¼·Â
+    public float ATK { get; private set; } // °ø°İ·Â
+    public float DEF { get; private set; } // ¹æ¾î·Â
+    public int LV { get; private set; } // ·¹º§
+    public int GroupID { get; private set; } // ±×·ì ID
+    public Monster(string name, float hp, float atk, float def, int lv, int groupID) // »ı¼ºÀÚ
+    {        Name = name; // ÀÌ¸§ ¼³Á¤
+        HP = hp; // Ã¼·Â ¼³Á¤
+        ATK = atk; // °ø°İ·Â ¼³Á¤
+        DEF = def; // ¹æ¾î·Â ¼³Á¤
+        LV = lv; // ·¹º§ ¼³Á¤
+        GroupID = groupID; // ±×·ì ID ¼³Á¤
+    }    public void TakeDamage(int damage) // ÇÇÇØ¸¦ ÀÔ´Â ¸Ş¼­µå
+    {        int actualDamage = Math.Max(1, damage - (int)DEF); // ÃÖ¼Ò 1 ÀÌ»óÀÇ ÇÇÇØ º¸Àå
+        HP = Math.Max(0, HP - actualDamage); // Ã¼·ÂÀÌ 0 ÀÌÇÏ·Î ³»·Á°¡Áö ¾Êµµ·Ï Ã³¸®
+        Console.WriteLine($"{Name}ÀÌ(°¡) {actualDamage}ÀÇ ÇÇÇØ¸¦ ÀÔ¾ú½À´Ï´Ù! (³²Àº Ã¼·Â: {HP})"); // ÇÇÇØ Ãâ·Â
+    }    public bool IsDead() // »ç¸Á ¿©ºÎ¸¦ ¹İÈ¯ÇÏ´Â ¸Ş¼­µå
+    {        return HP <= 0; // Ã¼·ÂÀÌ 0 ÀÌÇÏÀÌ¸é »ç¸Á
+    }    public override string ToString() // ¹®ÀÚ¿­ ¹İÈ¯ ¸Ş¼­µå ÀçÁ¤ÀÇ
+    {        return $"[Lv.{LV}] {Name} - HP: {HP}, ATK: {ATK}, DEF: {DEF}"; // ¸ó½ºÅÍ Á¤º¸ ¹İÈ¯
     }
-
-    public bool IsDead() // ì‚¬ë§ ì—¬ë¶€ë¥¼ ë°˜í™˜í•˜ëŠ” ë©”ì„œë“œ
-    {
-        return HP <= 0; // ì²´ë ¥ì´ 0 ì´í•˜ì´ë©´ ì‚¬ë§
-    }
-
-    public override string ToString() // ë¬¸ìì—´ ë°˜í™˜ ë©”ì„œë“œ ì¬ì •ì˜
-    {
-        return $"[Lv.{LV}] {Name} - HP: {HP}, ATK: {ATK}, DEF: {DEF}"; // ëª¬ìŠ¤í„° ì •ë³´ ë°˜í™˜
-    }
-
-    // Character.cs ì—ì„œ ìˆ˜ì • í›„ ì‚¬ìš©
+    // Character.cs ¿¡¼­ ¼öÁ¤ ÈÄ »ç¿ë
     // public void AttackPlayer(Character player)
     // {
-    //     Console.WriteLine($"{Name}ì´(ê°€) {player.Name}ì„(ë¥¼) ê³µê²©í•©ë‹ˆë‹¤!");
+    //     Console.WriteLine($"{Name}ÀÌ(°¡) {player.Name}À»(¸¦) °ø°İÇÕ´Ï´Ù!");
     //     player.TakeDamage(ATK);
     // }
-
-    public static List<Monster> MonsterList = new List<Monster> // ëª¬ìŠ¤í„° ë¦¬ìŠ¤íŠ¸
-    {
-        new Monster("ìŠ¹ì§„ì„ ì›í•˜ëŠ” ë™ë£Œ", 30, 5, 2, 1, 1),  // ê·¸ë£¹ 1 (í¡ì—°ì‹¤)
-        new Monster("ë¬´ëŠ¥í•œ ê°„ë¶€", 50, 8, 4, 2, 2),    // ê·¸ë£¹ 2 (íƒ•ë¹„ì‹¤)
-        new Monster("ê³ ì§‘ë¶ˆí†µ íŒ€ì¥", 35, 6, 2, 2, 3), // ê·¸ë£¹ 3 (ì´ë¦„ ë¯¸ì •)
-        new Monster("ê¼°ëŒ€ì°¨ì¥", 150, 20, 10, 5, 4), // ê·¸ë£¹ 4 (ì´ë¦„ ë¯¸ì •)
-        new Monster("íŒŒì¼", 150, 20, 10, 5, 5),  // ê·¸ë£¹ 4 (ì´ë¦„ ë¯¸ì •)
-        new Monster("ì„œë²„ì‹¤", 150, 20, 10, 5, 6),  // ê·¸ë£¹ 4 (ì´ë¦„ ë¯¸ì •)
-    };
-
-    public static Monster GetRandomMonsterByGroup(int groupID) // ê·¸ë£¹ IDì— ë”°ë¥¸ ëœë¤ ëª¬ìŠ¤í„° ë°˜í™˜ ë©”ì„œë“œ
-    {
-        Random rand = new Random(); // ëœë¤ ê°ì²´ ìƒì„±
-        List<Monster> filteredList = MonsterList.FindAll(m => m.GroupID == groupID); // ê·¸ë£¹ IDì— í•´ë‹¹í•˜ëŠ” ëª¬ìŠ¤í„° ë¦¬ìŠ¤íŠ¸ í•„í„°ë§
-
-        if (filteredList.Count == 0) // í•„í„°ë§ëœ ëª¬ìŠ¤í„°ê°€ ì—†ìœ¼ë©´
-        {
-            Console.WriteLine("ëª¬ìŠ¤í„° ì—†ìŒ"); // ë©”ì‹œì§€ ì¶œë ¥
-            return null; // null ë°˜í™˜
-        }
-
-        int index = rand.Next(filteredList.Count); // í•„í„°ë§ëœ ëª¬ìŠ¤í„° ì¤‘ ëœë¤ ì¸ë±ìŠ¤ ì„ íƒ
-        return filteredList[index]; // ì„ íƒëœ ëª¬ìŠ¤í„° ë°˜í™˜
-    }
-}
+    public static List<Monster> MonsterList = new List<Monster> // ¸ó½ºÅÍ ¸®½ºÆ®    {        new Monster("½ÂÁøÀ» ¿øÇÏ´Â µ¿·á", 30, 5, 2, 1, 1),  // ±×·ì 1 (Èí¿¬½Ç)        new Monster("¹«´ÉÇÑ °£ºÎ", 50, 8, 4, 2, 2),    // ±×·ì 2 (ÅÁºñ½Ç)        new Monster("°íÁıºÒÅë ÆÀÀå", 35, 6, 2, 2, 3), // ±×·ì 3 (ÀÌ¸§ ¹ÌÁ¤)        new Monster("²Á´ëÂ÷Àå", 150, 20, 10, 5, 4), // ±×·ì 4 (ÀÌ¸§ ¹ÌÁ¤)        new Monster("ÆÄÀÏ", 150, 20, 10, 5, 5),  // ±×·ì 4 (ÀÌ¸§ ¹ÌÁ¤)        new Monster("¼­¹ö½Ç", 150, 20, 10, 5, 6),  // ±×·ì 4 (ÀÌ¸§ ¹ÌÁ¤)    };    public static Monster GetRandomMonsterByGroup(int groupID) // ±×·ì ID¿¡ µû¸¥ ·£´ı ¸ó½ºÅÍ ¹İÈ¯ ¸Ş¼­µå
+    {        Random rand = new Random(); // ·£´ı °´Ã¼ »ı¼º
+        List<Monster> filteredList = MonsterList.FindAll(m => m.GroupID == groupID); // ±×·ì ID¿¡ ÇØ´çÇÏ´Â ¸ó½ºÅÍ ¸®½ºÆ® ÇÊÅÍ¸µ
+        if (filteredList.Count == 0) // ÇÊÅÍ¸µµÈ ¸ó½ºÅÍ°¡ ¾øÀ¸¸é
+        {            Console.WriteLine("¸ó½ºÅÍ ¾øÀ½"); // ¸Ş½ÃÁö Ãâ·Â
+            return null; // null ¹İÈ¯
+        }        int index = rand.Next(filteredList.Count); // ÇÊÅÍ¸µµÈ ¸ó½ºÅÍ Áß ·£´ı ÀÎµ¦½º ¼±ÅÃ
+        return filteredList[index]; // ¼±ÅÃµÈ ¸ó½ºÅÍ ¹İÈ¯
+    }}
