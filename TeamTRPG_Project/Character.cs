@@ -43,11 +43,13 @@ namespace TeamTRPG_Project
         public List<Item> inventory { get; set; }
         public List<Item> equipment { get; set; } //장착 중 아이템
 
+        Random rd = new Random();
+
         public Character(string name)
         {
             LV = 1;
             EXP = 0;
-            LVGuage = [0, 10, 35, 65, 100]; //일단 5렙까지 경험치 필요량
+            LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100 }; //일단 5렙까지 경험치 필요량
             this.name = name;
 
             ATK = 10;
@@ -111,8 +113,11 @@ namespace TeamTRPG_Project
                     UnEquip(i);
 
             equipment.Add(item);
-            itemATK += item.ATK;
-            itemDEF += item.DEF;
+
+            if(item is Weapon weapon)
+                itemATK += weapon.ATK;
+            else if (item is Armor armor)
+                itemDEF += armor.DEF;
         }
 
         private void UnEquip(Item item)
@@ -120,9 +125,11 @@ namespace TeamTRPG_Project
             item.IsEquip = false;
 
             equipment.Remove(item);
-            itemATK -= item.ATK;
-            itemDEF -= item.DEF;
-            
+            if (item is Weapon weapon)
+                itemATK -= weapon.ATK;
+            else if (item is Armor armor)
+                itemDEF -= armor.DEF;
+
         }
 
         public void GetExp(int exp)
@@ -146,8 +153,7 @@ namespace TeamTRPG_Project
 
         public float takeDamage(float damage)   //공격 받을 때
         {
-            Random rd = new Random();
-
+            
             if(rd.NextDouble() > avoid) //회피 실패
             {
                 HP -= damage;
@@ -157,9 +163,23 @@ namespace TeamTRPG_Project
                 Console.WriteLine("회피 성공!");
             }
 
-            //방어력 공식이 있으면 추가 될 수 있음
+            /*
+             * 방어력 공식이 있으면 추가 될 수 있음
+             */
             
             return HP;
+        }
+
+        public float CalculateDamage() //가하는 데미지 계산
+        {
+            int damageError = (int)((ATK + itemATK) * 0.1); // 데미지 오차
+            int damage = (int)(ATK + itemATK);
+            damage = rd.Next(damage - damageError, damage + damageError + 1);
+
+            if (rd.NextDouble() < crit) //크리티컬
+                damage = (int)(damage * critDamage);
+            
+            return damage;
         }
         
     }
