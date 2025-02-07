@@ -149,12 +149,21 @@ namespace TeamTRPG_Project
         {
             Item select = inventory[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
 
+<<<<<<< Updated upstream
             for (int i = 0; i < inventory.Count; i++)
             {
                 //인벤토리 아이템들 중에서 이미 장착중이고(&&) 아이템 타입이 같고(&&) inventory[i]와 select가 다를경우, 해당 장비 해제
                 if (inventory[i].IsEquip && (inventory[i].Type == select.Type) && (inventory[i] != select))
                     player.UnEquip(inventory[i]);
             }
+=======
+            //for (int i = 0; i < inventory.Count; i++)
+            //{
+            //    //인벤토리 아이템들 중에서 이미 장착중이고(&&) 아이템 타입이 같고(&&) inventory[i]와 select가 다를경우, 해당 장비 해제
+            //    if (inventory[i].IsEquip && (inventory[i].ItemType == select.ItemType) && (inventory[i] != select))
+            //        Player.UnEquip(inventory[i]);
+            //}
+>>>>>>> Stashed changes
 
             //아이템 장착
             player.EquipItem(select);
@@ -176,10 +185,17 @@ namespace TeamTRPG_Project
             Console.WriteLine("[아이템 목록]");
 
             //초기에 설정한 아이템리스트들을 전부 표기
+<<<<<<< Updated upstream
             for (int i = 0; i < itemList.Count; i++)
             {
                 Console.WriteLine($"- {itemList[i].ItemDisplay()} | {itemList[i].GetPriceString()}");
             }
+=======
+            //for (int i = 0; i < ItemList.Count; i++)
+            //{
+            //    Console.WriteLine($"- {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
+            //}
+>>>>>>> Stashed changes
 
             Console.WriteLine();
             Console.WriteLine("1. 아이템 구매");
@@ -209,14 +225,21 @@ namespace TeamTRPG_Project
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
 
+<<<<<<< Updated upstream
             for (int i = 0; i < itemList.Count; i++)
             {
                 Console.WriteLine($"- {i + 1}. {itemList[i].ItemDisplay()} | {itemList[i].GetPriceString()}");
             }
+=======
+            //for (int i = 0; i < ItemList.Count; i++)
+            //{
+            //    Console.WriteLine($"- {i + 1}. {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
+            //}
+>>>>>>> Stashed changes
 
-            Console.WriteLine();
-            Console.WriteLine("0. 나가기");
-            Console.WriteLine();
+            //Console.WriteLine();
+            //Console.WriteLine("0. 나가기");
+            //Console.WriteLine();
 
             if (needGold)
                 Console.WriteLine("골드가 부족합니다!!");
