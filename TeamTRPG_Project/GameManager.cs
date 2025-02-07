@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -9,13 +9,13 @@ namespace TeamTRPG_Project
 {
     internal class GameManager
     {
-        //Player Player;
+        Character Player;
         List<Item> ItemList;
-        List<Item> Inventory = new List<Item>();
+        List<Item> inventory = new List<Item>();
 
-        public GameManager()
+        public GameManager(string name)
         {
-            //player = new Player();
+            Player = new Character(name);
             ItemList = new List<Item>();
             {
                 ///아이템 정보
@@ -71,7 +71,7 @@ namespace TeamTRPG_Project
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
 
-            player.StatusDisplay();
+            Player.ShowInfo();
 
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
@@ -94,7 +94,7 @@ namespace TeamTRPG_Project
             // inventory에 있는 item들에 대한 출력
             for (int i = 0; i < inventory.Count; i++)
             {
-                Console.WriteLine(inventory[i].ItemDisplay());
+                Console.WriteLine(inventory[i].ShowInfo());
             }
 
             Console.WriteLine();
@@ -126,7 +126,7 @@ namespace TeamTRPG_Project
             // inventory에 있는 item들에 대한 출력
             for (int i = 0; i < inventory.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {inventory[i].ItemDisplay()}");
+                Console.WriteLine($"{i + 1}. {inventory[i].ShowInfo()}");
             }
 
             Console.WriteLine();
@@ -153,13 +153,13 @@ namespace TeamTRPG_Project
             for (int i = 0; i < inventory.Count; i++)
             {
                 //인벤토리 아이템들 중에서 이미 장착중이고(&&) 아이템 타입이 같고(&&) inventory[i]와 select가 다를경우, 해당 장비 해제
-                if (inventory[i].IsEquip && (inventory[i].Type == select.Type) && (inventory[i] != select))
-                    player.UnEquip(inventory[i]);
+                if (inventory[i].IsEquip && (inventory[i].ItemType == select.ItemType) && (inventory[i] != select))
+                    Player.UnEquip(inventory[i]);
             }
 
 
             //아이템 장착
-            player.EquipItem(select);
+            Player.EquipItem(select);
             //다시 장착화면으로 가서 업데이트
             EquipScreen();
         }
@@ -173,15 +173,14 @@ namespace TeamTRPG_Project
             Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
             Console.WriteLine();
             Console.WriteLine("[보유 골드]");
-            Console.WriteLine($"{player.Gold}G");
+            Console.WriteLine($"{Player.gold}G");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
 
             //초기에 설정한 아이템리스트들을 전부 표기
-
-            for (int i = 0; i < itemList.Count; i++)
+            for (int i = 0; i < ItemList.Count; i++)
             {
-                Console.WriteLine($"- {itemList[i].ItemDisplay()} | {itemList[i].GetPriceString()}");
+                Console.WriteLine($"- {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
             }
 
 
@@ -209,14 +208,13 @@ namespace TeamTRPG_Project
             Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
             Console.WriteLine();
             Console.WriteLine("[보유 골드]");
-            Console.WriteLine($"{player.Gold}G");
+            Console.WriteLine($"{Player.gold}G");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
 
-
-            for (int i = 0; i < itemList.Count; i++)
+            for (int i = 0; i < ItemList.Count; i++)
             {
-                Console.WriteLine($"- {i + 1}. {itemList[i].ItemDisplay()} | {itemList[i].GetPriceString()}");
+                Console.WriteLine($"- {i + 1}. {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
             }
 
 
@@ -229,14 +227,14 @@ namespace TeamTRPG_Project
             else if (hasItem)
                 Console.WriteLine("이미 보유한 아이템입니다!!");
 
-            int input = ConsoleUtility.GetInput(0, itemList.Count);
+            int input = ConsoleUtility.GetInput(0, ItemList.Count);
             switch (input)
             {
                 case 0:
                     MainScreen();
                     break;
                 default:
-                    Item select = itemList[input - 1];
+                    Item select = ItemList[input - 1];
 
                     if (inventory.Contains(select))
                         BuyScreen(false, true); //아이템이 이미 보유중이라는 메세지 표기
@@ -249,9 +247,9 @@ namespace TeamTRPG_Project
         public void Buy(Item item) // 아이템 구매
         {
             //골드가 충분할때 
-            if (player.Gold >= item.Cost)
+            if (Player.gold >= item.Price)
             {
-                player.Gold -= item.Cost;
+                Player.gold -= item.Price;
                 item.IsPurchase = true;
                 inventory.Add(item);
                 BuyScreen();

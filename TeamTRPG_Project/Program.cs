@@ -42,7 +42,7 @@
             }    
 
             
-            GameManager gm = new GameManager();
+            GameManager gm = new GameManager(Name);
             gm.MainScreen();
         }
 
