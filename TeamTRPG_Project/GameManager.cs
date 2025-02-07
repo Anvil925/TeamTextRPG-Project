@@ -11,7 +11,7 @@ namespace TeamTRPG_Project
     {
         Character Player;
         List<Item> ItemList;
-
+        Shop shop = new Shop();
 
         public GameManager(string name)
         {
@@ -19,13 +19,13 @@ namespace TeamTRPG_Project
             Dungeon.SetPlayer(Player); // 던전에 플레이어 정보 전달
             ItemList = new List<Item>();
             {
-                
+
             };
 
 
         }
 
-        public void DoungeonScene()
+        public void DungeonScene()
         {
             Console.Clear();
             ConsoleUtility.ColorWrite("던전 종류", ConsoleColor.Magenta);
@@ -75,10 +75,10 @@ namespace TeamTRPG_Project
                     InventoryScreen();
                     break;
                 case 3:
-                    ShopScreen();
+                    shop.DisplayShop();
                     break;
                 case 4:
-                    DoungeonScene();
+                    DungeonScene();
                     break;
                 case 5:
                     //포션
@@ -150,7 +150,7 @@ namespace TeamTRPG_Project
             // inventory에 있는 item들에 대한 출력
             for (int i = 0; i < Player.inventory.Count; i++)
             {
-              //  Console.WriteLine($"{i + 1}. {Player.inventory[i].ItemDisplay()}");
+                //  Console.WriteLine($"{i + 1}. {Player.inventory[i].ItemDisplay()}");
             }
 
             Console.WriteLine();
@@ -184,100 +184,6 @@ namespace TeamTRPG_Project
             Player.EquipItem(select);
             //다시 장착화면으로 가서 업데이트
             EquipScreen();
-        }
-
-        public void ShopScreen() // 상점 화면 
-        {
-            ConsoleUtility.Loading();
-
-            Console.Clear();
-            ConsoleUtility.ColorWrite("상점", ConsoleColor.Magenta);
-            Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
-            Console.WriteLine();
-            Console.WriteLine("[보유 골드]");
-            Console.WriteLine($"{Player.gold}G");
-            Console.WriteLine();
-            Console.WriteLine("[아이템 목록]");
-
-            //초기에 설정한 아이템리스트들을 전부 표기
-            //for (int i = 0; i < ItemList.Count; i++)
-            //{
-            //    Console.WriteLine($"- {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
-            //}
-
-            Console.WriteLine();
-            Console.WriteLine("1. 아이템 구매");
-            Console.WriteLine("0. 나가기");
-            Console.WriteLine();
-
-            int input = ConsoleUtility.GetInput(0, 1);
-            switch (input)
-            {
-                case 0:
-                    MainScreen();
-                    break;
-                case 1:
-                    BuyScreen();
-                    break;
-            }
-        }
-
-        public void BuyScreen(bool needGold = false, bool hasItem = false) // 구매 화면 
-        {
-            Console.Clear();
-            ConsoleUtility.ColorWrite("상점 - 아이템 구매", ConsoleColor.Magenta);
-            Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
-            Console.WriteLine();
-            Console.WriteLine("[보유 골드]");
-            Console.WriteLine($"{Player.gold}G");
-            Console.WriteLine();
-            Console.WriteLine("[아이템 목록]");
-
-            //for (int i = 0; i < ItemList.Count; i++)
-            //{
-            //    Console.WriteLine($"- {i + 1}. {ItemList[i].ShowInfo()} | {ItemList[i].GetPriceString()}");
-            //}
-
-            Console.WriteLine();
-            Console.WriteLine("0. 나가기");
-            Console.WriteLine();
-
-            if (needGold)
-                Console.WriteLine("골드가 부족합니다!!");
-            else if (hasItem)
-                Console.WriteLine("이미 보유한 아이템입니다!!");
-
-            int input = ConsoleUtility.GetInput(0, ItemList.Count);
-            switch (input)
-            {
-                case 0:
-                    MainScreen();
-                    break;
-                default:
-                    Item select = ItemList[input - 1];
-
-                    if (Player.inventory.Contains(select))
-                        BuyScreen(false, true); //아이템이 이미 보유중이라는 메세지 표기
-                    else
-                        Buy(select); //아이템 구매 시도
-                    break;
-            }
-        }
-
-        public void Buy(Item item) // 아이템 구매
-        {
-            //골드가 충분할때 
-            if (Player.gold >= item.Price)
-            {
-                Player.gold -= item.Price;
-                item.IsPurchase = true;
-                Player.inventory.Add(item);
-                BuyScreen();
-            }
-            else //골드가 부족할때
-            {
-                BuyScreen(true, false); //골드가 부족하다는 메세지 표기
-            }
         }
     }
 }
