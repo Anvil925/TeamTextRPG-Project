@@ -33,7 +33,6 @@ namespace TeamTRPG_Project
             ItemType = itemType;
             ATK = atk;
             DEF = def;
-
             Description = description;
             Price = price;
 
@@ -57,7 +56,6 @@ namespace TeamTRPG_Project
             ItemInfo.Append($"{Description}");
 
             return ItemInfo.ToString();
-
         }
     }
 }
