@@ -91,6 +91,11 @@ namespace TeamTRPG_Project
 
         }
 
+        public override string ToString()
+        {
+            return $"경력.{LV} {name} ({job})\n멘탈 {HP}/{MAXHP}";
+        }
+
         public void ShowInventory()
         {
             foreach (Item item in inventory)
