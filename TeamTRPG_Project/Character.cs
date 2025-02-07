@@ -67,21 +67,31 @@ namespace TeamTRPG_Project
             inventory.Add(item);
         }
         
+
+        //Gamemanager가 인벤토리 관리하면 제거
+
         public void EquipItem(Item item)
         {
-            item.IsEquip = !item.IsEquip;
-
-            if(item.IsEquip)
+            if (item.IsEquip)
             {
-                itemATK += item.ATK;
-                itemDEF += item.DEF;
-            } 
+                UnEquip(item);
+            }
             else
             {
-                itemATK -= item.ATK;
-                itemDEF -= item.DEF;
+                item.IsEquip = true;
+                itemATK += item.ATK;
+                itemDEF += item.DEF;
             }
         }
+
+        public void UnEquip(Item item)
+        {
+            
+            item.IsEquip = false;
+            itemATK -= item.ATK;
+            itemDEF -= item.DEF;
+        }
+
 
         
 
