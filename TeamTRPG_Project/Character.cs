@@ -143,6 +143,24 @@ namespace TeamTRPG_Project
             DEF += 1.0f;
             HP = MAX_HP; //레벨업시 풀피
         }
+
+        public float takeDamage(float damage)   //공격 받을 때
+        {
+            Random rd = new Random();
+
+            if(rd.NextDouble() > avoid) //회피 실패
+            {
+                HP -= damage;
+            } 
+            else
+            {
+                Console.WriteLine("회피 성공!");
+            }
+
+            //방어력 공식이 있으면 추가 될 수 있음
+            
+            return HP;
+        }
         
     }
 }
