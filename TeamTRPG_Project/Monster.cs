@@ -1,4 +1,5 @@
-using System; 
+using System;
+using TeamTRPG_Project;
 public class Monster 
 {
     public string Name { get; private set; } // 몬스터 이름
