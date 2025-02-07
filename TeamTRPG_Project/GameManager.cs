@@ -176,8 +176,8 @@ namespace TeamTRPG_Project
             for (int i = 0; i < Player.inventory.Count; i++)
             {
                 //인벤토리 아이템들 중에서 이미 장착중이고(&&) 아이템 타입이 같고(&&) inventory[i]와 select가 다를경우, 해당 장비 해제
-                if (Player.inventory[i].IsEquip && (Player.inventory[i].ItemType == select.ItemType) && (Player.inventory[i] != select))
-                    Player.UnEquip(Player.inventory[i]);
+                //if (Player.inventory[i].IsEquip && (Player.inventory[i].ItemType == select.ItemType) && (Player.inventory[i] != select))
+                //    //Player.UnEquip(Player.inventory[i]);
             }
 
             //아이템 장착
