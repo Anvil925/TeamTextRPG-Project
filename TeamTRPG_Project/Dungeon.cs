@@ -1,105 +1,116 @@
-using System;
+using System; 
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+using System.Collections.Generic; 
+using System.Linq; 
+using System.Security.Cryptography.X509Certificates; 
+using System.Text; 
 using System.Threading.Tasks;
 
-namespace TeamTRPG_Project
+namespace TeamTRPG_Project 
 {
-
-    
     internal class Dungeon
     {
-        //Monster monster;
+        Monster monster;
 
-        //List<Monster> field;
-
-        //List<Monster> MonsterList;
         static Character Player;
-
-        public static void SetPlayer(Character player )
+        public static void SetPlayer(Character player)
         {
             Player = player;
-            
         }
-
-
-
-
         public static void StartWork()
         {
-            ConsoleUtility.ColorWrite("¾÷¹« ½ÃÀÛ", ConsoleColor.Magenta);
-            Console.WriteLine("1.²Á´ë Â÷ÀåÀÇ ¿ÀÁ¡¹¹?");
-            Console.WriteLine("2.ÆÄÀÏ ¾îµğ°¬´Ï ¹Ì±Ã");
-            Console.WriteLine("3.¼­¹ö½ÇÀÇ ¿­±â");
-            Console.WriteLine("\n0.³ª°¡±â");
+            ConsoleUtility.Loading();
+            Console.Clear();
+            ConsoleUtility.ColorWrite("ì–´ë–¤ ì—…ë¬´ë¥¼ í•´ì•¼í• ê¹Œ?", ConsoleColor.Magenta);
+            Console.WriteLine("1.ê¼°ëŒ€ ì°¨ì¥ì˜ ì˜¤ì ë­?");
+            Console.WriteLine("2.íŒŒì¼ ì–´ë””ê°”ë‹ˆ ë¯¸ê¶");
+            Console.WriteLine("3.ì„œë²„ì‹¤ì˜ ì—´ê¸°");
+            Console.WriteLine("\n0.ë‚˜ê°€ê¸°");
             int input = ConsoleUtility.GetInput(0, 3);
             switch (input)
             {
                 case 0:
                     break;
                 case 1:
-                    StartWork_1();
                     break;
                 case 2:
-                    
                     break;
                 case 3:
-
                     break;
-
             }
-            
         }
-
-
-
-
-        public  static void PromotionBattle()
+        public static void PromotionBattle()
         {
-            ConsoleUtility.ColorWrite("½ÂÁø½ÃÇè", ConsoleColor.Magenta);
-            Console.WriteLine("1.Èí¿¬½Ç - ½ÂÁøÀ» ¿øÇÏ´Â µ¿·á");
-            Console.WriteLine("2.ÅÁºñ½Ç - ¹«´ÉÇÑ °£ºÎ (±ÇÀåLv:3)");
-            Console.WriteLine("3.ºÎÀå´ÔÀÚ¸®(±ÇÀåLv:5)");
-            Console.WriteLine("4.ºÎÀå´ÔÀÚ¸®(±ÇÀåLv:7)");
-            Console.WriteLine("5.ºÎÀå´ÔÀÚ¸®(±ÇÀåLv:10)");
-            Console.WriteLine("\n0.³ª°¡±â");
+            ConsoleUtility.Loading();
+            Console.Clear();
+            ConsoleUtility.ColorWrite("ìŠ¹ì§„ì€ ì–´ë ¤ìš´ ë²•!", ConsoleColor.Magenta);
+            Console.WriteLine("1.í¡ì—°ì‹¤ - ìŠ¹ì§„ì„ ì›í•˜ëŠ” ë™ë£Œ");
+            Console.WriteLine("2.íƒ•ë¹„ì‹¤ - ë¬´ëŠ¥í•œ ê°„ë¶€ (ê¶Œì¥Lv:3)");
+            Console.WriteLine("3.ë¶€ì¥ë‹˜ìë¦¬(ê¶Œì¥Lv:5)");
+            Console.WriteLine("4.ë¶€ì¥ë‹˜ìë¦¬(ê¶Œì¥Lv:7)");
+            Console.WriteLine("5.ë¶€ì¥ë‹˜ìë¦¬(ê¶Œì¥Lv:10)");
+            Console.WriteLine("\n0.ë‚˜ê°€ê¸°");
             int input = ConsoleUtility.GetInput(0, 5);
             switch (input)
             {
                 case 0:
                     break;
                 case 1:
-
+                    PromotionBattle1();
                     break;
-                case 2:
-
+                case 2:  
                     break;
                 case 3:
-
                     break;
-
                 case 4:
-
                     break;
                 case 5:
-
                     break;
             }
         }
-
-
-        public static void StartWork_1()
+        public static void PromotionBattle1()
         {
-            Console.WriteLine("[Battle]");
-            Monster.SummonMonste(1);
-
-
-            
+            ConsoleUtility.Loading();
+            Console.Clear();
+            ConsoleUtility.ColorWrite("ë‹´ë°°ëƒ„ìƒˆê°€ ììš±í•˜ë‹¤...", ConsoleColor.Magenta);
+            // ëª¬ìŠ¤í„° ì—¬ëŸ¬ ë§ˆë¦¬ ìƒì„±
+            List<Monster> monsters = new List<Monster>();
+            int numberOfMonsters = 3;  // ì˜ˆì‹œë¡œ 3ë§ˆë¦¬ ëª¬ìŠ¤í„° ìƒì„±
+            for (int i = 0; i < numberOfMonsters; i++)
+            {
+                Monster monster = Monster.GetRandomMonsterByGroup(1); // ëª¬ìŠ¤í„° ê·¸ë£¹ 1ì—ì„œ ëœë¤ ëª¬ìŠ¤í„° ë¶ˆëŸ¬ì˜¤ê¸°
+                if (monster != null)
+                {
+                    monsters.Add(monster);
+                    Console.WriteLine($"{monster.Name} (ì´)ê°€ ë‚˜íƒ€ë‚¬ìŠµë‹ˆë‹¤!");
+                    ConsoleUtility.ColorWrite(monster.ToString(), ConsoleColor.Cyan);
+                }
+            }            
+            while (true)
+            {
+                Console.WriteLine("1. ê³µê²©");
+                Console.WriteLine("2. ìŠ¤í‚¬");
+                Console.WriteLine("3. ì•„ì´í…œì‚¬ìš©");
+                Console.WriteLine("4. í”Œë ˆì´ì–´ìƒíƒœ");
+                Console.WriteLine("5. ë„ë§ê°€ê¸°");
+                Console.Write("ì„ íƒ: ");
+                 int input = ConsoleUtility.GetInput(0, 5);
+                switch (input)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;                        
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                }
+            }
         }
-
-
     }
 }

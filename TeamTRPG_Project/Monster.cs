@@ -1,7 +1,6 @@
-using System;
-using System.Linq;
-using TeamTRPG_Project;
-public class Monster
+using System; 
+using TeamTRPG_Project; 
+public class Monster 
 {
     public string Name { get; private set; } // 몬스터 이름
     public float HP { get; private set; } // 체력
@@ -10,7 +9,6 @@ public class Monster
     public int LV { get; private set; } // 레벨
     public int EXP { get; private set; } //  몬스터 경험치 추가
     public int GroupID { get; private set; } // 그룹 ID
-
 
     public Monster(string name, float hp, float atk, float def, int lv, int exp, int groupID) // 생성자
     {
@@ -21,29 +19,32 @@ public class Monster
         LV = lv; // 레벨 설정
         EXP = exp; // 경험치 설정
         GroupID = groupID; // 그룹 ID 설정
+    } 
+
+    public void TakeDamage(int damage)
+    {
+        int actualDamage = Math.Max(damage - (int)DEF, 1); 
+        HP -= actualDamage;
+        Console.WriteLine($"{Name}) {actualDamage} 의 피해를 입었습니다!( 남은 체력{HP})"); 
     }
 
+    public bool IsDead() 
+    {
+        return HP <= 0;
 
-    public void TakeDamage(int damage) // 피해를 입는 메서드
-    {
-        int actualDamage = Math.Max(1, damage - (int)DEF); // 최소 1 이상의 피해 보장
-        HP = Math.Max(0, HP - actualDamage); // 체력이 0 이하로 내려가지 않도록 처리
-        Console.WriteLine($"{Name}이(가) {actualDamage}의 피해를 입었습니다! (남은 체력: {HP})"); // 피해 출력
     }
-    public bool IsDead() // 사망 여부를 반환하는 메서드
-    {
-        return HP <= 0; // 체력이 0 이하이면 사망
-    }
+
     public override string ToString() // 문자열 반환 메서드 재정의
     {
-        return $"[Lv.{LV}] {Name} - HP: {HP}, ATK: {ATK}, DEF: {DEF}"; // 몬스터 정보 반환
+        return $"[경력:{LV}연차] {Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}"; // 몬스터 정보 반환
     }
-    // Character.cs 에서 수정 후 사용
-    // public void AttackPlayer(Character player)
-    // {
-    //     Console.WriteLine($"{Name}이(가) {player.Name}을(를) 공격합니다!");
-    //     player.TakeDamage(ATK);
-    // }
+
+    public void AttackPlayer(Character player) // 플레이어를 공격하는 메서드
+    {
+        Console.WriteLine($"{Name}이(가) {player.name}을(를) 공격합니다!"); // 공격 메시지 출력
+        player.takeDamage(ATK); // 플레이어에게 공격력만큼 피해 입힘
+    }
+
     public static List<Monster> MonsterList = new List<Monster> // 몬스터 리스트
     {
         new Monster("승진을 원하는 동료", 30, 5, 2, 1, 1, 1),  // 그룹 1 (흡연실)
@@ -98,60 +99,14 @@ public class Monster
     {
         Random rand = new Random(); // 랜덤 객체 생성
         List<Monster> filteredList = MonsterList.FindAll(m => m.GroupID == groupID); // 그룹 ID에 해당하는 몬스터 리스트 필터링
+
         if (filteredList.Count == 0) // 필터링된 몬스터가 없으면
         {
             Console.WriteLine("몬스터 없음"); // 메시지 출력
             return null; // null 반환
         }
+
         int index = rand.Next(filteredList.Count); // 필터링된 몬스터 중 랜덤 인덱스 선택
         return filteredList[index]; // 선택된 몬스터 반환
     }
-
-    public static void SummonMonste(int groupID)
-    {
-        Console.Clear();
-        Random rand = new Random();
-        int rd = rand.Next(1, 5); // 1 ~ 4마리 몬스터 랜덤 소환
-        List<Monster> field = new List<Monster>(); // 소환된 몬스터들을 저장할 리스트 초기화
-
-        // 그룹 ID에 맞는 몬스터를 소환하여 field 리스트에 추가
-        for (int i = 0; i < rd; i++)
-        {
-            // 랜덤으로 몬스터 소환
-            Monster summonedMonster = GetRandomMonsterByGroup(groupID);
-
-            if (summonedMonster != null)
-            {
-                field.Add(summonedMonster); // 소환된 몬스터를 field에 추가
-            }
-        }
-
-        // 소환된 몬스터 출력
-        Console.WriteLine($"{rd}마리의 몬스터가 소환되었습니다!");
-        foreach (var monster in field)
-        {
-            Console.WriteLine(monster.ToString()); // 몬스터 정보 출력
-        }
-
-        Console.WriteLine("1.공격\n2.스킬\n\n0.도망가기");
-        
-        int input = ConsoleUtility.GetInput(0, 2);
-        switch(input)
-        {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-
-            
-        }
-
-
-
-    }
-
-
-
 }
