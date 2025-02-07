@@ -36,7 +36,7 @@ public class Monster
 
     public override string ToString() // 문자열 반환 메서드 재정의
     {
-        return $"[경력:{LV}연차] {Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}"; // 몬스터 정보 반환
+        return $"[경력:{LV}년차] {Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}"; // 몬스터 정보 반환
     }
 
     public void AttackPlayer(Character player) // 플레이어를 공격하는 메서드
