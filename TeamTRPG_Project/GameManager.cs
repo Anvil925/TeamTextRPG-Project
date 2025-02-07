@@ -12,11 +12,11 @@ namespace TeamTRPG_Project
         Character Player;
         List<Item> ItemList;
         List<Item> inventory = new List<Item>();
-        Dungeon Dungeon;
 
         public GameManager(string name)
         {
             Player = new Character(name);
+            Dungeon.SetPlayer(Player); // 던전에 플레이어 정보 전달
             ItemList = new List<Item>();
             {
                 ///아이템 정보

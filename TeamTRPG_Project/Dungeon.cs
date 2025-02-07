@@ -14,13 +14,16 @@ namespace TeamTRPG_Project
     {
         Monster monster;
 
-        //public void Dungeon()
-        //{
 
+        static Character Player;
 
-        //}
+        public static void SetPlayer(Character player)
+        {
+            Player = player;
 
+        }
 
+        
 
         public static void StartWork()
         {
