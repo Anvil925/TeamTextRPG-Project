@@ -9,7 +9,7 @@ namespace TeamTRPG_Project
     public enum Jobs
     {
         INTERN,     //인턴
-        DEVELOPE,   //개발
+        DEVELOP,   //개발
         PLANNING,   //기획
         ART         //아트
     }
@@ -75,14 +75,26 @@ namespace TeamTRPG_Project
 
         public void ShowInfo()
         {
-            Console.WriteLine("Lv : {0:D2}", LV);
-            Console.WriteLine("EXP : {0} / {1}", EXP, (LV < MAXLV)?LVGuage[LV] : "00");
+            Console.WriteLine("경력 : {0:D2}년차", LV);
+            Console.WriteLine("EXP : {0} / {1}", EXP, (LV < MAXLV) ? LVGuage[LV] : "MAX");
             Console.WriteLine("{0} ( {1} )", name, job);
             Console.WriteLine("정치력 : {0} {1}", ATK + itemATK, (itemATK > 0) ? $"(+{itemATK})" : "");
             Console.WriteLine("아부력 : {0} {1}", DEF + itemDEF, (itemDEF > 0) ? $"(+{itemDEF})" : "");
             Console.WriteLine("멘 탈 : {0} / {1}", HP, MAX_HP);
             Console.WriteLine("주 량 : {0}", crit);
             Console.WriteLine("GOLD : {0}", gold);
+
+            Console.WriteLine();
+            Console.WriteLine("장착 아이템");
+            foreach (Item item in equipment)
+                Console.WriteLine(item.ShowInfo());
+
+        }
+
+        public void ShowInventory()
+        {
+            foreach (Item item in inventory)
+                Console.WriteLine(item.ShowInfo());
         }
 
         public void GetItem(Item item)
@@ -92,7 +104,7 @@ namespace TeamTRPG_Project
 
         public void RemoveItem(Item item)
         {
-            if(equipment.Contains(item)) //장착 중이라면
+            if (equipment.Contains(item)) //장착 중이라면
                 UnEquip(item);
 
             inventory.Remove(item);
@@ -105,16 +117,20 @@ namespace TeamTRPG_Project
                 UnEquip(item);
                 return;
             } //이미 착용한 경우 장착 해제 후 바로 리턴
-            
-            item.IsEquip = true;
 
             foreach (Item i in equipment)
+            {
                 if (i.ItemType == item.ItemType) //이미 장착한 아이템과 같은 경우
+                {
                     UnEquip(i);
+                    break;
+                }
+            }
 
+            item.IsEquip = true;
             equipment.Add(item);
 
-            if(item is Weapon weapon)
+            if (item is Weapon weapon)
                 itemATK += weapon.ATK;
             else if (item is Armor armor)
                 itemDEF += armor.DEF;
@@ -153,11 +169,15 @@ namespace TeamTRPG_Project
 
         public float takeDamage(float damage)   //공격 받을 때
         {
-            
-            if(rd.NextDouble() > avoid) //회피 실패
+
+            if (rd.NextDouble() > avoid) //회피 실패
             {
                 HP -= damage;
-            } 
+                if (HP < 0)
+                {
+                    HP = 0;
+                }
+            }
             else
             {
                 Console.WriteLine("회피 성공!");
@@ -166,21 +186,22 @@ namespace TeamTRPG_Project
             /*
              * 방어력 공식이 있으면 추가 될 수 있음
              */
-            
+
             return HP;
         }
 
         public float CalculateDamage() //가하는 데미지 계산
         {
-            int damageError = (int)((ATK + itemATK) * 0.1); // 데미지 오차
-            int damage = (int)(ATK + itemATK);
-            damage = rd.Next(damage - damageError, damage + damageError + 1);
+            float damageError = float.Ceiling((ATK + itemATK) * 0.1f); // 데미지 오차
+            float damage = float.Ceiling(ATK + itemATK);
 
             if (rd.NextDouble() < crit) //크리티컬
-                damage = (int)(damage * critDamage);
-            
+                damage = float.Ceiling(damage * critDamage);
+
+            damage = rd.Next((int)(damage - damageError), (int)(damage + damageError + 1));
+
             return damage;
         }
-        
+
     }
 }
