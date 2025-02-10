@@ -27,7 +27,7 @@ namespace TeamTRPG_Project
                 Console.WriteLine("1. 공격");
                 Console.WriteLine("2. 스킬");
                 Console.WriteLine("3. 아이템 사용");
-                Console.WriteLine("4. 플레이어상태");
+                Console.WriteLine("4. 상태보기");
                 Console.WriteLine("5. 도망가기");
                 int action = ConsoleUtility.GetInput(1, 5);  // 유효한 입력 처리
 
@@ -42,6 +42,7 @@ namespace TeamTRPG_Project
                     case 3:
                         break;
                     case 4:
+                        player.ShowInfo();
                         break;
                     case 5:
                         Console.WriteLine("도망쳤습니다!");
