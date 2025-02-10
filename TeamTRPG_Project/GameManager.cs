@@ -93,7 +93,7 @@ namespace TeamTRPG_Project
                     DoungeonScene();
                     break;
                 case 5:
-                    //포션
+                    PotionScene();
                     break;
                 case 6:
                     SelectJobScreen();
@@ -101,6 +101,10 @@ namespace TeamTRPG_Project
             }
         }
 
+        private void PotionScene()
+        {
+
+        }
         private void SelectJobScreen()
         {
             selectJob.JobScreen();
@@ -132,7 +136,7 @@ namespace TeamTRPG_Project
 
             Console.Clear();
             ConsoleUtility.ColorWrite("인벤토리", ConsoleColor.Magenta);
-            Console.WriteLine("보유 중인 아아템을 관리할 수 있습니다.");
+            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
 

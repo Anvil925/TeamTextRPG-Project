@@ -103,7 +103,7 @@ namespace TeamTRPG_Project
             else if (hasItem)
                 Console.WriteLine("이미 보유한 아이템입니다!!");
 
-            int input = ConsoleUtility.GetInput(0, itemlist.Items[choice].Count);
+            int input = ConsoleUtility.GetInput(0, itemlist.Items[choice-1].Count);
             switch (input)
             {
                 case 0:
