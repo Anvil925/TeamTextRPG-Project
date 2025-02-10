@@ -45,7 +45,7 @@ namespace TeamTRPG_Project
             ItemInfo.Append("능력치 : 0\t| ");
         }
 
-        public string ShowInfo()
+        public string ShowInfo(bool isShop = false)
         {
             ItemInfo.Clear();
 
@@ -57,7 +57,7 @@ namespace TeamTRPG_Project
 
             ItemInfo.Append($"{Description}\t| {Price}G");
 
-            if (IsPurchase)
+            if (isShop && IsPurchase)
                 ItemInfo.Append("\t| 구매 완료");
 
             return ItemInfo.ToString();

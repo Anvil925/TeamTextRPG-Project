@@ -139,7 +139,7 @@ namespace TeamTRPG_Project
             // inventory에 있는 item들에 대한 출력
             for (int i = 0; i < Player.inventory.Count; i++)
             {
-                //Console.WriteLine(Player.inventory[i].ItemDisplay());
+                Console.WriteLine(Player.inventory[i].ShowInfo());
             }
 
             Console.WriteLine();
@@ -171,7 +171,8 @@ namespace TeamTRPG_Project
             // inventory에 있는 item들에 대한 출력
             for (int i = 0; i < Player.inventory.Count; i++)
             {
-                //  Console.WriteLine($"{i + 1}. {Player.inventory[i].ItemDisplay()}");
+                Console.WriteLine($"{i + 1}. {Player.inventory[i].ShowInfo()}");
+
             }
 
             Console.WriteLine();

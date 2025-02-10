@@ -57,7 +57,7 @@ namespace TeamTRPG_Project
             //상점 목록
             for (int i = 0; i < currentItem.Count; i++)
             {
-                Console.WriteLine($"- {currentItem[i].ShowInfo()}");
+                Console.WriteLine($"- {currentItem[i].ShowInfo(true)}");
             }
 
             Console.WriteLine();
@@ -91,7 +91,7 @@ namespace TeamTRPG_Project
 
             for (int i = 0; i < currentItem.Count; i++)
             {
-                Console.WriteLine($"- {i + 1}. {currentItem[i].ShowInfo()}");
+                Console.WriteLine($"- {i + 1}. {currentItem[i].ShowInfo(true)}");
             }
 
             Console.WriteLine();

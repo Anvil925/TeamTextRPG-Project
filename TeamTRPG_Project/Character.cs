@@ -91,8 +91,18 @@ namespace TeamTRPG_Project
 
         public void ShowInventory()
         {
+
             foreach (Item item in inventory)
-                Console.WriteLine(item.ShowInfo());
+                if (item == null)
+                {
+                    Console.WriteLine("❌ 인벤토리에 null 아이템이 들어있음!");
+                }
+                else
+                {
+                    Console.WriteLine($"📦 현재 인벤토리 아이템 개수: {inventory.Count}");
+
+                    Console.WriteLine(item.ShowInfo());
+                }
         }
 
         public void Inventory(Item item)
