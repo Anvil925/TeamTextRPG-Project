@@ -86,11 +86,11 @@ namespace TeamTRPG_Project
             Console.WriteLine($"{character.gold}G");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
+            var currentItem = itemlist.Items[choice - 1];
 
-            for (int i = 0; i < itemlist.Items.Count; i++)
+            for (int i = 0; i < currentItem.Count; i++)
             {
-                var currentItem = itemlist.Items[choice - 1][i];
-                Console.WriteLine($"- {i + 1}. {currentItem.ShowInfo()}");
+                Console.WriteLine($"- {i + 1}. {currentItem[i].ShowInfo()}");
             }
 
             Console.WriteLine();
@@ -106,7 +106,7 @@ namespace TeamTRPG_Project
             switch (input)
             {
                 case 0:
-                    DisplayShop();
+                    ShopScreen(choice);
                     break;
                 default:
                     Item select = itemlist.Items[choice][input - 1];
