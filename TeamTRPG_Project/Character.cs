@@ -6,14 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
-    public enum Jobs
-    {
-        INTERN,     //인턴
-        DEVELOP,   //개발
-        PLANNING,   //기획
-        ART         //아트
-    }
-
+    
     public class Character
     {
         public int LV { get; set; }
@@ -30,7 +23,7 @@ namespace TeamTRPG_Project
         public float itemDEF { get; set; }
 
         public float HP { get; set; }
-        public float MAX_HP { get; set; }
+        public float MAX_HP { get; set; } 
 
         public float crit { get; set; }
         public float critDamage { get; set; }
@@ -39,13 +32,13 @@ namespace TeamTRPG_Project
 
         public int gold { get; set; }
 
-        public Jobs job { get; set; }
+        public Job job { get; set; }
         public List<Item> inventory { get; set; }
         public List<Item> equipment { get; set; } //장착 중 아이템
 
         Random rd = new Random();
 
-        public Character(string name, Jobs job = Jobs.INTERN)
+        public Character(string name)
         {
             LV = 1;
             EXP = 0;
@@ -67,7 +60,7 @@ namespace TeamTRPG_Project
 
             gold = 1500;
 
-            this.job = job;
+            job = Job.JobList[3]; //list 3 is Intern
 
             inventory = new List<Item>();
             equipment = new List<Item>();
@@ -77,7 +70,7 @@ namespace TeamTRPG_Project
         {
             Console.WriteLine("경력 : {0:D2}년차", LV);
             Console.WriteLine("EXP : {0} / {1}", EXP, (LV < MAXLV) ? LVGuage[LV] : "MAX");
-            Console.WriteLine("{0} ( {1} )", name, job);
+            Console.WriteLine("{0} ( {1} )", name, job.JobType);
             Console.WriteLine("정치력 : {0} {1}", ATK + itemATK, (itemATK > 0) ? $"(+{itemATK})" : "");
             Console.WriteLine("아부력 : {0} {1}", DEF + itemDEF, (itemDEF > 0) ? $"(+{itemDEF})" : "");
             Console.WriteLine("멘 탈 : {0} / {1}", HP, MAX_HP);
@@ -93,7 +86,7 @@ namespace TeamTRPG_Project
 
         public override string ToString()
         {
-            return $"경력.{LV} {name} ({job})\n멘탈 {HP}/{MAX_HP}";
+            return $"경력.{LV} {name} ({job.JobType})\n멘탈 {HP}/{MAX_HP}";
         }
 
         public void ShowInventory()
@@ -222,6 +215,15 @@ namespace TeamTRPG_Project
             Console.WriteLine("멘탈 회복 {0:F0} -> {1:F0}", prevHP, HP);
             inventory.Remove(potion);
             return HP;
+        }
+        
+        public void SetJob(Job job) //직업은 기초 공방체 up
+        {
+            this.job = job;
+            ATK += job.ATK;
+            DEF += job.DEF;
+            MAX_HP += job.MAX_HP;
+            HP += job.MAX_HP;
         }
     }
 }
