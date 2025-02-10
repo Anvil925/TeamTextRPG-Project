@@ -22,10 +22,11 @@ namespace TeamTRPG_Project
         Weapon weapon;
         Character character = new Character("");
         GameManager gm = new GameManager("");
-        ItemList itemlist = new ItemList();
+        private ItemList itemlist = ItemList.Instance();
         public Shop(GameManager gameManager)
         {
-            gm = gameManager;  // GameManager 인스턴스를 전달받아 초기화
+            gm = gameManager;
+            character = gm.GetCharacter();
         }
         public void DisplayShop()
         {
@@ -75,7 +76,7 @@ namespace TeamTRPG_Project
                     break;
             }
         }
-        private void buyScreen(int choice, bool needGold = false, bool hasItem = false)
+        private void buyScreen(int choice, bool needGold = false, bool hasItem = false) // 구매씬
         {
 
             Console.Clear();
@@ -86,11 +87,11 @@ namespace TeamTRPG_Project
             Console.WriteLine($"{character.gold}G");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
+            var currentItem = itemlist.Items[choice - 1];
 
-            for (int i = 0; i < itemlist.Items.Count; i++)
+            for (int i = 0; i < currentItem.Count; i++)
             {
-                var currentItem = itemlist.Items[choice - 1][i];
-                Console.WriteLine($"- {i + 1}. {currentItem.ShowInfo()}");
+                Console.WriteLine($"- {i + 1}. {currentItem[i].ShowInfo()}");
             }
 
             Console.WriteLine();
@@ -106,10 +107,10 @@ namespace TeamTRPG_Project
             switch (input)
             {
                 case 0:
-                    DisplayShop();
+                    ShopScreen(choice);
                     break;
                 default:
-                    Item select = itemlist.Items[choice][input - 1];
+                    Item select = itemlist.Items[choice-1][input - 1];
 
                     if (character.inventory.Contains(select))
                         buyScreen(choice, false, true); //아이템이 이미 보유중이라는 메세지 표기
@@ -118,8 +119,9 @@ namespace TeamTRPG_Project
                     break;
             }
         }
-        private void buy(Item item, int choice)
+        private void buy(Item item, int choice) // 구매
         {
+    
             //골드가 충분할때 
             if (character.gold >= item.Price)
             {
