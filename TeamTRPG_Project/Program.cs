@@ -1,5 +1,6 @@
 ﻿namespace TeamTRPG_Project
 {
+    using NAudio.Wave;
     using System.Threading;
     internal class Program
     {
@@ -9,14 +10,16 @@
             for (int i = 0; i < Story.Length; i++)
             {
                 Console.Write(Story[i]);
-                Thread.Sleep(30);
+                //Thread.Sleep(30);
+                if (i % 4 == 0)
+                    Console.Beep(500, 50);
             }
             Thread.Sleep(2000);
         }
 
         static void Main(string[] args)
         {
-            //StartStory();
+            StartStory();
             string Name;
             while (true)
             {
@@ -37,12 +40,22 @@
                     continue;
                 }
             }
-            GameManager.Instance.SetPlayerName(Name);
-            Shop shop = new Shop(GameManager.Instance);
-            GameManager.Instance.SetShop(shop);
+            using (AudioFileReader audioFile = new AudioFileReader("DungeonBGM.mp3"))
+            using (var outputDevice = new WaveOutEvent())
+            {
+                audioFile.Volume = 0.1f;
+                outputDevice.Init(audioFile);
 
-            GameManager.Instance.MainScreen();
+                outputDevice.Play();
+
+                GameManager.Instance.SetPlayerName(Name);
+                Shop shop = new Shop(GameManager.Instance);
+                GameManager.Instance.SetShop(shop);
+
+                GameManager.Instance.MainScreen();
+                outputDevice.Stop();
+            }
+
         }
-
     }
 }
