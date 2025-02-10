@@ -18,9 +18,12 @@ namespace TeamTRPG_Project
 
         public void JobScreen()
         {
+            CheckLv();
+            CheckJob();
+
             Console.Clear();
             Console.WriteLine("환영합니다. 이곳에서 전직을 할 수 있습니다.");
-            Console.WriteLine("원하시는 직업을 선택해주세요.");
+            Console.WriteLine("원하시는 팀을 선택해주세요.");
             Console.WriteLine();
             Console.WriteLine("1. 기획");
             Console.WriteLine("2. 개발");
@@ -35,8 +38,33 @@ namespace TeamTRPG_Project
                 case 1:
                 case 2:
                 case 3:
-                    //player.SetJob();
+                    Job job = Job.JobList[input - 1];
+                    //player.SetJob(Job.JobList[input-1]);      // Character 함수 호출
+                    Console.WriteLine($"축하합니다. {job.Name}팀으로 배정 되었습니다!");
+                    Thread.Sleep(1000);
                     break;
+            }
+        }
+
+        // 전직에 충족되는 레벨인지 확인
+        private void CheckJob()
+        {
+            if (player.job != Jobs.INTERN)
+            {
+                Console.WriteLine("이미 전직을 완료하셨습니다.");
+                Thread.Sleep(1000);
+                return;
+            }
+        }
+
+        // 전직을 했는지 확인
+        private void CheckLv()
+        {
+            if (player.LV < 3)
+            {
+                Console.WriteLine("아직은 전직이 불가능한 레벨입니다 ㅠㅠ");
+                Thread.Sleep(1000);
+                return;
             }
         }
     }
