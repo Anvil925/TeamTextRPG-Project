@@ -18,8 +18,11 @@ namespace TeamTRPG_Project
 
         public void JobScreen()
         {
-            CheckLv();
-            CheckJob();
+            if(!IsLvOK())
+                return;
+
+            if (IsHaveJob())
+                return;
 
             Console.Clear();
             Console.WriteLine("환영합니다. 이곳에서 전직을 할 수 있습니다.");
@@ -46,26 +49,28 @@ namespace TeamTRPG_Project
             }
         }
 
-        // 전직에 충족되는 레벨인지 확인
-        private void CheckJob()
+        // 전직을 했는지 확인
+        private bool IsHaveJob()
         {
             if (player.job != Jobs.INTERN)
             {
                 Console.WriteLine("이미 전직을 완료하셨습니다.");
                 Thread.Sleep(1000);
-                return;
+                return true;
             }
+            return false;
         }
 
-        // 전직을 했는지 확인
-        private void CheckLv()
+        // 전직에 충족되는 레벨인지 확인
+        private bool IsLvOK()
         {
             if (player.LV < 3)
             {
                 Console.WriteLine("아직은 전직이 불가능한 레벨입니다 ㅠㅠ");
                 Thread.Sleep(1000);
-                return;
+                return false;
             }
+            return true;
         }
     }
 }
