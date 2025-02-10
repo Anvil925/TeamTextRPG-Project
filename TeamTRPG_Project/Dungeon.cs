@@ -142,7 +142,7 @@ namespace TeamTRPG_Project
             do
             {
                 Console.WriteLine("1. 전투시작");
-                Console.WriteLine("2. 플레이어상태");
+                Console.WriteLine("2. 상태보기");
                 Console.WriteLine("3. 도망가기");
                 int input = ConsoleUtility.GetInput(1, 3);
                 switch (input)
@@ -151,6 +151,7 @@ namespace TeamTRPG_Project
                         Battle.StartBattle(Player, monsters);
                         break;
                     case 2:
+                        Player.ShowInfo();
                         break;
                     case 3:
                         if (gm != null)
