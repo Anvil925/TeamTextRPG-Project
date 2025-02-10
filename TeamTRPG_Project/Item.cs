@@ -55,11 +55,10 @@ namespace TeamTRPG_Project
 
             InputAbility();
 
-            ItemInfo.Append($"{Description}\t|");
+            ItemInfo.Append($"{Description}\t| {Price}G");
 
-            ItemInfo.Append($" {Price}G");
-
-            ItemInfo = IsPurchase ? ItemInfo.Append($"\t| 구매 완료") : ItemInfo.Append($"");
+            if (IsPurchase)
+                ItemInfo.Append("\t| 구매 완료");
 
             return ItemInfo.ToString();
         }

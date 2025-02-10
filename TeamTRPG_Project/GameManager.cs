@@ -27,6 +27,10 @@ namespace TeamTRPG_Project
             ItemList = new List<Item>();
         }
 
+        public Character GetCharacter()
+        {
+            return Player;
+        }
     public void SetShop(Shop shopInstance)
     {
         shop = shopInstance;
