@@ -12,18 +12,19 @@ namespace TeamTRPG_Project
         Character Player;
         List<Item> ItemList;
 
+        public Shop shop;
 
         public GameManager(string name)
         {
             Player = new Character(name);
             Dungeon.SetPlayer(Player); // 던전에 플레이어 정보 전달
             ItemList = new List<Item>();
-            {
-                
-            };
-
-
         }
+
+    public void SetShop(Shop shopInstance)
+    {
+        shop = shopInstance;
+    }
 
         public void DoungeonScene()
         {
