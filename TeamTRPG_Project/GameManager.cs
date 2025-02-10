@@ -8,10 +8,26 @@ using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
-    internal class GameManager
+    class GameManager
     {
-        Character Player;
-        List<Item> ItemList;
+        private static GameManager _instance;
+        public Character Player { get; private set; }
+        public Dungeon dungeon { get; private set; }
+        public SelectJob selectJob { get; private set; }
+        public List<Item> ItemList { get; private set; }
+
+        public static GameManager Instance
+        {
+            get
+            {
+                // 인스턴스가 없으면 새로 생성
+                if (_instance == null)
+                {
+                    _instance = new GameManager();
+                }
+                return _instance;
+            }
+        }
 
         public Shop shop;
 
@@ -26,7 +42,11 @@ namespace TeamTRPG_Project
             selectJob = new SelectJob(Player); // SelectJob 객체 생성
             ItemList = new List<Item>();
         }
-
+        public void SetPlayerName(string name)
+        {
+            Player = new Character(name);  // Player 이름을 설정
+            Dungeon.SetPlayer(Player);     // 던전에도 Player 정보 전달
+        }
         public Character GetCharacter()
         {
             return Player;
@@ -84,7 +104,7 @@ namespace TeamTRPG_Project
                     StatusScreen();
                     break;
                 case 2:
-                    InventoryScreen();
+                    SelectInventory();
                     break;
                 case 3:
                     shop.DisplayShop();
@@ -93,7 +113,7 @@ namespace TeamTRPG_Project
                     DoungeonScene();
                     break;
                 case 5:
-                    //포션
+                    PotionScene();
                     break;
                 case 6:
                     SelectJobScreen();
@@ -101,6 +121,22 @@ namespace TeamTRPG_Project
             }
         }
 
+        private void SelectInventory()
+        {
+            Console.Clear();
+            ConsoleUtility.ColorWrite("인벤토리", ConsoleColor.Magenta);
+            Console.WriteLine("1. 무기\n2. 방어구\n3. 포션\n\n0. 나가기\n");
+            int choice = ConsoleUtility.GetInput(0, 3);
+            if (choice == 0)
+            {
+                MainScreen();
+            }
+
+        }
+        private void PotionScene()
+        {
+            Console.Clear();
+        }
         private void SelectJobScreen()
         {
             selectJob.JobScreen();
@@ -132,7 +168,7 @@ namespace TeamTRPG_Project
 
             Console.Clear();
             ConsoleUtility.ColorWrite("인벤토리", ConsoleColor.Magenta);
-            Console.WriteLine("보유 중인 아아템을 관리할 수 있습니다.");
+            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
 
