@@ -20,41 +20,44 @@ namespace TeamTRPG_Project
     class Shop
     {
         Weapon weapon;
-        Character character;
-        GameManager gm;
-        Item item;
-        ItemList itemlist = new ItemList();
-
-        public void temporary_Method()
+        Character character = new Character("");
+        GameManager gm = new GameManager("");
+        private ItemList itemlist = ItemList.Instance();
+        public Shop(GameManager gameManager)
         {
-            string _Purchase = weapon.IsPurchase ? "구매 완료" : $"{item.Price}";
+            gm = gameManager;
+            character = gm.GetCharacter();
         }
         public void DisplayShop()
         {
             Console.Clear();
-            Console.WriteLine("상점 목록");
-            Console.WriteLine("1. 무기\n2. 방어구\n3.포션\n");
-            int choice = ConsoleUtility.GetInput(1, 3);
+            Console.WriteLine("상점 목록\n");
+            Console.WriteLine("1. 무기\n2. 방어구\n3. 포션\n\n0. 나가기\n");
+            int choice = ConsoleUtility.GetInput(0,3);
+            if(choice == 0)
+            {
+                gm.MainScreen();
+            }
             ShopScreen(choice);
         }
 
         public void ShopScreen(int choice) // 상점 화면 
         {
             ShopCase Value = (ShopCase)choice;
-            int value = choice;
             Console.Clear();
             ConsoleUtility.ColorWrite("상점", ConsoleColor.Magenta);
-            Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다. [0]", Value);
+            Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다. [{0}]", Value);
             Console.WriteLine();
             Console.WriteLine("[보유 골드]");
             Console.WriteLine($"{character.gold}G");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
+            var currentItem = itemlist.Items[choice-1];
 
             //상점 목록
-            for (int i = 0; i < itemlist.Items[choice].Count; i++)
+            for (int i = 0; i < currentItem.Count; i++)
             {
-                Console.WriteLine($"- {item.ShowInfo} | {temporary_Method}");
+                Console.WriteLine($"- {currentItem[i].ShowInfo()}");
             }
 
             Console.WriteLine();
@@ -66,14 +69,14 @@ namespace TeamTRPG_Project
             switch (input)
             {
                 case 0:
-                    gm.MainScreen();
+                    DisplayShop();
                     break;
                 case 1:
                     buyScreen(choice);
                     break;
             }
         }
-        private void buyScreen(int choice, bool needGold = false, bool hasItem = false)
+        private void buyScreen(int choice, bool needGold = false, bool hasItem = false) // 구매씬
         {
 
             Console.Clear();
@@ -84,10 +87,11 @@ namespace TeamTRPG_Project
             Console.WriteLine($"{character.gold}G");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
+            var currentItem = itemlist.Items[choice - 1];
 
-            for (int i = 0; i < itemlist.Items.Count; i++)
+            for (int i = 0; i < currentItem.Count; i++)
             {
-                Console.WriteLine($"- {i + 1}. {item.ShowInfo()} | {temporary_Method}");
+                Console.WriteLine($"- {i + 1}. {currentItem[i].ShowInfo()}");
             }
 
             Console.WriteLine();
@@ -103,10 +107,10 @@ namespace TeamTRPG_Project
             switch (input)
             {
                 case 0:
-                    gm.MainScreen();
+                    ShopScreen(choice);
                     break;
                 default:
-                    Item select = itemlist.Items[choice][input - 1];
+                    Item select = itemlist.Items[choice-1][input - 1];
 
                     if (character.inventory.Contains(select))
                         buyScreen(choice, false, true); //아이템이 이미 보유중이라는 메세지 표기
@@ -115,8 +119,9 @@ namespace TeamTRPG_Project
                     break;
             }
         }
-        private void buy(Item item, int choice)
+        private void buy(Item item, int choice) // 구매
         {
+    
             //골드가 충분할때 
             if (character.gold >= item.Price)
             {

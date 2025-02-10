@@ -47,13 +47,18 @@ namespace TeamTRPG_Project
 
         public string ShowInfo()
         {
+            ItemInfo.Clear();
+
             if(IsEquip) ItemInfo.Append("[E]");
 
             ItemInfo.Append($"{Name}\t| ");
 
             InputAbility();
 
-            ItemInfo.Append($"{Description}");
+            ItemInfo.Append($"{Description}\t| {Price}G");
+
+            if (IsPurchase)
+                ItemInfo.Append("\t| 구매 완료");
 
             return ItemInfo.ToString();
         }

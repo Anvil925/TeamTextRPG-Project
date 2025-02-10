@@ -11,7 +11,7 @@ namespace TeamTRPG_Project
         private static ItemList instance;
 
         // 전체 아이템 리스트
-        public List<List<Item>> Items = new List<List<Item>>();
+        public List<List<Item>> Items = new List<List<Item>>(3);
 
         // 각 타입별 아이템 리스트
         public List<Weapon> Weapons = new List<Weapon>();
@@ -28,6 +28,11 @@ namespace TeamTRPG_Project
 
         public ItemList()
         {
+            for (int i = 0; i < Items.Capacity; i++)
+            {
+                Items.Add(new List<Item>());
+            }
+
             // 무기
             Weapons.Add(new Weapon("일반 키보드", 5, "일반 키보드. 평범한 키보드이다.", 300));
             Weapons.Add(new Weapon("기계식 키보드", 10, "저가형 기계식 키보드. 소리가 시끄럽다.", 600));

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,19 +12,29 @@ namespace TeamTRPG_Project
     {
         Character Player;
         List<Item> ItemList;
-        Shop shop = new Shop();
 
+        public Shop shop;
 
         Dungeon dungeon;
+        SelectJob selectJob;
         public GameManager(string name)
         {
             Player = new Character(name);
             dungeon = new Dungeon(); // Dungeon 객체 초기화
             Dungeon.SetPlayer(Player); // 던전에 플레이어 정보 전달
             Dungeon.SetGameManager(this); // Dungeon에 GameManager 정보 전달
+            selectJob = new SelectJob(Player); // SelectJob 객체 생성
             ItemList = new List<Item>();
         }
 
+        public Character GetCharacter()
+        {
+            return Player;
+        }
+    public void SetShop(Shop shopInstance)
+    {
+        shop = shopInstance;
+    }
 
         public void DoungeonScene()
         {
@@ -59,9 +70,10 @@ namespace TeamTRPG_Project
             Console.WriteLine("3. 상점");
             Console.WriteLine("4. 출근하기");
             Console.WriteLine("5. 회복아이템");
+            Console.WriteLine("6. 전직하기");
             Console.WriteLine();
 
-            int input = ConsoleUtility.GetInput(0, 5);
+            int input = ConsoleUtility.GetInput(0, 6);
 
             switch (input)
             {
@@ -83,7 +95,16 @@ namespace TeamTRPG_Project
                 case 5:
                     //포션
                     break;
+                case 6:
+                    SelectJobScreen();
+                    break;
             }
+        }
+
+        private void SelectJobScreen()
+        {
+            selectJob.JobScreen();
+            MainScreen();
         }
 
         public void StatusScreen() //상태창 화면

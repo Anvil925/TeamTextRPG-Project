@@ -40,6 +40,9 @@
 
 
             GameManager gm = new GameManager(Name);
+            Shop shop = new Shop(gm);
+            gm.SetShop(shop);
+
             gm.MainScreen();
         }
 
