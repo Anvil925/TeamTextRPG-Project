@@ -37,13 +37,11 @@
                     continue;
                 }
             }
+            GameManager.Instance.SetPlayerName(Name);
+            Shop shop = new Shop(GameManager.Instance);
+            GameManager.Instance.SetShop(shop);
 
-
-            GameManager gm = new GameManager(Name);
-            Shop shop = new Shop(gm);
-            gm.SetShop(shop);
-
-            gm.MainScreen();
+            GameManager.Instance.MainScreen();
         }
 
     }

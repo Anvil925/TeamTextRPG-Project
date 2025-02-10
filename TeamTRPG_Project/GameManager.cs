@@ -8,25 +8,43 @@ using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
-    internal class GameManager
+    class GameManager
     {
-        Character Player;
-        List<Item> ItemList;
+        private static GameManager _instance;
+        public Character Player { get; private set; }
+        public Dungeon dungeon { get; private set; }
+        public SelectJob selectJob { get; private set; }
+        public List<Item> ItemList { get; private set; }
+
+        public static GameManager Instance
+        {
+            get
+            {
+                // 인스턴스가 없으면 새로 생성
+                if (_instance == null)
+                {
+                    _instance = new GameManager();
+                }
+                return _instance;
+            }
+        }
 
         public Shop shop;
 
-        Dungeon dungeon;
-        SelectJob selectJob;
-        public GameManager(string name)
+
+        private GameManager()
         {
-            Player = new Character(name);
             dungeon = new Dungeon(); // Dungeon 객체 초기화
             Dungeon.SetPlayer(Player); // 던전에 플레이어 정보 전달
             Dungeon.SetGameManager(this); // Dungeon에 GameManager 정보 전달
             selectJob = new SelectJob(Player); // SelectJob 객체 생성
             ItemList = new List<Item>();
         }
-
+        public void SetPlayerName(string name)
+        {
+            Player = new Character(name);  // Player 이름을 설정
+            Dungeon.SetPlayer(Player);     // 던전에도 Player 정보 전달
+        }
         public Character GetCharacter()
         {
             return Player;
@@ -101,9 +119,16 @@ namespace TeamTRPG_Project
             }
         }
 
+        private void SelectInventory()
+        {
+            Console.Clear();
+            ConsoleUtility.ColorWrite("인벤토리", ConsoleColor.Magenta);
+            Console.WriteLine("\n");
+
+        }
         private void PotionScene()
         {
-
+            Console.Clear();
         }
         private void SelectJobScreen()
         {

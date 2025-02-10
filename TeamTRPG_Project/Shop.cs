@@ -21,7 +21,7 @@ namespace TeamTRPG_Project
     {
         Weapon weapon;
         Character character = new Character("");
-        GameManager gm = new GameManager("");
+        GameManager gm;
         private ItemList itemlist = ItemList.Instance();
         public Shop(GameManager gameManager)
         {
