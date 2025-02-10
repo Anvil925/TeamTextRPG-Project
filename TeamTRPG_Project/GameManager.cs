@@ -38,10 +38,10 @@ namespace TeamTRPG_Project
                     MainScreen();
                     break;
                 case 1:
-                    Dungeon.StartWork();
+                    Dungeon.DungeonTypes(input);
                     break;
                 case 2:
-                    Dungeon.PromotionBattle();
+                    Dungeon.DungeonTypes(input);
                     break;
 
             }
@@ -78,7 +78,7 @@ namespace TeamTRPG_Project
                     shop.DisplayShop();
                     break;
                 case 4:
-                    DungeonScene();
+                    DoungeonScene();
                     break;
                 case 5:
                     //포션
