@@ -12,7 +12,6 @@ namespace TeamTRPG_Project
     {
         Character Player;
         List<Item> ItemList;
-        Shop shop = new Shop();
 
         public Shop shop;
 
