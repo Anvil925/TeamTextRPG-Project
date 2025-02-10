@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
-    internal class Battle
+    public class Battle
     {
 
         public static void StartBattle(Character player, List<Monster> monsters)
@@ -114,8 +114,8 @@ namespace TeamTRPG_Project
                 Console.Clear();
                 Console.SetCursorPosition(x, y);
                 Console.Write(text);
-
                 Thread.Sleep(50); // 0.05초 대기
+                Console.Clear();
             }
         }
     }
