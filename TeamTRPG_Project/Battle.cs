@@ -27,9 +27,9 @@ namespace TeamTRPG_Project
                 Console.WriteLine("1. 공격");
                 Console.WriteLine("2. 스킬");
                 Console.WriteLine("3. 아이템 사용");
-                Console.WriteLine("4. 도망가기");
-                Console.Write("선택: ");
-                int action = ConsoleUtility.GetInput(1, 4);  // 유효한 입력 처리
+                Console.WriteLine("4. 플레이어상태");
+                Console.WriteLine("5. 도망가기");
+                int action = ConsoleUtility.GetInput(1, 5);  // 유효한 입력 처리
 
                 switch (action)
                 {
@@ -42,8 +42,11 @@ namespace TeamTRPG_Project
                     case 3:
                         break;
                     case 4:
+                        break;
+                    case 5:
                         Console.WriteLine("도망쳤습니다!");
                         battleEnded = true;
+                        Dungeon.DungeonTypes(1); // 던전으로 돌아가기 (메인 씬으로 가는 코드)
                         break;
                 }
 
