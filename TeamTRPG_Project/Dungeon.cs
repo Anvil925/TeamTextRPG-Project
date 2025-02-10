@@ -144,7 +144,6 @@ namespace TeamTRPG_Project
                 Console.WriteLine("1. 전투시작");
                 Console.WriteLine("2. 플레이어상태");
                 Console.WriteLine("3. 도망가기");
-                Console.Write("선택: ");
                 int input = ConsoleUtility.GetInput(1, 3);
                 switch (input)
                 {
