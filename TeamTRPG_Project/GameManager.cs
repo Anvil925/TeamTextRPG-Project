@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -31,11 +31,9 @@ namespace TeamTRPG_Project
 
         public Shop shop;
 
-        Dungeon dungeon;
-        SelectJob selectJob;
-        public GameManager(string name)
+
+        private GameManager()
         {
-            Player = new Character(name);
             dungeon = new Dungeon(); // Dungeon 객체 초기화
             Dungeon.SetPlayer(Player); // 던전에 플레이어 정보 전달
             Dungeon.SetGameManager(this); // Dungeon에 GameManager 정보 전달
@@ -126,11 +124,14 @@ namespace TeamTRPG_Project
             Console.Clear();
             ConsoleUtility.ColorWrite("인벤토리", ConsoleColor.Magenta);
             Console.WriteLine("1. 무기\n2. 방어구\n3. 포션\n\n0. 나가기\n");
+            
             int choice = ConsoleUtility.GetInput(0, 3);
             if (choice == 0)
             {
                 MainScreen();
             }
+
+            Console.WriteLine("\n");
 
         }
         private void PotionScene()
