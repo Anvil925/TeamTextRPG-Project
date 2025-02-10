@@ -70,7 +70,7 @@ namespace TeamTRPG_Project
         {
             Console.WriteLine("경력 : {0:D2}년차", LV);
             Console.WriteLine("EXP : {0} / {1}", EXP, (LV < MAXLV) ? LVGuage[LV] : "MAX");
-            Console.WriteLine("{0} ( {1} )", name, job.JobType);
+            Console.WriteLine("{0} ( {1} )", name, job.Name);
             Console.WriteLine("정치력 : {0} {1}", ATK + itemATK, (itemATK > 0) ? $"(+{itemATK})" : "");
             Console.WriteLine("아부력 : {0} {1}", DEF + itemDEF, (itemDEF > 0) ? $"(+{itemDEF})" : "");
             Console.WriteLine("멘 탈 : {0} / {1}", HP, MAX_HP);
@@ -86,7 +86,7 @@ namespace TeamTRPG_Project
 
         public override string ToString()
         {
-            return $"경력.{LV} {name} ({job.JobType})\n멘탈 {HP}/{MAX_HP}";
+            return $"경력.{LV} {name} ({job.Name})\n멘탈 {HP}/{MAX_HP}";
         }
 
         public void ShowInventory()

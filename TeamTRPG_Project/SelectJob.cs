@@ -42,7 +42,7 @@ namespace TeamTRPG_Project
                 case 2:
                 case 3:
                     Job job = Job.JobList[input - 1];
-                    //player.SetJob(Job.JobList[input-1]);      // Character 함수 호출
+                    player.SetJob(Job.JobList[input-1]);      // Character 함수 호출
                     Console.WriteLine($"축하합니다. {job.Name}팀으로 배정 되었습니다!");
                     Thread.Sleep(1000);
                     break;
@@ -52,7 +52,7 @@ namespace TeamTRPG_Project
         // 전직을 했는지 확인
         private bool IsHaveJob()
         {
-            if (player.job != Jobs.INTERN)
+            if (player.job.JobType != Jobs.INTERN)
             {
                 Console.WriteLine("이미 전직을 완료하셨습니다.");
                 Thread.Sleep(1000);
