@@ -31,7 +31,7 @@ namespace TeamTRPG_Project
 
         public Shop shop;
 
-
+        Item item;
         private GameManager()
         {
             dungeon = new Dungeon(); // Dungeon 객체 초기화
@@ -54,7 +54,7 @@ namespace TeamTRPG_Project
         shop = shopInstance;
     }
 
-        public void DoungeonScene()
+        public void DungeonScene()
         {
             Console.Clear();
             ConsoleUtility.ColorWrite("던전 종류", ConsoleColor.Magenta);
@@ -87,11 +87,10 @@ namespace TeamTRPG_Project
             Console.WriteLine("2. 인벤토리");
             Console.WriteLine("3. 상점");
             Console.WriteLine("4. 출근하기");
-            Console.WriteLine("5. 회복아이템");
-            Console.WriteLine("6. 전직하기");
+            Console.WriteLine("5. 전직하기");
             Console.WriteLine();
 
-            int input = ConsoleUtility.GetInput(0, 6);
+            int input = ConsoleUtility.GetInput(0, 5);
 
             switch (input)
             {
@@ -108,12 +107,9 @@ namespace TeamTRPG_Project
                     shop.DisplayShop();
                     break;
                 case 4:
-                    DoungeonScene();
+                    DungeonScene();
                     break;
                 case 5:
-                    PotionScene();
-                    break;
-                case 6:
                     SelectJobScreen();
                     break;
             }
@@ -121,22 +117,39 @@ namespace TeamTRPG_Project
 
         private void SelectInventory()
         {
-            Console.Clear();
-            ConsoleUtility.ColorWrite("인벤토리", ConsoleColor.Magenta);
-            Console.WriteLine("1. 무기\n2. 방어구\n3. 포션\n\n0. 나가기\n");
-            
-            int choice = ConsoleUtility.GetInput(0, 3);
-            if (choice == 0)
+            while (true)
             {
-                MainScreen();
+                //Console.Clear();
+                ConsoleUtility.ColorWrite("인벤토리", ConsoleColor.Magenta);
+                Console.WriteLine("1. 무기\n2. 방어구\n3. 포션\n\n0. 나가기\n");
+
+                int decision = ConsoleUtility.GetInput(0, 3);
+                if (decision == 0)
+                {
+                    MainScreen();
+                    return;
+                }
+
+                InventoryScreen(decision);
+
+               
+            }
+        }
+        private void Displayitems(ItemType itemType)
+        {
+            if (Player.inventory == null || Player.inventory.Count == 0)
+            {
+                Console.WriteLine("인벤토리가 비어 있습니다.");
+                return;
             }
 
-            Console.WriteLine("\n");
-
-        }
-        private void PotionScene()
-        {
-            Console.Clear();
+            foreach (var item in Player.inventory)
+            {
+                if (item.ItemType == itemType)  // 아이템 타입을 필터링
+                {
+                    Console.WriteLine(item.ShowInfo());
+                }
+            }
         }
         private void SelectJobScreen()
         {
@@ -163,22 +176,29 @@ namespace TeamTRPG_Project
             MainScreen();
         }
 
-        public void InventoryScreen() //인벤토리 화면
+        public void InventoryScreen(int decision) //인벤토리 화면
         {
             ConsoleUtility.Loading();
+            ItemType Value = (ItemType)decision;
 
             Console.Clear();
-            ConsoleUtility.ColorWrite("인벤토리", ConsoleColor.Magenta);
+            ConsoleUtility.ColorWrite($"인벤토리 - [{Value-1}]", ConsoleColor.Magenta);
             Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
-
-            // inventory에 있는 item들에 대한 출력
-            for (int i = 0; i < Player.inventory.Count; i++)
+            switch (decision)
             {
-                Console.WriteLine(Player.inventory[i].ShowInfo());
-            }
+                case 1:
+                    Displayitems(ItemType.ATK);
+                    break;
+                case 2:
+                    Displayitems(ItemType.DEF);
+                    break;
+                case 3:
+                    Displayitems(ItemType.POTION);
+                    break;
 
+            }
             Console.WriteLine();
             Console.WriteLine("1. 장착 관리");
             Console.WriteLine("0. 나가기");
