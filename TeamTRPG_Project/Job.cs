@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
+    public enum Jobs
+    {
+        INTERN,     //인턴
+        DEVELOP,   //개발
+        PLANNING,   //기획
+        ART         //아트
+    }
+
     public class Job
     {
         public string Name { get; set; }
@@ -28,8 +36,9 @@ namespace TeamTRPG_Project
         public static List<Job> JobList = new List<Job>()
         {
             new Job("기획", Jobs.PLANNING, 5, 5, 50),
-            new Job("개발", Jobs.PLANNING, 8, 3, 50),
-            new Job("디자이너", Jobs.PLANNING, 3, 8, 50)
+            new Job("개발", Jobs.DEVELOP, 8, 3, 50),
+            new Job("디자이너", Jobs.ART, 3, 8, 50),
+            new Job("인턴", Jobs.INTERN, 0, 0, 0)
         };
     }
 }
