@@ -23,7 +23,11 @@ namespace TeamTRPG_Project
         public float itemDEF { get; set; }
 
         public float HP { get; set; }
-        public float MAX_HP { get; set; } 
+        public float MAX_HP { get; set; }
+
+        //for skill
+        //public float MP { get; set; }
+        //public float MAX_MP { get; set; }
 
         public float crit { get; set; }
         public float critDamage { get; set; }
@@ -35,6 +39,9 @@ namespace TeamTRPG_Project
         public Job job { get; set; }
         public List<Item> inventory { get; set; }
         public List<Item> equipment { get; set; } //장착 중 아이템
+
+        //for skill
+        //public List<Skill> skills {get; set;}
 
         Random rd = new Random();
 
@@ -52,6 +59,10 @@ namespace TeamTRPG_Project
 
             HP = 100;
             MAX_HP = 100;
+
+            //for skill
+            //MP = 100; 
+            //MAX_MP = 100;
 
             crit = 0.15f;
             critDamage = 1.6f;
@@ -176,6 +187,9 @@ namespace TeamTRPG_Project
             ATK += 0.5f;
             DEF += 1.0f;
             HP = MAX_HP; //레벨업시 풀피
+
+            //for skill
+            //Mp = Max_MP;
             Console.WriteLine("경력이 {0}으로 올랐습니다.", LV);
         }
 
@@ -235,5 +249,20 @@ namespace TeamTRPG_Project
             MAX_HP += job.MAX_HP;
             HP += job.MAX_HP;
         }
+
+        //for skill
+        /*
+        public void AddSkill(Skill skill)
+        {
+            skills.Add(skill);
+        }
+        */
+        //for skill
+        /*
+        public void UseSkill(Skill skill) //index로 변경 가능
+        {
+            //mp소모 + CalculateDamage처럼 비슷한 데미지 float 값이 반환될 수도 있음
+        }
+        */
     }
 }
