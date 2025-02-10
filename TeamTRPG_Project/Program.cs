@@ -40,6 +40,9 @@
                     continue;
                 }
             }
+
+            //솔루션 -> 패키지 관리자 -> NAduio 설치 
+            //mp3 파일을 bin/Debug/net9.0 에 추가할 것 (실행파일이 있는 위치)
             using (AudioFileReader audioFile = new AudioFileReader("DungeonBGM.mp3"))
             using (var outputDevice = new WaveOutEvent())
             {
