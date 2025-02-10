@@ -163,6 +163,7 @@ namespace TeamTRPG_Project
                     case 1:
                         break;
                     case 2:
+                        Player.ShowInfo();
                         break;
                     case 3:
                         if (gm != null)
