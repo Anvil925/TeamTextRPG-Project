@@ -39,13 +39,13 @@ namespace TeamTRPG_Project
 
         public int gold { get; set; }
 
-        public Job job { get; set; }
+        public Jobs job { get; set; }
         public List<Item> inventory { get; set; }
         public List<Item> equipment { get; set; } //장착 중 아이템
 
         Random rd = new Random();
 
-        public Character(string name)
+        public Character(string name, Jobs job = Jobs.INTERN)
         {
             LV = 1;
             EXP = 0;
@@ -67,7 +67,7 @@ namespace TeamTRPG_Project
 
             gold = 1500;
 
-            job = Job.JobList[0]; // 0 is Intern;
+            this.job = job;
 
             inventory = new List<Item>();
             equipment = new List<Item>();
@@ -223,11 +223,5 @@ namespace TeamTRPG_Project
             inventory.Remove(potion);
             return HP;
         }
-
-        public void SetJob(int number)
-        {
-            job = Job.JobList[number];
-        }
-
     }
 }
