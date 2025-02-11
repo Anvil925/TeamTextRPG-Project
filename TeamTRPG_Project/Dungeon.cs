@@ -53,9 +53,9 @@ namespace TeamTRPG_Project
                 ConsoleUtility.ColorWrite("승진은 어려운 법!", ConsoleColor.Magenta);
                 Console.WriteLine("1.흡연실 - 승진을 원하는 동료");
                 Console.WriteLine("2.탕비실 - 무능한 간부 (권장Lv:3)");
-                Console.WriteLine("3.부장님자리(권장Lv:5)");
-                Console.WriteLine("4.부장님자리(권장Lv:7)");
-                Console.WriteLine("5.부장님자리(권장Lv:10)");
+                Console.WriteLine("3.팀장실 - 보고서의 전쟁 (권장Lv:5)");
+                Console.WriteLine("4.차장실 - 꼰대의 성벽 (권장Lv:7)");
+                Console.WriteLine("5.사장실 - 권력의 최종 시험 (권장Lv:10)");
                 Console.WriteLine("\n0.나가기");
                 input = ConsoleUtility.GetInput(0, 5);
                 switch (input)
@@ -86,7 +86,7 @@ namespace TeamTRPG_Project
                 Console.WriteLine("1.입장한다.");
                 Console.WriteLine("2.상태보기");
                 Console.WriteLine("\n0.나가기");
-                input = ConsoleUtility.GetInput(0, 5);
+                input = ConsoleUtility.GetInput(0, 2);
                 switch (input)
                 {
                     case 0:
@@ -95,7 +95,7 @@ namespace TeamTRPG_Project
                         StartWork(9, 3);
                         break;
                     case 2:
-                        Player.ShowInfo();
+                        Player.ShowInfo();                        
                         break;
                 }
             }

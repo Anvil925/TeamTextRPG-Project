@@ -9,12 +9,12 @@ namespace TeamTRPG_Project
     public class Skill
     {
         public Jobs JobType { get; set; }           // 스킬의 직업 타입
-        string Name { get; set; }           // 이름
-        float ATK { get; set; }            // 공격력
-        int MP { get; set; }              // 마나 소모량
-        string Description { get; set; }    // 설명
+        public string Name { get; set; }           // 이름
+        public float ATK { get; set; }            // 공격력
+        public int MP { get; set; }              // 마나 소모량
+        public string Description { get; set; }    // 설명
 
-        int Range { get; set; }             // 범위 (스킬에 적중당할 몬스터의 수)
+        public int Range { get; set; }             // 범위 (스킬에 적중당할 몬스터의 수)
         public int SkillPoint {  get; set; }       // 스킬을 획득하기 위한 스킬 포인트
 
         public bool IsLearn {  get; set; }         // 스킬을 배웠는지 확인

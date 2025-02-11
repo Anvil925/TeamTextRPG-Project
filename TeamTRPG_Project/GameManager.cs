@@ -61,8 +61,8 @@ namespace TeamTRPG_Project
             Console.Clear();
             ConsoleUtility.ColorWrite("던전 종류", ConsoleColor.Magenta);
             Console.WriteLine();
-            Console.WriteLine("1. 업무시작\n\n2. 승진시험\n\n0.나가기");
-            int input = ConsoleUtility.GetInput(0, 2);
+            Console.WriteLine("1. 업무시작\n\n2. 승진시험\n\n3. 프로젝트진행\n\n0.나가기");
+            int input = ConsoleUtility.GetInput(0, 3);
             switch (input)
             {
                 case 0:
@@ -72,6 +72,9 @@ namespace TeamTRPG_Project
                     Dungeon.DungeonTypes(input);
                     break;
                 case 2:
+                    Dungeon.DungeonTypes(input);
+                    break;
+                case 3:
                     Dungeon.DungeonTypes(input);
                     break;
 
@@ -99,7 +102,7 @@ namespace TeamTRPG_Project
             switch (input)
             {
                 case 0:
-                    MainScreen(); //정보 변경 새로 만들어야함.
+                    MainScreen(); 
                     break;
                 case 1:
                     StatusScreen();

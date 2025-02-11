@@ -24,6 +24,8 @@ namespace TeamTRPG_Project
 
             PrintTitle();
 
+            PrintPlayerInfo();
+
             PrintSkillList();
 
             PrintSelect();
@@ -44,21 +46,30 @@ namespace TeamTRPG_Project
         {
             PrintTitle();
 
+            PrintPlayerInfo();
+
             PrintSkillList(true);
 
             Console.WriteLine("0. 나가기");
             int SelectCount = SkillList.Count;
             int input = ConsoleUtility.GetInput(0, SelectCount);
 
-            if(input != 0)
+            if (input != 0)
             {
                 GetSkill(input);
                 LearnSkillScreen(); //스킬 구매 창 유지
-            } else
+            }
+            else
             {
                 SkillWindowScreen(); //스킬 구매 창 나가기
             }
 
+        }
+
+        private void PrintPlayerInfo()
+        {
+            Console.WriteLine($"플레이어 스킬 포인트 : {player.skillPoints} Point");
+            Console.WriteLine();
         }
 
         private void GetSkill(int index)
@@ -107,7 +118,7 @@ namespace TeamTRPG_Project
         // 설정한 스킬 리스트 출력
         private void PrintSkillList(bool isLearnSkillWindow = false)
         {
-            if(SkillList.Count == 0)
+            if (SkillList.Count == 0)
             {
                 Console.WriteLine("인턴은 스킬을 가질 수 업습니다.");
                 Thread.Sleep(1000);
