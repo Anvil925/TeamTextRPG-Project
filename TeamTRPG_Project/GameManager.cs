@@ -339,7 +339,11 @@ namespace TeamTRPG_Project
 
             }
             Console.WriteLine();
-            Console.WriteLine("1. 장착 관리");
+
+            if (Value != ShopCase.포션)
+                Console.WriteLine("1. 장착 관리");
+            else
+                Console.WriteLine("1. 아이템 사용");
             Console.WriteLine("0. 나가기");
             Console.WriteLine();
 
@@ -350,9 +354,63 @@ namespace TeamTRPG_Project
                     MainScreen();
                     break;
                 case 1:
-                    EquipScreen(Value);
+                    if (Value != ShopCase.포션) EquipScreen(Value);
+                    else UseScreen();
                     break;
             }
+        }
+
+        // 아이템 사용 화면
+        private void UseScreen()
+        {
+            Console.Clear();
+
+            ConsoleUtility.ColorWrite($"인벤토리 - 포션 사용 [포션]", ConsoleColor.Magenta);
+
+            Console.WriteLine("포션 아이템을 사용할 수 있습니다.");
+            Console.WriteLine();
+            Console.WriteLine("[아이템 목록]");
+
+            List<Item> filteredItems = Player.inventory
+                   .Where(item => item.ItemType == ItemType.POTION)
+                   .ToList();
+
+            if (filteredItems.Count == 0)
+            {
+                Console.WriteLine("해당 유형의 아이템이 없습니다.");
+                Console.WriteLine("\n0. 나가기\n");
+                ConsoleUtility.GetInput(0, 0);
+                MainScreen();
+                return;
+            }
+
+            // 필터링된 아이템에 1부터 번호 매기기
+            for (int i = 0; i < filteredItems.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {filteredItems[i].ShowInfo()}");
+            }
+
+            Console.WriteLine("\n0. 나가기\n");
+            int input = ConsoleUtility.GetInput(0, filteredItems.Count);
+
+            if (input == 0)
+            {
+                MainScreen();
+            }
+            else
+            {
+                Use(input, filteredItems);
+            }
+        }
+
+        private void Use(int input, List<Item> filteredItems)
+        {
+            Item select = filteredItems[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
+
+            if(select is Potion)
+                Player.UsePotion((Potion)select);
+
+            UseScreen(); // 다시 장착 화면으로 이동 (업데이트된 상태)
         }
 
         public void EquipScreen(ShopCase Value) //장착 화면
