@@ -18,6 +18,9 @@ namespace TeamTRPG_Project
 
         public void JobScreen()
         {
+            if(player == null)
+                player = GameManager.Instance.Player;
+
             if(!IsLvOK())
                 return;
 
