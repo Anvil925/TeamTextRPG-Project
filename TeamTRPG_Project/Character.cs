@@ -41,6 +41,7 @@ namespace TeamTRPG_Project
 
         public List<Skill> skills {get; set;}
         int skillPoints;
+        public List<string> ClearedDungeons { get; private set; }  // 클리어한 던전 목록
 
         Random rd = new Random();
 
@@ -76,6 +77,9 @@ namespace TeamTRPG_Project
             skills = new List<Skill>();
 
             skillPoints = 0;
+
+            ClearedDungeons = new List<string>();
+
         }
 
         public void ShowInfo()
@@ -326,5 +330,18 @@ namespace TeamTRPG_Project
             return skill;
         }
         */ //skill 클래스에서 구현이 되었음
+        public void ClearDungeon(string dungeonName)
+        {
+            if (!ClearedDungeons.Contains(dungeonName))
+            {
+                ClearedDungeons.Add(dungeonName);
+                Console.WriteLine($"{dungeonName} 던전을 클리어했습니다!");
+            }
+            else
+            {
+                Console.WriteLine($"{dungeonName} 던전은 이미 클리어한 상태입니다.");
+            }
+        }
     }
 }
+

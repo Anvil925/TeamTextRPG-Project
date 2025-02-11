@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using TeamTRPG_Project;
 
 namespace TeamTRPG_Project
 {
@@ -16,6 +17,7 @@ namespace TeamTRPG_Project
         public SelectJob selectJob { get; private set; }
         public List<Item> ItemList { get; private set; }
         public SkillWindow skillWindow { get; private set; }
+
 
         public static GameManager Instance
         {
@@ -31,7 +33,6 @@ namespace TeamTRPG_Project
         }
 
         public Shop shop;
-
         Item item;
         private GameManager()
         {
@@ -40,6 +41,7 @@ namespace TeamTRPG_Project
             Dungeon.SetGameManager(this); // Dungeon에 GameManager 정보 전달
             selectJob = new SelectJob(Player); // SelectJob 객체 생성
             ItemList = new List<Item>();
+
         }
         public void SetPlayerName(string name)
         {
@@ -92,9 +94,10 @@ namespace TeamTRPG_Project
             Console.WriteLine("5. 전직하기");
             Console.WriteLine("6. 강화하기");
             Console.WriteLine("7. 스킬획득");
+            Console.WriteLine("8. 퀘스트");
             Console.WriteLine();
 
-            int input = ConsoleUtility.GetInput(0, 7);
+            int input = ConsoleUtility.GetInput(0, 8);
 
             switch (input)
             {
@@ -122,10 +125,13 @@ namespace TeamTRPG_Project
                 case 7:
                     skillWindow.SkillWindowScreen();
                     break;
-
+                case 8:
+                    QuestManager.Instance.ShowQuests(Player);
+                    break;
             }
         }
 
+       
         public void ItemUpgradScreen()
         {
             Console.Clear();
@@ -323,7 +329,7 @@ namespace TeamTRPG_Project
 
             }
             Console.WriteLine();
-            Console.WriteLine("1. 장착 관리");
+            Console.WriteLine("1. 장착 관리/사용 ");
             Console.WriteLine("0. 나가기");
             Console.WriteLine();
 
