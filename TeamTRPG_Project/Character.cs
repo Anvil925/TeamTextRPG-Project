@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
-    
+
     public class Character
     {
         public int LV { get; set; }
@@ -25,9 +25,8 @@ namespace TeamTRPG_Project
         public float HP { get; set; }
         public float MAX_HP { get; set; }
 
-        //for skill
-        //public float MP { get; set; }
-        //public float MAX_MP { get; set; }
+        public float MP { get; set; }
+        public float MAX_MP { get; set; }
 
         public float crit { get; set; }
         public float critDamage { get; set; }
@@ -60,9 +59,8 @@ namespace TeamTRPG_Project
             HP = 100;
             MAX_HP = 100;
 
-            //for skill
-            //MP = 100; 
-            //MAX_MP = 100;
+            MP = 100; 
+            MAX_MP = 100;
 
             crit = 0.15f;
             critDamage = 1.6f;
@@ -188,8 +186,8 @@ namespace TeamTRPG_Project
             DEF += 1.0f;
             HP = MAX_HP; //레벨업시 풀피
 
-            //for skill
-            //Mp = Max_MP;
+            
+            Mp = Max_MP;
             Console.WriteLine("경력이 {0}으로 올랐습니다.", LV);
         }
 
@@ -217,7 +215,7 @@ namespace TeamTRPG_Project
             return HP;
         }
 
-        public float CalculateDamage() //가하는 데미지 계산
+        public float CalculateDamage() //가하는 데미지 계산 //일반 공격
         {
             float damageError = float.Ceiling((ATK + itemATK) * 0.1f); // 데미지 오차
             float damage = float.Ceiling(ATK + itemATK);
@@ -227,20 +225,33 @@ namespace TeamTRPG_Project
 
             damage = rd.Next((int)(damage - damageError), (int)(damage + damageError + 1));
 
+            RegenerateMana(10f); //일반 공격 시 마나 10 회복
+
             return damage;
         }
-        
+
         public float UsePotion(Potion potion)
         {
             float prevHP = HP;
             HP += potion.REC;
-            if(HP > MAX_HP)
+            if (HP > MAX_HP)
                 HP = MAX_HP;
             Console.WriteLine("멘탈 회복 {0:F0} -> {1:F0}", prevHP, HP);
             inventory.Remove(potion);
             return HP;
         }
+
+
+        public void RegenerateMana(float mana) 
+        {
+            float prevMP = MP;
+            MP += mana;
+            if (HP > MAX_HP)
+                HP = MAX_HP;
+            Console.WriteLine("마나 재생 {0:F0} -> {1:F0}", prevMP, MP); //어색하면 제거
+        }          
         
+
         public void SetJob(Job job) //직업은 기초 공방체 up
         {
             this.job = job;
@@ -264,5 +275,13 @@ namespace TeamTRPG_Project
             //mp소모 + CalculateDamage처럼 비슷한 데미지 float 값이 반환될 수도 있음
         }
         */
+
+        //for skill
+        /*
+        public void ShowSkills() 
+        {
+            //index + 스킬 설명 형식
+        }
+         */
     }
 }
