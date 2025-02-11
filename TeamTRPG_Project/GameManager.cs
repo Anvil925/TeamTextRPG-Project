@@ -49,10 +49,10 @@ namespace TeamTRPG_Project
         {
             return Player;
         }
-    public void SetShop(Shop shopInstance)
-    {
-        shop = shopInstance;
-    }
+        public void SetShop(Shop shopInstance)
+        {
+            shop = shopInstance;
+        }
 
         public void DungeonScene()
         {
@@ -88,9 +88,10 @@ namespace TeamTRPG_Project
             Console.WriteLine("3. 상점");
             Console.WriteLine("4. 출근하기");
             Console.WriteLine("5. 전직하기");
+            Console.WriteLine("6. 강화하기");
             Console.WriteLine();
 
-            int input = ConsoleUtility.GetInput(0, 5);
+            int input = ConsoleUtility.GetInput(0, 6);
 
             switch (input)
             {
@@ -112,6 +113,121 @@ namespace TeamTRPG_Project
                 case 5:
                     SelectJobScreen();
                     break;
+                case 6:
+                    ItemUpgradScreen();
+                    break;
+
+            }
+        }
+
+        public void ItemUpgradScreen()
+        {
+            Console.Clear();
+            ConsoleUtility.ColorWrite("아이템을 더 강력하게 강화합니다", ConsoleColor.Magenta);
+            Console.WriteLine();
+            Console.WriteLine("강화 할 아이템 번호를 입력하십시오.");
+            Console.WriteLine("[보유 골드]");
+            Console.WriteLine($"{Player.gold}\n");
+
+            if(Player.inventory.Count==0)
+            {
+                Console.WriteLine("강화 할 아이템이 없습니다.");
+                Thread.Sleep(2000);
+                MainScreen();
+            }
+            
+
+            int i = 1;
+            foreach (var item in Player.inventory)
+            {                
+                Console.Write($"{i}| Lv : {item.ItemLV} | {item.Name} | {item.ItemType} | ");
+                if (item is Weapon weapon)
+                    Console.WriteLine(weapon.ATK);
+                else if (item is Armor armor)
+                    Console.WriteLine(armor.DEF);
+                i++;
+            }
+            Console.WriteLine("\n\n0.나가기");
+            int input = ConsoleUtility.GetInput(0, Player.inventory.Count);
+            if(input == 0)
+            {
+                MainScreen();
+            }
+            else
+            {
+                Item decision = Player.inventory[input - 1];
+                ItemUpgrad(decision);
+            }
+            
+
+
+
+        }
+
+
+
+        private void ItemUpgrad(Item decision)
+        {
+            int probability = 0;
+            int expense = 0;
+
+            switch (decision.ItemLV)
+            {
+                case 1: probability = 90; expense = 1000; break;
+                case 2: probability = 80; expense = 2000; break;
+                case 3: probability = 70; expense = 3000; break;
+                case 4: probability = 60; expense = 5000; break;
+                case 5: probability = 50; expense = 7000; break;
+                case 6: probability = 40; expense = 10000; break;
+                case 7: probability = 30; expense = 15000; break;
+                case 8: probability = 20; expense = 25000; break;
+                case 9: probability = 10; expense = 50000; break;
+                default:
+                    Console.WriteLine("포션은 강화 할 수 없는 아이템입니다.");
+                    Thread.Sleep(2000);
+                    ItemUpgradScreen();
+                    return;
+            }
+
+            Console.WriteLine($"Lv : {decision.ItemLV} {decision.Name}를 Lv : {decision.ItemLV + 1} {decision.Name}로 강화하시겠습니까?");
+            Console.WriteLine($"강화 성공률 {probability}%, 비용: {expense} 골드");
+
+            string select = Console.ReadLine();
+            if (select.ToUpper() == "Y")
+            {
+                Player.gold -= expense;
+                Random random = new Random();
+                int chance = random.Next(1, 101);
+                if (chance <= probability)
+                {
+                    Console.WriteLine("축하합니다. 강화에 성공하셨습니다.");
+                    decision.ItemLV += 1; //레벨 증가
+                    Console.Write($"Lv : {decision.ItemLV} {decision.Name}");
+                    if (decision is Weapon weapon)
+                    {
+                        Console.Write($"{decision.ItemType} | 강화 전 : {weapon.ATK} =>");
+                        weapon.ATK *= 1.1f;  // 공격력을 10% 증가
+                        Console.WriteLine($" 강화 후 {weapon.ATK:F1})");
+                    }
+                    else if (decision is Armor armor)
+                    {
+                        Console.Write($"{decision.ItemType} | 강화 전 : {armor.DEF} =>");
+                        armor.DEF *= 1.1f;  // 방어력을 10% 증가
+                        Console.WriteLine($" 강화 후 {armor.DEF:F1})");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("강화에 실패하였습니다.!ㅠㅠ");
+                }
+                Thread.Sleep(2000);
+                ItemUpgradScreen();
+            }
+            else
+            {
+                Console.WriteLine("당신은 쫄보군요!");
+                Thread.Sleep(2000);
+                MainScreen();
             }
         }
 
@@ -132,7 +248,7 @@ namespace TeamTRPG_Project
 
                 InventoryScreen(decision);
 
-               
+
             }
         }
         private void Displayitems(ItemType itemType)
@@ -182,7 +298,7 @@ namespace TeamTRPG_Project
             ItemType Value = (ItemType)decision;
 
             Console.Clear();
-            ConsoleUtility.ColorWrite($"인벤토리 - [{Value-1}]", ConsoleColor.Magenta);
+            ConsoleUtility.ColorWrite($"인벤토리 - [{Value - 1}]", ConsoleColor.Magenta);
             Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
