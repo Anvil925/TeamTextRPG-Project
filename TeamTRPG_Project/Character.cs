@@ -40,8 +40,9 @@ namespace TeamTRPG_Project
         public List<Item> equipment { get; set; } //장착 중 아이템
 
         public List<Skill> skills {get; set;}
-        int skillPoints;
+        public int skillPoints { get; set; }
         public List<string> ClearedDungeons { get; private set; }  // 클리어한 던전 목록
+
 
         Random rd = new Random();
 

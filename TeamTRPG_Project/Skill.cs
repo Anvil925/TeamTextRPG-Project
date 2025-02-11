@@ -9,12 +9,12 @@ namespace TeamTRPG_Project
     public class Skill
     {
         public Jobs JobType { get; set; }           // 스킬의 직업 타입
-        string Name { get; set; }           // 이름
-        float ATK { get; set; }            // 공격력
-        int MP { get; set; }              // 마나 소모량
-        string Description { get; set; }    // 설명
+        public string Name { get; set; }           // 이름
+        public float ATK { get; set; }            // 공격력
+        public int MP { get; set; }              // 마나 소모량
+        public string Description { get; set; }    // 설명
 
-        int Range { get; set; }             // 범위 (스킬에 적중당할 몬스터의 수)
+        public int Range { get; set; }             // 범위 (스킬에 적중당할 몬스터의 수)
         public int SkillPoint {  get; set; }       // 스킬을 획득하기 위한 스킬 포인트
 
         public bool IsLearn {  get; set; }         // 스킬을 배웠는지 확인
@@ -98,7 +98,12 @@ namespace TeamTRPG_Project
 
             Attack(monsters);
         }
-
+        public void UseSkillMonster(Character player, List<Monster> monsters)
+        {
+            Console.WriteLine($"{player.name}에게 {Name} 사용! 데미지: {this.ATK}"); // 스킬 사용 메시지 출력
+            Console.WriteLine($"{Description}"); // 스킬 설명 출력
+            player.takeDamage((int)ATK); // 플레이어에게 데미지 적용
+        }
         // MP가 충분한지 체크
         private bool CheckMP(Character player)
         {
