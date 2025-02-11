@@ -40,7 +40,7 @@ namespace TeamTRPG_Project
         public List<Item> equipment { get; set; } //장착 중 아이템
 
         public List<Skill> skills {get; set;}
-        int skillPoints;
+        public int skillPoints { get; set; }
 
         Random rd = new Random();
 
