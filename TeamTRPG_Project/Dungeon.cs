@@ -11,10 +11,7 @@ namespace TeamTRPG_Project
     internal class Dungeon
     {
         Monster? monster;
-
         public static GameManager gm;
-
-
         static Character? Player;
         public static void SetPlayer(Character player)
         {
@@ -42,13 +39,13 @@ namespace TeamTRPG_Project
                     case 0:
                         break;
                     case 1:
-                        Battle(1, 1);
+                        StartWork(6, 1);
                         break;
                     case 2:
-                        Battle(2, 1);
+                        StartWork(7, 1);
                         break;
                     case 3:
-                        Battle(3, 1);
+                        StartWork(8, 1);
                         break;
                 }
             }
@@ -67,27 +64,24 @@ namespace TeamTRPG_Project
                     case 0:
                         break;
                     case 1:
-                        Battle(6, 2);
+                        StartWork(1, 2);
                         break;
                     case 2:
-                        Battle(6, 2);
+                        StartWork(2, 2);
                         break;
                     case 3:
-                        Battle(6, 2);
+                        StartWork(3, 2);
                         break;
                     case 4:
-                        Battle(6, 2);
+                        StartWork(4, 2);
                         break;
                     case 5:
-                        Battle(6, 2);
+                        StartWork(5, 2);
                         break;
                 }
             }
-
-
         }
-
-        public static void Battle(int GroupID, int BattleTypes)
+        public static void StartWork(int GroupID, int BattleTypes)
         {
             ConsoleUtility.Loading();
             Console.Clear();
@@ -109,7 +103,6 @@ namespace TeamTRPG_Project
                     case 3:
                         ConsoleUtility.ColorWrite("서버 폭파 5분전", ConsoleColor.Magenta);
                         break;
-
                 }
             }
             else if (BattleTypes == 2)
@@ -133,13 +126,8 @@ namespace TeamTRPG_Project
                         break;
                 }
             }
-
-
-
             List<Monster> monsters = new List<Monster>();
-
-            int numberOfMonsters = new Random().Next(1, 5);
-
+            int numberOfMonsters = new Random().Next(1, 4);
             for (int i = 0; i < numberOfMonsters; i++)
             {
                 Monster monster = Monster.GetRandomMonsterByGroup(GroupID); // 몬스터 그룹 1에서 랜덤 몬스터 불러오기
@@ -154,15 +142,16 @@ namespace TeamTRPG_Project
             do
             {
                 Console.WriteLine("1. 전투시작");
-                Console.WriteLine("2. 플레이어상태");
+                Console.WriteLine("2. 상태보기");
                 Console.WriteLine("3. 도망가기");
-                Console.Write("선택: ");
                 int input = ConsoleUtility.GetInput(1, 3);
                 switch (input)
                 {
                     case 1:
+                        Battle.StartBattle(Player, monsters);
                         break;
                     case 2:
+                        Player.ShowInfo();
                         break;
                     case 3:
                         if (gm != null)
@@ -178,13 +167,6 @@ namespace TeamTRPG_Project
                         break;
                 }
             } while (count != 0 && Player.HP > 0); 
-
-
-
-
         }
-
-
-
     }
 }

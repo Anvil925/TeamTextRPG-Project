@@ -20,25 +20,30 @@ public class Monster
         EXP = exp; // 경험치 설정
         GroupID = groupID; // 그룹 ID 설정
     }
-
+    public override string ToString() // 문자열 반환 메서드 재정의
+    {   
+        string info;
+        if (GroupID <= 5)
+            info = $"[경력 : {LV}년차 {Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}]";
+        else if (GroupID == 6)
+            info = $"[{LV}년 경력의 {Name} 맛집 - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}]";
+        else if (GroupID == 7)
+            info = $"[{Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}]";
+        else
+            info = $"[Unknown Group {GroupID} - {Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}]";
+        return info;
+    }
+    public bool IsDead()
+    {
+        return HP <= 0;
+    }
     public void TakeDamage(int damage)
     {
         int actualDamage = Math.Max(damage - (int)DEF, 1);
         HP -= actualDamage;
-        Console.WriteLine($"{Name}) {actualDamage} 의 피해를 입었습니다!( 남은 체력{HP})");
+        HP = Math.Max(HP, 0); // HP가 0 이하로 떨어지지 않도록
+        Console.WriteLine($"{Name})(이)가 {actualDamage} 의 피해를 입었습니다!( 남은 체력{HP})");
     }
-
-    public bool IsDead()
-    {
-        return HP <= 0;
-
-    }
-
-    public override string ToString() // 문자열 반환 메서드 재정의
-    {
-        return $"[경력:{LV}연차] {Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}"; // 몬스터 정보 반환
-    }
-
     public void AttackPlayer(Character player) // 플레이어를 공격하는 메서드
     {
         Console.WriteLine($"{Name}이(가) {player.name}을(를) 공격합니다!"); // 공격 메시지 출력
