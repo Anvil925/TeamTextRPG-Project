@@ -39,8 +39,8 @@ namespace TeamTRPG_Project
         public List<Item> inventory { get; set; }
         public List<Item> equipment { get; set; } //장착 중 아이템
 
-        //for skill
-        //public List<Skill> skills {get; set;}
+        
+        public List<Skill> skills {get; set;}
 
         Random rd = new Random();
 
@@ -73,6 +73,7 @@ namespace TeamTRPG_Project
 
             inventory = new List<Item>();
             equipment = new List<Item>();
+            skills = new List<Skill>();
         }
 
         public void ShowInfo()
@@ -187,7 +188,7 @@ namespace TeamTRPG_Project
             HP = MAX_HP; //레벨업시 풀피
 
             
-            Mp = Max_MP;
+            MP = MAX_MP;
             Console.WriteLine("경력이 {0}으로 올랐습니다.", LV);
         }
 
@@ -261,27 +262,41 @@ namespace TeamTRPG_Project
             HP += job.MAX_HP;
         }
 
-        //for skill
-        /*
+        
         public void AddSkill(Skill skill)
         {
+            /*
+             * 직업에 따라 획득 여부를 추가할 수도 있음. //이러면 반환형을 bool형으로 바꿀 수 있음
+             * if(skill.job.JobType == job.JobType) ....
+             */
             skills.Add(skill);
         }
-        */
-        //for skill
-        /*
-        public void UseSkill(Skill skill) //index로 변경 가능
+        
+        
+        public bool UseSkill(int index) //입력시 -1 주의 //false시 사용 실패 // true시 성공
         {
+            Skill skill = skills[index];
             //mp소모 + CalculateDamage처럼 비슷한 데미지 float 값이 반환될 수도 있음
-        }
-        */
+            if(skill.MP > MP)
+            {
+                Console.WriteLine("스킬을 사용하는 데 마나가 부족합니다!");
+                return false;
+            }
 
-        //for skill
-        /*
+            MP -= skill.MP;
+            Console.WriteLine($"스킬 {skill.Name}사용!");
+            //Skill 관련 메소드
+            return true;
+        }
+        
+
         public void ShowSkills() 
         {
-            //index + 스킬 설명 형식
+            foreach(Skill skill in skills)
+            {
+                //skill.ShowInfo();
+            }
         }
-         */
+         
     }
 }
