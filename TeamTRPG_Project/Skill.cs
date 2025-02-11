@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
-    internal class Skill
+    public class Skill
     {
         public Jobs JobType { get; set; }           // 스킬의 직업 타입
         string Name { get; set; }           // 이름
