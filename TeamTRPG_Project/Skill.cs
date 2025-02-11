@@ -15,8 +15,39 @@ namespace TeamTRPG_Project
         string Description { get; set; }    // 설명
 
         int Range { get; set; }             // 범위 (스킬에 적중당할 몬스터의 수)
+        int SkillPoint {  get; set; }       // 스킬을 획득하기 위한 스킬 포인트
 
-        public Skill(Jobs job, string name, float atk, int mp, string description, int range = 1)
+        bool IsLearn {  get; set; }         // 스킬을 배웠는지 확인
+
+        // 기획 스킬
+        public static List<Skill> PlanSkills = new List<Skill>()
+        {
+            new Skill(Jobs.PLANNING, "아이디어 폭발", 50, 50, "새로운 기획안이 마구 떠오른다!", 2  ),
+            new Skill(Jobs.PLANNING, "트랜드 감지", 50, 50, "업계 동향을 빠르게 파악!", 2  ),
+            new Skill(Jobs.PLANNING, "기획서 생성술", 50, 50, "PPT + 문서를 초고속으로 생성!", 2  ),
+            new Skill(Jobs.PLANNING, "회의 장악", 30, 50, "내가 원하는 방향으로 회의를 이끈다!", 3  ),
+            new Skill(Jobs.PLANNING, "완벽한 기획서", 100, 100, "상사와 클라이언트가 감탄하는 기획서를 완성!", 3 , 10)
+        };
+        // 개발 스킬
+        public static List<Skill> DevSkills = new List<Skill>()
+        {
+            new Skill(Jobs.DEVELOP, "디버깅 주문", 50, 50, "버그를 즉시 감지하고 수정!", 2  ),
+            new Skill(Jobs.DEVELOP, "긴급 패치", 50, 50, "시스템 장애를 빠르게 해결!", 2  ),
+            new Skill(Jobs.DEVELOP, "블루스크린의 저주", 30, 50, "적에게 치명적인 오류를 발생!", 3  ),
+            new Skill(Jobs.DEVELOP, "로그 추적의 눈", 70, 50, "적의 약점을 찾아 치명적인 데미지를 준다!", 1  ),
+            new Skill(Jobs.DEVELOP, "무한 루프의 형벌", 100, 100, "적을 영원히 루프에 가둔다!", 3 , 10)
+        };
+        // 디자인 스킬
+        public static List<Skill> ArtSkills = new List<Skill>()
+        {
+            new Skill(Jobs.ART, "디버깅 주문", 50, 50, "버그를 즉시 감지하고 수정!", 2  ),
+            new Skill(Jobs.ART, "긴급 패치", 50, 50, "시스템 장애를 빠르게 해결!", 2  ),
+            new Skill(Jobs.ART, "블루스크린의 저주", 30, 50, "적에게 치명적인 오류를 발생!", 3  ),
+            new Skill(Jobs.ART, "로그 추적의 눈", 70, 50, "적의 약점을 찾아 치명적인 데미지를 준다!", 1  ),
+            new Skill(Jobs.ART, "무한 루프의 형벌", 100, 100, "적을 영원히 루프에 가둔다!", 3 , 10)
+        };
+
+        public Skill(Jobs job, string name, float atk, int mp, string description, int range = 1, int skillPoint = 5)
         {
             JobType = job;
             Name = name;
@@ -24,6 +55,9 @@ namespace TeamTRPG_Project
             MP = mp;
             Description = description;
             Range = range;
+
+            IsLearn = false;
+            SkillPoint = skillPoint;
         }
 
         // 스킬을 사용할 때 불러올 함수
