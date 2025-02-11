@@ -20,6 +20,7 @@ namespace TeamTRPG_Project
     {
         public StringBuilder ItemInfo;
 
+
         public string Name { get; set; }
         public ItemType ItemType { get; set; }
         public string Description {  get; set; }    // 설명
@@ -28,7 +29,9 @@ namespace TeamTRPG_Project
         public bool IsEquip {  get; set; }          // 장착이 되었는가?
         public bool IsPurchase { get; set; }        // 구매가 되었는가?
 
-        public Item(string name, string description, int price)
+        public int ItemLV { get; set; }
+
+        public Item(int Itemlv , string name, string description, int price)
         {
             Name = name;
             Description = description;
@@ -38,6 +41,7 @@ namespace TeamTRPG_Project
             IsPurchase = false;
 
             ItemInfo = new StringBuilder();
+            ItemLV = Itemlv;
         }
 
         public virtual void InputAbility()
@@ -67,8 +71,9 @@ namespace TeamTRPG_Project
     public class Weapon : Item
     {
         public float ATK { get; set; }      // 공격력
-        public Weapon(string name, float atk, string description, int price) : base(name, description, price)
+        public Weapon(int Itemlv ,string name, float atk, string description, int price) : base(Itemlv, name, description, price)
         {
+            ItemLV = Itemlv; 
             ItemType = ItemType.ATK;
             ATK = atk;
         }
@@ -82,8 +87,9 @@ namespace TeamTRPG_Project
     public class Armor : Item
     {
         public float DEF { get; set; }      // 방어력
-        public Armor(string name, float def, string description, int price) : base(name, description, price)
+        public Armor(int Itemlv , string name, float def, string description, int price) : base(Itemlv, name, description, price)
         {
+            ItemLV = Itemlv;
             ItemType = ItemType.DEF;
             DEF = def;
         }
@@ -97,7 +103,7 @@ namespace TeamTRPG_Project
     public class Potion : Item
     {
         public float REC { get; set; }      // 회복량
-        public Potion(string name, float def, string description, int price) : base(name, description, price)
+        public Potion(int Itemlv,string name, float def, string description, int price) : base(Itemlv, name, description, price)
         {
             ItemType = ItemType.POTION;
             REC = def;
