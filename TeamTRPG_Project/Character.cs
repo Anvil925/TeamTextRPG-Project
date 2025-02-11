@@ -94,12 +94,12 @@ namespace TeamTRPG_Project
             Console.WriteLine("장착 아이템");
             foreach (Item item in equipment)
                 Console.WriteLine(item.ShowInfo());
-            /*
+            
             Console.WriteLine();
             Console.WriteLine("배운 스킬");
             foreach (Skill skill in skills)
                 Console.WriteLine(skill.ShowInfo());
-            */
+            
 
         }
 
@@ -304,7 +304,7 @@ namespace TeamTRPG_Project
         {
             for (int i = 0; i < skills.Count; i++)
             {
-                //Console.WriteLine($"{i} - {skills[i].ShowInfo()}"); //skill클래스에서 string으로 반환하는 함수 필요
+                Console.WriteLine($"{i} - {skills[i].ShowInfo()}"); 
             }
         }
 
