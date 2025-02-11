@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
-    internal class Battle
+    public class Battle
     {
 
         public static void StartBattle(Character player, List<Monster> monsters)
@@ -27,9 +27,9 @@ namespace TeamTRPG_Project
                 Console.WriteLine("1. 공격");
                 Console.WriteLine("2. 스킬");
                 Console.WriteLine("3. 아이템 사용");
-                Console.WriteLine("4. 도망가기");
-                Console.Write("선택: ");
-                int action = ConsoleUtility.GetInput(1, 4);  // 유효한 입력 처리
+                Console.WriteLine("4. 상태보기");
+                Console.WriteLine("5. 도망가기");
+                int action = ConsoleUtility.GetInput(1, 5);  // 유효한 입력 처리
 
                 switch (action)
                 {
@@ -42,8 +42,12 @@ namespace TeamTRPG_Project
                     case 3:
                         break;
                     case 4:
+                        player.ShowInfo();
+                        break;
+                    case 5:
                         Console.WriteLine("도망쳤습니다!");
                         battleEnded = true;
+                        Dungeon.DungeonTypes(1); // 던전으로 돌아가기 (메인 씬으로 가는 코드)
                         break;
                 }
 
@@ -114,8 +118,8 @@ namespace TeamTRPG_Project
                 Console.Clear();
                 Console.SetCursorPosition(x, y);
                 Console.Write(text);
-
                 Thread.Sleep(50); // 0.05초 대기
+                Console.Clear();
             }
         }
     }

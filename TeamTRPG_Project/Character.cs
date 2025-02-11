@@ -154,8 +154,9 @@ namespace TeamTRPG_Project
                 itemDEF += armor.DEF;
         }
 
-        private void UnEquip(Item item)
+        public void UnEquip(Item item)
         {
+
             item.IsEquip = false;
 
             equipment.Remove(item);
