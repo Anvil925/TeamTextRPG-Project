@@ -79,6 +79,26 @@ namespace TeamTRPG_Project
                         break;
                 }
             }
+            else if (input == 3)
+            {
+                ConsoleUtility.ColorWrite("왠지 프로젝트와의 긴 싸움이 시작 될거 같다....", ConsoleColor.Magenta);
+                ConsoleUtility.ColorWrite("험난한 프로젝트를 시작하게 됩니다. 진짜로 입장 하시겠습니까?(권장 LV.???)", ConsoleColor.Magenta);
+                Console.WriteLine("1.입장한다.");
+                Console.WriteLine("2.상태보기");
+                Console.WriteLine("\n0.나가기");
+                input = ConsoleUtility.GetInput(0, 5);
+                switch (input)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        StartWork(9, 3);
+                        break;
+                    case 2:
+                        Player.ShowInfo();
+                        break;
+                }
+            }
         }
         public static void StartWork(int GroupID, int BattleTypes)
         {
@@ -122,6 +142,15 @@ namespace TeamTRPG_Project
                         break;
                     case 5:
                         ConsoleUtility.ColorWrite("~~~", ConsoleColor.Magenta);
+                        break;
+                }
+            }
+            else if (BattleTypes == 3)
+            {
+                switch (GroupID)
+                {
+                    case 1:
+                        ConsoleUtility.ColorWrite("?????", ConsoleColor.Magenta);
                         break;
                 }
             }
