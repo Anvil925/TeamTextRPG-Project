@@ -168,7 +168,7 @@ namespace TeamTRPG_Project
                 itemDEF += armor.DEF;
         }
 
-        public void UnEquip(Item item)
+        private void UnEquip(Item item) //외부 클래스에서 부르지 말 것 //EquipItem 메소드가 장착/해제 를 전부 담당합니다.
         {
 
             item.IsEquip = false;
