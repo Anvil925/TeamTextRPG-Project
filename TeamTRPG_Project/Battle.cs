@@ -18,9 +18,13 @@ namespace TeamTRPG_Project
             Console.WriteLine("몬스터 목록:");
             for (int i = 0; i < monsters.Count; i++)
             {
-                ConsoleUtility.ColorWrite(monsters[i].ToString(), ConsoleColor.Cyan);
+                if (monsters[i].IsDead())
+                    Console.ForegroundColor = ConsoleColor.Red; // 죽은 몬스터는 빨간색
+                else
+                    Console.ForegroundColor = ConsoleColor.Cyan; // 살아있는 몬스터는 기본 색상
+                Console.WriteLine(monsters[i].ToString());   
             }
-
+            Console.ResetColor();
             bool battleEnded = false;
             while (!battleEnded)
             {
@@ -50,18 +54,14 @@ namespace TeamTRPG_Project
                         Dungeon.DungeonTypes(1); // 던전으로 돌아가기 (메인 씬으로 가는 코드)
                         break;
                 }
-
                 if (!battleEnded)
                 {
                 }
-
                 battleEnded = monsters.All(m => m.HP <= 0);
             }
-
             Console.WriteLine("전투가 종료되었습니다!");
             Thread.Sleep(1000);
         }
-
         // 플레이어의 공격 메서드
         private static void PlayerAttack(Character player, List<Monster> monsters)
         {
@@ -69,17 +69,38 @@ namespace TeamTRPG_Project
             Console.WriteLine("공격할 몬스터를 선택하세요:");
             for (int i = 0; i < monsters.Count; i++)
             {
-                ConsoleUtility.ColorWrite($"{i + 1}. {monsters[i]}", ConsoleColor.Cyan); // 몬스터 목록 출력
+                if (monsters[i].IsDead())
+                    Console.ForegroundColor = ConsoleColor.Red; // 죽은 몬스터는 빨간색
+                else
+                    Console.ForegroundColor = ConsoleColor.Cyan; // 살아있는 몬스터는 기본 색상
+                Console.WriteLine($"{i + 1}. {monsters[i]}"); // 몬스터 목록 출력
             }
-
-            int targetIndex = ConsoleUtility.GetInput(1, monsters.Count) - 1; // 유효한 입력 처리
+            Console.ResetColor();
+            int targetIndex;
+            do
+            {
+                Console.Write("공격할 몬스터 번호를 입력하세요: ");
+                targetIndex = ConsoleUtility.GetInput(1, monsters.Count) - 1; 
+                if (monsters[targetIndex].IsDead())
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("이미 죽은 몬스터는 공격할 수 없습니다! 다시 선택하세요.");
+                    Console.ResetColor();
+                }
+            } while (monsters[targetIndex].IsDead()); // 죽은 몬스터면 다시 입력받음
             Monster targetMonster = monsters[targetIndex]; // 선택한 몬스터
-
             float damage = player.CalculateDamage();
             ShakeText("!!!!!", 1, 10);
             Console.WriteLine(); // 빈줄출력
             Console.WriteLine($"{targetMonster.Name}에게 {damage}의 피해를 입혔습니다!");
             targetMonster.TakeDamage((int)damage);
+            if (targetMonster.IsDead())
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"{targetMonster.Name}을(를) 처치했습니다! 🎉");
+                Console.ResetColor();
+                Thread.Sleep(2000);
+            }
             Thread.Sleep(2000);
         }
 
@@ -89,7 +110,7 @@ namespace TeamTRPG_Project
             {
                 if (monster.HP > 0)
                 {
-                    Console.WriteLine($"{monster.Name}가 공격을 준비 합니다!");
+                    Console.WriteLine($"{monster.Name}(이)가 공격을 준비 합니다!");
                     Thread.Sleep(2000);
                     ShakeText("!!!!!", 1, 10);
                     Thread.Sleep(1000);
@@ -100,21 +121,23 @@ namespace TeamTRPG_Project
                     Console.Clear();
                     for (int i = 0; i < monsters.Count; i++)
                     {
-                        ConsoleUtility.ColorWrite(monsters[i].ToString(), ConsoleColor.Cyan);
+                        if (monsters[i].IsDead())
+                            Console.ForegroundColor = ConsoleColor.Red; // 죽은 몬스터는 빨간색
+                        else
+                            Console.ForegroundColor = ConsoleColor.Cyan; // 살아있는 몬스터는 기본 색상
+                        Console.WriteLine(monsters[i].ToString());
                     }
+                    Console.ResetColor();
                 }
             }
         }
-
         static void ShakeText(string text, int intensity, int duration)
         {
             Random rand = new Random();
-
             for (int i = 0; i < duration; i++)
             {
                 int x = rand.Next(0, Console.WindowWidth - text.Length); // X축 위치 (콘솔 너비 범위 내)
                 int y = rand.Next(0, Console.WindowHeight); // Y축 위치 (콘솔 높이 범위 내)
-
                 Console.Clear();
                 Console.SetCursorPosition(x, y);
                 Console.Write(text);
