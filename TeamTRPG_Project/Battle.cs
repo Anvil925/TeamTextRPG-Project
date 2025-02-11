@@ -49,7 +49,7 @@ namespace TeamTRPG_Project
                         player.ShowInfo();
                         break;
                     case 5:
-                        Console.WriteLine("도망쳤습니다!");
+                        Console.WriteLine("도망쳤습니다!"); // 이 부분 현재 오류발생 던전씬으로 가지지만 던전에서 도망가기가 불가능 무한 루프
                         battleEnded = true;
                         Dungeon.DungeonTypes(1); // 던전으로 돌아가기 (메인 씬으로 가는 코드)
                         break;
@@ -98,6 +98,7 @@ namespace TeamTRPG_Project
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"{targetMonster.Name}을(를) 처치했습니다! 🎉");
+                player.GetExp(targetMonster.EXP);
                 Console.ResetColor();
                 Thread.Sleep(2000);
             }
@@ -130,7 +131,66 @@ namespace TeamTRPG_Project
                     Console.ResetColor();
                 }
             }
+        
         }
+        // 스킬 사용 2.번 스킬을 선택하였을때 사용가능한 스킬 목록을 보여주고 선택하게한다.
+        // 스킬을 사용하면 스킬의 데미지를 계산하여 몬스터에게 데미지를 입힌다.
+        // private static void UseSkill(Character player, List<Monster> monsters)
+        // {
+        //     Console.Clear();
+        //     Console.WriteLine("사용할 스킬을 선택하세요:");
+        //     for (int i = 0; i < player.Skills.Count; i++) // 플레이어의 스킬 목록 출력
+        //     {
+        //         Console.WriteLine($"{i + 1}. {player.Skills[i]}"); // 스킬 목록 출력
+        //     }
+        //     int skillIndex; // 사용할 스킬 인덱스
+        //     do 
+        //     {
+        //         Console.Write("사용할 스킬 번호를 입력하세요: ");
+        //         skillIndex = ConsoleUtility.GetInput(1, player.Skills.Count) - 1; 
+        //     } while (skillIndex < 0 || skillIndex >= player.Skills.Count);
+        //     Skill skill = player.Skills[skillIndex];
+        //     Console.WriteLine($"{skill.Name} 스킬을 사용합니다!");
+        //     float damage = player.CalculateSkillDamage(skill);
+        //     ShakeText("!!!!!", 1, 10);
+        //     Console.WriteLine(); // 빈줄출력
+        //     Console.WriteLine($"{skill.Name} 스킬로 {damage}의 피해를 입혔습니다!");
+        //     foreach (Monster monster in monsters)
+        //     {
+        //         monster.TakeDamage((int)damage);
+        //         if (monster.IsDead())
+        //         {
+        //             Console.ForegroundColor = ConsoleColor.Yellow;
+        //             Console.WriteLine($"{monster.Name}을(를) 처치했습니다! 🎉");
+        //             Console.ResetColor();
+        //             Thread.Sleep(2000);
+        //         }
+        //     }
+        //     Thread.Sleep(2000);
+        // }
+        // 3. 번 아이템 사용을 선택하였을때 사용가능한 아이템 목록을 보여주고 선택하게한다.
+        // 아이템을 사용하면 해당 아이템 효과를 사용한다.
+        // private static void UseItem(Character player, List<Monster> monsters)
+        // {
+        //     Console.Clear();
+        //     Console.WriteLine("사용할 아이템을 선택하세요:");
+        //     for (int i = 0; i < player.Items.Count; i++) // 플레이어의 아이템 목록 출력
+        //     {
+        //         Console.WriteLine($"{i + 1}. {player.Items[i]}"); // 아이템 목록 출력
+        //     }
+        //     int itemIndex; // 사용할 아이템 인덱스
+        //     do 
+        //     {
+        //         Console.Write("사용할 아이템 번호를 입력하세요: ");
+        //         itemIndex = ConsoleUtility.GetInput(1, player.Items.Count) - 1; 
+        //     } while (itemIndex < 0 || itemIndex >= player.Items.Count);
+        //     Item item = player.Items[itemIndex];
+        //     Console.WriteLine($"{item.Name} 아이템을 사용합니다!");
+        //     item.Use(player);
+        //     player.Items.Remove(item);
+        //     Thread.Sleep(2000);
+        // }
+
         static void ShakeText(string text, int intensity, int duration)
         {
             Random rand = new Random();

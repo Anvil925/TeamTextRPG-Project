@@ -21,7 +21,6 @@ namespace TeamTRPG_Project
         {
             gm = gameManager;
         }
-
         public static void DungeonTypes(int input)
         {
             ConsoleUtility.Loading();
@@ -39,13 +38,13 @@ namespace TeamTRPG_Project
                     case 0:
                         break;
                     case 1:
-                        StartWork(6, 1);
+                        StartWork(1, 1);
                         break;
                     case 2:
-                        StartWork(7, 1);
+                        StartWork(2, 1);
                         break;
                     case 3:
-                        StartWork(8, 1);
+                        StartWork(3, 1);
                         break;
                 }
             }
@@ -54,9 +53,9 @@ namespace TeamTRPG_Project
                 ConsoleUtility.ColorWrite("승진은 어려운 법!", ConsoleColor.Magenta);
                 Console.WriteLine("1.흡연실 - 승진을 원하는 동료");
                 Console.WriteLine("2.탕비실 - 무능한 간부 (권장Lv:3)");
-                Console.WriteLine("3.부장님자리(권장Lv:5)");
-                Console.WriteLine("4.부장님자리(권장Lv:7)");
-                Console.WriteLine("5.부장님자리(권장Lv:10)");
+                Console.WriteLine("3.팀장실 - 보고서의 전쟁 (권장Lv:5)");
+                Console.WriteLine("4.차장실 - 꼰대의 성벽 (권장Lv:7)");
+                Console.WriteLine("5.사장실 - 권력의 최종 시험 (권장Lv:10)");
                 Console.WriteLine("\n0.나가기");
                 input = ConsoleUtility.GetInput(0, 5);
                 switch (input)
@@ -64,19 +63,39 @@ namespace TeamTRPG_Project
                     case 0:
                         break;
                     case 1:
-                        StartWork(1, 2);
-                        break;
-                    case 2:
-                        StartWork(2, 2);
-                        break;
-                    case 3:
-                        StartWork(3, 2);
-                        break;
-                    case 4:
                         StartWork(4, 2);
                         break;
-                    case 5:
+                    case 2:
                         StartWork(5, 2);
+                        break;
+                    case 3:
+                        StartWork(6, 2);
+                        break;
+                    case 4:
+                        StartWork(7, 2);
+                        break;
+                    case 5:
+                        StartWork(8, 2);
+                        break;
+                }
+            }
+            else if (input == 3)
+            {
+                ConsoleUtility.ColorWrite("왠지 프로젝트와의 긴 싸움이 시작 될거 같다....", ConsoleColor.Magenta);
+                ConsoleUtility.ColorWrite("험난한 프로젝트를 시작하게 됩니다. 진짜로 입장 하시겠습니까?(권장 LV.???)", ConsoleColor.Magenta);
+                Console.WriteLine("1.입장한다.");
+                Console.WriteLine("2.상태보기");
+                Console.WriteLine("\n0.나가기");
+                input = ConsoleUtility.GetInput(0, 2);
+                switch (input)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        StartWork(9, 3);
+                        break;
+                    case 2:
+                        Player.ShowInfo();                        
                         break;
                 }
             }
@@ -113,10 +132,10 @@ namespace TeamTRPG_Project
                         ConsoleUtility.ColorWrite("담배냄새가 자욱하다...", ConsoleColor.Magenta);
                         break;
                     case 2:
-                        ConsoleUtility.ColorWrite("~~~", ConsoleColor.Magenta);
+                        ConsoleUtility.ColorWrite($"{Player.name}아 커피 좀 타와봐라!", ConsoleColor.Magenta);
                         break;
                     case 3:
-                        ConsoleUtility.ColorWrite("~~~", ConsoleColor.Magenta);
+                        ConsoleUtility.ColorWrite($"일을 그거 밖에 못해? 잘 좀 하자... {Player.name}아", ConsoleColor.Magenta);
                         break;
                     case 4:
                         ConsoleUtility.ColorWrite("~~~", ConsoleColor.Magenta);
@@ -126,14 +145,25 @@ namespace TeamTRPG_Project
                         break;
                 }
             }
-            List<Monster> monsters = new List<Monster>();
-            int numberOfMonsters = new Random().Next(1, 4);
-            for (int i = 0; i < numberOfMonsters; i++)
+            else if (BattleTypes == 3)
             {
-                Monster monster = Monster.GetRandomMonsterByGroup(GroupID); // 몬스터 그룹 1에서 랜덤 몬스터 불러오기
-                if (monster != null)
+                switch (GroupID)
                 {
-                    monsters.Add(monster);
+                    case 1:
+                        ConsoleUtility.ColorWrite("?????", ConsoleColor.Magenta);
+                        break;
+                }
+            }
+            List<Monster> monsters = new List<Monster>();
+            HashSet<string> monsterNames = new HashSet<string>(); // 중복 체크용 HashSet
+            int numberOfMonsters = new Random().Next(1, 4);
+            while (monsters.Count < numberOfMonsters)
+            {
+                Monster monster = Monster.GetRandomMonsterByGroup(GroupID); // 랜덤 몬스터 생성
+                if (monster != null && !monsterNames.Contains(monster.Name)) // 중복 체크
+                {
+                    monsters.Add(monster); // 몬스터 추가
+                    monsterNames.Add(monster.Name); // 추가된 몬스터 이름 저장
                     Console.WriteLine($"{monster.Name} (이)가 나타났습니다!");
                     ConsoleUtility.ColorWrite(monster.ToString(), ConsoleColor.Cyan);
                 }

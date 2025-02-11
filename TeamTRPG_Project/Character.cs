@@ -13,7 +13,7 @@ namespace TeamTRPG_Project
         public int EXP { get; set; }
         public int[] LVGuage { get; set; }
 
-        const int MAXLV = 5;
+        const int MAXLV = 10;
 
         public string name { get; set; }
         public float ATK { get; set; }
@@ -40,7 +40,9 @@ namespace TeamTRPG_Project
         public List<Item> equipment { get; set; } //장착 중 아이템
 
         public List<Skill> skills {get; set;}
-        int skillPoints;
+        public int skillPoints { get; set; }
+        public List<string> ClearedDungeons { get; private set; }  // 클리어한 던전 목록
+
 
         Random rd = new Random();
 
@@ -48,7 +50,7 @@ namespace TeamTRPG_Project
         {
             LV = 1;
             EXP = 0;
-            LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100 }; //일단 5렙까지 경험치 필요량
+            LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100, 140, 185, 230, 280, 320 }; //일단 5렙까지 경험치 필요량
             this.name = name;
 
             ATK = 10;
@@ -67,7 +69,7 @@ namespace TeamTRPG_Project
 
             avoid = 0.1f;
 
-            gold = 1500;
+            gold = 150000;
 
             job = Job.JobList[3]; //list 3 is Intern
 
@@ -76,6 +78,9 @@ namespace TeamTRPG_Project
             skills = new List<Skill>();
 
             skillPoints = 0;
+
+            ClearedDungeons = new List<string>();
+
         }
 
         public void ShowInfo()
@@ -94,12 +99,12 @@ namespace TeamTRPG_Project
             Console.WriteLine("장착 아이템");
             foreach (Item item in equipment)
                 Console.WriteLine(item.ShowInfo());
-            /*
+            
             Console.WriteLine();
             Console.WriteLine("배운 스킬");
             foreach (Skill skill in skills)
                 Console.WriteLine(skill.ShowInfo());
-            */
+            
 
         }
 
@@ -295,6 +300,7 @@ namespace TeamTRPG_Project
             }
 
             Console.WriteLine("스킬을 획득하였습니다.");
+            skill.IsLearn = true;
             skillPoints -= skill.SkillPoint;
             skills.Add(skill);
             return true;
@@ -304,7 +310,7 @@ namespace TeamTRPG_Project
         {
             for (int i = 0; i < skills.Count; i++)
             {
-                //Console.WriteLine($"{i} - {skills[i].ShowInfo()}"); //skill클래스에서 string으로 반환하는 함수 필요
+                Console.WriteLine($"{i} - {skills[i].ShowInfo()}"); 
             }
         }
 
@@ -325,5 +331,18 @@ namespace TeamTRPG_Project
             return skill;
         }
         */ //skill 클래스에서 구현이 되었음
+        public void ClearDungeon(string dungeonName)
+        {
+            if (!ClearedDungeons.Contains(dungeonName))
+            {
+                ClearedDungeons.Add(dungeonName);
+                Console.WriteLine($"{dungeonName} 던전을 클리어했습니다!");
+            }
+            else
+            {
+                Console.WriteLine($"{dungeonName} 던전은 이미 클리어한 상태입니다.");
+            }
+        }
     }
 }
+
