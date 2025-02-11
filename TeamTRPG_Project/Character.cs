@@ -13,7 +13,7 @@ namespace TeamTRPG_Project
         public int EXP { get; set; }
         public int[] LVGuage { get; set; }
 
-        const int MAXLV = 5;
+        const int MAXLV = 10;
 
         public string name { get; set; }
         public float ATK { get; set; }
@@ -48,7 +48,7 @@ namespace TeamTRPG_Project
         {
             LV = 1;
             EXP = 0;
-            LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100 }; //일단 5렙까지 경험치 필요량
+            LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100, 140, 185, 230, 280, 320 }; //일단 5렙까지 경험치 필요량
             this.name = name;
 
             ATK = 10;
@@ -67,7 +67,7 @@ namespace TeamTRPG_Project
 
             avoid = 0.1f;
 
-            gold = 1500;
+            gold = 1500000;
 
             job = Job.JobList[3]; //list 3 is Intern
 
@@ -94,12 +94,12 @@ namespace TeamTRPG_Project
             Console.WriteLine("장착 아이템");
             foreach (Item item in equipment)
                 Console.WriteLine(item.ShowInfo());
-            /*
+            
             Console.WriteLine();
             Console.WriteLine("배운 스킬");
             foreach (Skill skill in skills)
                 Console.WriteLine(skill.ShowInfo());
-            */
+            
 
         }
 
@@ -304,7 +304,7 @@ namespace TeamTRPG_Project
         {
             for (int i = 0; i < skills.Count; i++)
             {
-                //Console.WriteLine($"{i} - {skills[i].ShowInfo()}"); //skill클래스에서 string으로 반환하는 함수 필요
+                Console.WriteLine($"{i} - {skills[i].ShowInfo()}"); 
             }
         }
 

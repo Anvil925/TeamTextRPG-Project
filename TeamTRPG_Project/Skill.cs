@@ -136,6 +136,8 @@ namespace TeamTRPG_Project
 
         public string ShowInfo(bool isSkillWindow = false)
         {
+            if(SkillInfo == null)
+                SkillInfo = new StringBuilder();
             SkillInfo.Clear();
 
             SkillInfo.Append($"{Name}\t| ");
