@@ -15,6 +15,7 @@ namespace TeamTRPG_Project
         public Dungeon dungeon { get; private set; }
         public SelectJob selectJob { get; private set; }
         public List<Item> ItemList { get; private set; }
+        public SkillWindow skillWindow { get; private set; }
 
         public static GameManager Instance
         {
@@ -44,6 +45,7 @@ namespace TeamTRPG_Project
         {
             Player = new Character(name);  // Player 이름을 설정
             Dungeon.SetPlayer(Player);     // 던전에도 Player 정보 전달
+            skillWindow = new SkillWindow(Player); //상점에도 전달
         }
         public Character GetCharacter()
         {
@@ -89,9 +91,10 @@ namespace TeamTRPG_Project
             Console.WriteLine("4. 출근하기");
             Console.WriteLine("5. 전직하기");
             Console.WriteLine("6. 강화하기");
+            Console.WriteLine("7. 스킬획득");
             Console.WriteLine();
 
-            int input = ConsoleUtility.GetInput(0, 6);
+            int input = ConsoleUtility.GetInput(0, 7);
 
             switch (input)
             {
@@ -115,6 +118,9 @@ namespace TeamTRPG_Project
                     break;
                 case 6:
                     ItemUpgradScreen();
+                    break;
+                case 7:
+                    skillWindow.SkillWindowScreen();
                     break;
 
             }
