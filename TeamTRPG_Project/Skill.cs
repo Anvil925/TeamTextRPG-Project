@@ -8,16 +8,18 @@ namespace TeamTRPG_Project
 {
     internal class Skill
     {
-        Jobs JobType { get; set; }           // 스킬의 직업 타입
+        public Jobs JobType { get; set; }           // 스킬의 직업 타입
         string Name { get; set; }           // 이름
         float ATK { get; set; }            // 공격력
         int MP { get; set; }              // 마나 소모량
         string Description { get; set; }    // 설명
 
         int Range { get; set; }             // 범위 (스킬에 적중당할 몬스터의 수)
-        int SkillPoint {  get; set; }       // 스킬을 획득하기 위한 스킬 포인트
+        public int SkillPoint {  get; set; }       // 스킬을 획득하기 위한 스킬 포인트
 
-        bool IsLearn {  get; set; }         // 스킬을 배웠는지 확인
+        public bool IsLearn {  get; set; }         // 스킬을 배웠는지 확인
+
+        StringBuilder SkillInfo { get; set; }      // 스킬 설명을 위한 StringBuilder
 
         // 기획 스킬
         public static List<Skill> PlanSkills = new List<Skill>()
@@ -103,6 +105,22 @@ namespace TeamTRPG_Project
             {
                 monsters[i].TakeDamage((int)ATK);
             }
+        }
+
+        public string ShowInfo(bool isSkillWindow = false)
+        {
+            SkillInfo.Clear();
+
+            SkillInfo.Append($"{Name}\t| ");
+
+            SkillInfo.Append($"데미지 : {ATK}\t| 마나 : {MP} MP\t| ");
+
+            SkillInfo.Append($"{Description}\t| 획득 포인트 : {SkillPoint}P");
+
+            if (isSkillWindow && IsLearn)
+                SkillInfo.Append("\t| 획득 완료");
+
+            return SkillInfo.ToString();
         }
 
     }
