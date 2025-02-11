@@ -168,7 +168,7 @@ public class Monster
         }
     if (groupID == 9) // 그룹 9번의 몬스터에게 플레이어 직업에 맞는 스킬을 부여
     {
-        Monster rareMonster = filteredList.FirstOrDefault(m => m.Name == "특정 몬스터 이름");
+        Monster rareMonster = filteredList.FirstOrDefault(m => m.Name == "????? ????? PROJECT");
         if (rareMonster != null)
         {
             int chance = rand.Next(100); 
