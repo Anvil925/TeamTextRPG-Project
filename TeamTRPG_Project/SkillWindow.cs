@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,5 +9,100 @@ namespace TeamTRPG_Project
 {
     internal class SkillWindow
     {
+        Character player;
+        List<Skill> SkillList;
+
+        public SkillWindow(Character player)
+        {
+            SkillList = new List<Skill>();
+        }
+
+        public void SkillWindowScreen()
+        {
+            SetSkillList();
+
+            PrintTitle();
+
+            PrintSkillList();
+
+            PrintSelect();
+
+            int input = ConsoleUtility.GetInput(0, 1);
+            if (input == 1)
+            {
+                LearnSkillScreen();
+            }
+        }
+
+        // 스킬 획득 창 출력
+        private void LearnSkillScreen()
+        {
+            PrintTitle();
+
+            PrintSkillList(true);
+
+            Console.WriteLine("0. 나가기");
+            int SelectCount = SkillList.Count;
+            int input = ConsoleUtility.GetInput(0, SelectCount);
+
+            if(input != 0)
+            {
+                GetSkill(input);
+            }
+        }
+
+        private void GetSkill(int index)
+        {
+            player.AddSkill(SkillList[index - 1]);
+        }
+
+        // 선택 사항 출력
+        private void PrintSelect()
+        {
+            Console.WriteLine("1. 스킬 획득하기");
+            Console.WriteLine("0. 나가기");
+            Console.WriteLine();
+        }
+
+        // 스킬 창 타이틀 출력
+        private static void PrintTitle()
+        {
+            Console.Clear();
+            Console.WriteLine("[스킬창]");
+            Console.WriteLine();
+        }
+
+
+        // 직업에 맞는 스킬 리스트 설정
+        private void SetSkillList()
+        {
+            if (player.job.JobType == Jobs.INTERN)
+                return;
+
+            switch (player.job.JobType)
+            {
+                case Jobs.DEVELOP:
+                    SkillList = Skill.DevSkills;
+                    break;
+                case Jobs.PLANNING:
+                    SkillList = Skill.PlanSkills;
+                    break;
+                case Jobs.ART:
+                    SkillList = Skill.ArtSkills;
+                    break;
+            }
+        }
+
+        // 설정한 스킬 리스트 출력
+        private void PrintSkillList(bool isLearnSkillWindow = false)
+        {
+            for (int i = 0; i < SkillList.Count; i++)
+            {
+                // 앞에 부분을 꾸며주는 문자
+                string deco = isLearnSkillWindow ? $"- {i + 1}" : "- ";
+                Console.WriteLine(deco + SkillList[i].ShowInfo(true));
+            }
+            Console.WriteLine();
+        }
     }
 }
