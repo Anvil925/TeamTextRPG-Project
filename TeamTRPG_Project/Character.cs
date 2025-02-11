@@ -25,8 +25,8 @@ namespace TeamTRPG_Project
         public float HP { get; set; }
         public float MAX_HP { get; set; }
 
-        public float MP { get; set; }
-        public float MAX_MP { get; set; }
+        public int MP { get; set; }
+        public int MAX_MP { get; set; }
 
         public float crit { get; set; }
         public float critDamage { get; set; }
@@ -39,8 +39,8 @@ namespace TeamTRPG_Project
         public List<Item> inventory { get; set; }
         public List<Item> equipment { get; set; } //장착 중 아이템
 
-        
         public List<Skill> skills {get; set;}
+        int skillPoints;
 
         Random rd = new Random();
 
@@ -74,6 +74,8 @@ namespace TeamTRPG_Project
             inventory = new List<Item>();
             equipment = new List<Item>();
             skills = new List<Skill>();
+
+            skillPoints = 0;
         }
 
         public void ShowInfo()
@@ -84,6 +86,7 @@ namespace TeamTRPG_Project
             Console.WriteLine("정치력 : {0} {1}", ATK + itemATK, (itemATK > 0) ? $"(+{itemATK})" : "");
             Console.WriteLine("아부력 : {0} {1}", DEF + itemDEF, (itemDEF > 0) ? $"(+{itemDEF})" : "");
             Console.WriteLine("멘 탈 : {0} / {1}", HP, MAX_HP);
+            Console.WriteLine("마 나 : {0} / {1}", MP, MAX_MP);
             Console.WriteLine("주 량 : {0}", crit);
             Console.WriteLine("GOLD : {0}", gold);
 
@@ -91,6 +94,12 @@ namespace TeamTRPG_Project
             Console.WriteLine("장착 아이템");
             foreach (Item item in equipment)
                 Console.WriteLine(item.ShowInfo());
+            /*
+            Console.WriteLine();
+            Console.WriteLine("배운 스킬");
+            foreach (Skill skill in skills)
+                Console.WriteLine(skill.ShowInfo());
+            */
 
         }
 
@@ -191,6 +200,7 @@ namespace TeamTRPG_Project
             
             MP = MAX_MP;
             Console.WriteLine("경력이 {0}으로 올랐습니다.", LV);
+            skillPoints += 10;  //레벨업시 스킬포인트
         }
 
         public float takeDamage(float damage)   //공격 받을 때
@@ -227,7 +237,7 @@ namespace TeamTRPG_Project
 
             damage = rd.Next((int)(damage - damageError), (int)(damage + damageError + 1));
 
-            RegenerateMana(10f); //일반 공격 시 마나 10 회복
+            RegenerateMana(10); //일반 공격 시 마나 10 회복
 
             return damage;
         }
@@ -244,12 +254,12 @@ namespace TeamTRPG_Project
         }
 
 
-        public void RegenerateMana(float mana) 
+        public void RegenerateMana(int mana) 
         {
             float prevMP = MP;
             MP += mana;
-            if (HP > MAX_HP)
-                HP = MAX_HP;
+            if (MP > MAX_MP)
+                MP = MAX_MP;
             Console.WriteLine("마나 재생 {0:F0} -> {1:F0}", prevMP, MP); //어색하면 제거
         }          
         
@@ -264,21 +274,45 @@ namespace TeamTRPG_Project
         }
 
         
-        public void AddSkill(Skill skill)
+        public bool AddSkill(Skill skill)
         {
-            /*
-             * 직업에 따라 획득 여부를 추가할 수도 있음. //이러면 반환형을 bool형으로 바꿀 수 있음
-             * if(skill.job.JobType == job.JobType) ....
-             */
+            if (skill.JobType != job.JobType)
+            {
+                Console.WriteLine("배울 수 없는 직업의 스킬입니다!");
+                return false;
+            }
+
+            if(skill.IsLearn)
+            {
+                Console.WriteLine("이미 배운 스킬입니다!");
+                return false;
+            }
+            
+            if(skill.SkillPoint > skillPoints)
+            {
+                Console.WriteLine("스킬 포인트가 부족합니다!");
+                return false;
+            }
+
+            Console.WriteLine("스킬을 획득하였습니다.");
+            skillPoints -= skill.SkillPoint;
             skills.Add(skill);
+            return true;
         }
         
-        
-        
+        public void ShowSkills() 
+        {
+            for (int i = 0; i < skills.Count; i++)
+            {
+                //Console.WriteLine($"{i} - {skills[i].ShowInfo()}"); //skill클래스에서 string으로 반환하는 함수 필요
+            }
+        }
+
+        /*
         public Skill UseSkill(int index) //입력시 -1 주의 
         {
             Skill skill = skills[index];
-            //mp소모 + CalculateDamage처럼 비슷한 데미지 float 값이 반환될 수도 있음
+            
             if(skill.MP > MP)
             {
                 Console.WriteLine("스킬을 사용하는 데 마나가 부족합니다!");
@@ -290,15 +324,6 @@ namespace TeamTRPG_Project
             //Skill 관련 메소드
             return skill;
         }
-        
-
-        public void ShowSkills() 
-        {
-            foreach(Skill skill in skills)
-            {
-                //skill.ShowInfo();
-            }
-        }
-         
+        */ //skill 클래스에서 구현이 되었음
     }
 }
