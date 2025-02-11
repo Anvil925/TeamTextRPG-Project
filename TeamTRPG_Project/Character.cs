@@ -273,6 +273,7 @@ namespace TeamTRPG_Project
         }
         
         
+        //혹시 던전 메니저 쪽에서 스킬로 필요하면 리턴값 스킬 넘기는 걸로 바꿀 수 있어요
         public bool UseSkill(int index) //입력시 -1 주의 //false시 사용 실패 // true시 성공
         {
             Skill skill = skills[index];
