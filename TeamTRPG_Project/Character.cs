@@ -273,21 +273,21 @@ namespace TeamTRPG_Project
         }
         
         
-        //혹시 던전 메니저 쪽에서 스킬로 필요하면 리턴값 스킬 넘기는 걸로 바꿀 수 있어요
-        public bool UseSkill(int index) //입력시 -1 주의 //false시 사용 실패 // true시 성공
+        
+        public Skill UseSkill(int index) //입력시 -1 주의 
         {
             Skill skill = skills[index];
             //mp소모 + CalculateDamage처럼 비슷한 데미지 float 값이 반환될 수도 있음
             if(skill.MP > MP)
             {
                 Console.WriteLine("스킬을 사용하는 데 마나가 부족합니다!");
-                return false;
+                return null; //null 반환시 스킬 사용 불가능!
             }
 
             MP -= skill.MP;
             Console.WriteLine($"스킬 {skill.Name}사용!");
             //Skill 관련 메소드
-            return true;
+            return skill;
         }
         
 
