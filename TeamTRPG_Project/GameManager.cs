@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -202,43 +203,55 @@ namespace TeamTRPG_Project
             Console.WriteLine($"강화 성공률 {probability}%, 비용: {expense} 골드");
 
             string select = Console.ReadLine();
-            if (select.ToUpper() == "Y")
+            if(Player.gold>= expense)
             {
-                ConsoleUtility.Upgrading();
-                Player.gold -= expense;
-                Random random = new Random();
-                int chance = random.Next(1, 101);
-                if (chance <= probability)
+                if (select.ToUpper() == "Y")
                 {
-                    Console.WriteLine("축하합니다. 강화에 성공하셨습니다.");
-                    decision.ItemLV += 1; //레벨 증가
-                    Console.Write($"Lv : {decision.ItemLV} {decision.Name}");
-                    if (decision is Weapon weapon)
+                    ConsoleUtility.Upgrading();
+                    Player.gold -= expense;
+                    Random random = new Random();
+                    int chance = random.Next(1, 101);
+                    if (chance <= probability)
                     {
-                        Console.Write($"{decision.ItemType} | 강화 전 : {weapon.ATK} =>");
-                        weapon.ATK *= 1.1f;  // 공격력을 10% 증가
-                        Console.WriteLine($" 강화 후 {weapon.ATK:F1})");
+                        Console.WriteLine("축하합니다. 강화에 성공하셨습니다.");
+                        decision.ItemLV += 1; //레벨 증가
+                        Console.Write($"Lv : {decision.ItemLV} {decision.Name}");
+                        if (decision is Weapon weapon)
+                        {
+                            Console.Write($"{decision.ItemType} | 강화 전 : {weapon.ATK} =>");
+                            weapon.ATK *= 1.1f;  // 공격력을 10% 증가
+                            if (decision.IsEquip) Player.itemATK = weapon.ATK; // 해당 아이템이 장착 중이라면 플레이어한테도 장착한 아이템을 적용시켜줌.
+                            Console.WriteLine($" 강화 후 {weapon.ATK:F1})");
+                        }
+                        else if (decision is Armor armor)
+                        {
+                            Console.Write($"{decision.ItemType} | 강화 전 : {armor.DEF} =>");
+                            armor.DEF *= 1.1f;  // 방어력을 10% 증가
+                            if (decision.IsEquip) Player.itemDEF = armor.DEF;
+                            Console.WriteLine($" 강화 후 {armor.DEF:F1})");
+                        }
                     }
-                    else if (decision is Armor armor)
+                    else
                     {
-                        Console.Write($"{decision.ItemType} | 강화 전 : {armor.DEF} =>");
-                        armor.DEF *= 1.1f;  // 방어력을 10% 증가
-                        Console.WriteLine($" 강화 후 {armor.DEF:F1})");
+                        Console.WriteLine("강화에 실패하였습니다.!ㅠㅠ");
                     }
+                    Thread.Sleep(2000);
+                    ItemUpgradScreen();
                 }
                 else
                 {
-                    Console.WriteLine("강화에 실패하였습니다.!ㅠㅠ");
+                    Console.WriteLine("당신은 쫄보군요!");
+                    Thread.Sleep(2000);
+                    MainScreen();
                 }
-                Thread.Sleep(2000);
-                ItemUpgradScreen();
+
             }
             else
             {
-                Console.WriteLine("당신은 쫄보군요!");
+                Console.WriteLine("돈이 부족합니다.");
                 Thread.Sleep(2000);
-                MainScreen();
             }
+
         }
 
         private void SelectInventory()
