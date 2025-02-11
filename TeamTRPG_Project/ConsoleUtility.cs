@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,5 +44,20 @@ namespace TeamTRPG_Project
                 Console.Write(str);
             }
         }
+
+        public static void Upgrading()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            for (int i = 0;i<5; i++)
+            {
+                Thread.Sleep(100);
+                Console.Write("두근 ");
+
+            }
+            Console.WriteLine("과연!!!!!");
+            Console.ResetColor();
+            Thread.Sleep(1000);
+        }
+        
     }
 }

@@ -195,6 +195,7 @@ namespace TeamTRPG_Project
             string select = Console.ReadLine();
             if (select.ToUpper() == "Y")
             {
+                ConsoleUtility.Upgrading();
                 Player.gold -= expense;
                 Random random = new Random();
                 int chance = random.Next(1, 101);
