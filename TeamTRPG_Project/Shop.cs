@@ -32,9 +32,9 @@ namespace TeamTRPG_Project
         {
             Console.Clear();
             Console.WriteLine("상점 목록\n");
-            Console.WriteLine("1. 무기\n2. 방어구\n3. 포션\n\n0. 나가기\n");
-            int choice = ConsoleUtility.GetInput(0,3);
-            if(choice == 0)
+            Console.WriteLine("1. 무기\n2. 방어구\n3. 포션\n4. 아이템 판매\n\n0. 나가기\n");
+            int choice = ConsoleUtility.GetInput(0, 4);
+            switch(choice)
             {
                 gm.MainScreen();
             }

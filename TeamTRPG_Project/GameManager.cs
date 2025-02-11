@@ -119,7 +119,7 @@ namespace TeamTRPG_Project
         {
             while (true)
             {
-                //Console.Clear();
+                Console.Clear();
                 ConsoleUtility.ColorWrite("인벤토리", ConsoleColor.Magenta);
                 Console.WriteLine("1. 무기\n2. 방어구\n3. 포션\n\n0. 나가기\n");
 
@@ -179,22 +179,22 @@ namespace TeamTRPG_Project
         public void InventoryScreen(int decision) //인벤토리 화면
         {
             ConsoleUtility.Loading();
-            ItemType Value = (ItemType)decision;
+            ShopCase Value = (ShopCase)decision;
 
             Console.Clear();
-            ConsoleUtility.ColorWrite($"인벤토리 - [{Value-1}]", ConsoleColor.Magenta);
+            ConsoleUtility.ColorWrite($"인벤토리 - [{Value}]", ConsoleColor.Magenta);
             Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
-            switch (decision)
+            switch (Value)
             {
-                case 1:
+                case ShopCase.무기:
                     Displayitems(ItemType.ATK);
                     break;
-                case 2:
+                case ShopCase.방어구:
                     Displayitems(ItemType.DEF);
                     break;
-                case 3:
+                case ShopCase.포션:
                     Displayitems(ItemType.POTION);
                     break;
 
@@ -211,58 +211,74 @@ namespace TeamTRPG_Project
                     MainScreen();
                     break;
                 case 1:
-                    EquipScreen();
+                    EquipScreen(Value);
                     break;
             }
         }
 
-        public void EquipScreen() //장착 화면
+        public void EquipScreen(ShopCase Value) //장착 화면
         {
             Console.Clear();
-            ConsoleUtility.ColorWrite("인벤토리 - 장착 관리", ConsoleColor.Magenta);
 
-            Console.WriteLine("보유 중인 아아템을 관리할 수 있습니다.");
+            Dictionary<ShopCase, ItemType> typeMapping = new Dictionary<ShopCase, ItemType>
+            { 
+                { ShopCase.무기, ItemType.ATK },
+                { ShopCase.방어구, ItemType.DEF },
+                { ShopCase.포션, ItemType.POTION }
+            };
+            
+            ItemType Ivalue = typeMapping[Value];
+
+            ConsoleUtility.ColorWrite($"인벤토리 - 장착 관리 [{Value}]", ConsoleColor.Magenta);
+
+            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
-
-            // inventory에 있는 item들에 대한 출력
-            for (int i = 0; i < Player.inventory.Count; i++)
+            List<Item> filteredItems = Player.inventory
+                   .Where(item => item.ItemType == Ivalue)
+                   .ToList();
+            if (filteredItems.Count == 0)
             {
-                Console.WriteLine($"{i + 1}. {Player.inventory[i].ShowInfo()}");
-
+                Console.WriteLine("해당 유형의 아이템이 없습니다.");
+                Console.WriteLine("\n0. 나가기\n");
+                ConsoleUtility.GetInput(0, 0);
+                MainScreen();
+                return;
             }
 
-            Console.WriteLine();
-            Console.WriteLine("0. 나가기");
-            Console.WriteLine();
-
-            int input = ConsoleUtility.GetInput(0, Player.inventory.Count); //입력값의 제한이 소지한 아이템의 갯수만큼 증가
-            switch (input)
+            // 필터링된 아이템에 1부터 번호 매기기
+            for (int i = 0; i < filteredItems.Count; i++)
             {
-                case 0:
-                    MainScreen();
-                    break;
-                default:  //0이 아닌 값은 아이템을 선택했을 경우
-                    Equip(input); //아이템 장착
-                    break;
+                Console.WriteLine($"{i + 1}. {filteredItems[i].ShowInfo()}");
+            }
+
+            Console.WriteLine("\n0. 나가기\n");
+            int input = ConsoleUtility.GetInput(0, filteredItems.Count);
+
+            if (input == 0)
+            {
+                MainScreen();
+            }
+            else
+            {
+                Equip(input, Value, filteredItems);
             }
         }
+        
 
-        public void Equip(int input) //아이템 장착
+        public void Equip(int input, ShopCase Value, List<Item> filteredItems) //아이템 장착
         {
-            Item select = Player.inventory[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
+            Item select = filteredItems[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
 
-            for (int i = 0; i < Player.inventory.Count; i++)
+            foreach (var item in Player.inventory)
             {
-                //인벤토리 아이템들 중에서 이미 장착중이고(&&) 아이템 타입이 같고(&&) inventory[i]와 select가 다를경우, 해당 장비 해제
-                //if (Player.inventory[i].IsEquip && (Player.inventory[i].ItemType == select.ItemType) && (Player.inventory[i] != select))
-                //    //Player.UnEquip(Player.inventory[i]);
+                if (item.IsEquip && item.ItemType == select.ItemType && item != select)
+                {
+                    Player.UnEquip(item);
+                }
             }
-
-            //아이템 장착
             Player.EquipItem(select);
-            //다시 장착화면으로 가서 업데이트
-            EquipScreen();
+            EquipScreen(Value); // 다시 장착 화면으로 이동 (업데이트된 상태)
         }
     }
 }

@@ -20,6 +20,7 @@ namespace TeamTRPG_Project
     {
         public StringBuilder ItemInfo;
 
+
         public string Name { get; set; }
         public ItemType ItemType { get; set; }
         public string Description {  get; set; }    // 설명
