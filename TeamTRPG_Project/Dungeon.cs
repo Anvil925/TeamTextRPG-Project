@@ -127,7 +127,7 @@ namespace TeamTRPG_Project
                 }
             }
             List<Monster> monsters = new List<Monster>();
-            int numberOfMonsters = new Random().Next(1, 5);
+            int numberOfMonsters = new Random().Next(1, 4);
             for (int i = 0; i < numberOfMonsters; i++)
             {
                 Monster monster = Monster.GetRandomMonsterByGroup(GroupID); // 몬스터 그룹 1에서 랜덤 몬스터 불러오기
