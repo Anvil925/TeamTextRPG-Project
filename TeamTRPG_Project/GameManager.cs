@@ -64,6 +64,19 @@ namespace TeamTRPG_Project
             Console.WriteLine();
             Console.WriteLine("1. 업무시작\n\n2. 승진시험\n\n3. 프로젝트진행\n\n0.나가기");
             int input = ConsoleUtility.GetInput(0, 3);
+            Dictionary<int, HashSet<string>> requiredJobs = new Dictionary<int, HashSet<string>> // 직업별 입장 가능 던전
+            {
+                {3, new HashSet<string> { "개발", "기획", "디자이너" }} 
+            };
+            string playerJob = Player.job.Name; // 플레이어 직업
+            if (requiredJobs.ContainsKey(input) && !requiredJobs[input].Contains(playerJob)) // 해당 던전에 직업이 맞지 않으면
+            {
+                ConsoleUtility.ColorWrite($"⚠️ {string.Join(", ", requiredJobs[input])} 직업만 입장할 수 있습니다!", ConsoleColor.Red); // 입장 불가 메시지 출력
+                Thread.Sleep(1000);
+                DungeonScene(); //
+                return;
+            }
+
             switch (input)
             {
                 case 0:
