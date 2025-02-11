@@ -48,6 +48,33 @@ namespace TeamTRPG_Project
             new Skill(Jobs.ART, "로그 추적의 눈", 70, 50, "적의 약점을 찾아 치명적인 데미지를 준다!", 1  ),
             new Skill(Jobs.ART, "무한 루프의 형벌", 100, 100, "적을 영원히 루프에 가둔다!", 3 , 10)
         };
+        // 프로젝트 몬스터 기획용 스킬
+        public static List<Skill> MonsterPlanSkills = new List<Skill>()
+        {
+            new Skill(Jobs.PLANNING, "이거 왜 바뀌었어요?", 50, 50, "초기 기획과 실제 구현 사이에서 계속해서 기획이 변경되었다.", 1),
+            new Skill(Jobs.PLANNING, "조금만 더 수정하면 완벽해질 것 같은데요?!", 70, 50, "\"한 번 더 논의 해보죠??\"라는 말과 함께 회의가 끝나지 않는다.", 1),
+            new Skill(Jobs.PLANNING, "이거 구현이 안되는데요?", 90, 50, "여러 고민 끝에 기획을 완성했지만 퇴짜맞았다", 1  ),
+            new Skill(Jobs.PLANNING, "이 캐릭터 너무 사기인데요?", 120, 50, "성난 유저들의 항의가 빗발친다.", 1  ),
+            new Skill(Jobs.PLANNING, "이거 내일까지 가능하죠?", 300, 100, "마감이 다가오는데 무리한 수정들이 들어온다.", 1)
+        };
+        // 프로젝트 몬스터 개발용 스킬
+        public static List<Skill> MonsterDevSkills = new List<Skill>()
+        {
+            new Skill(Jobs.DEVELOP, "이거 구현해주세요!!", 50, 50, "기획자가 무리한 요구를 한다. 개발 기간이 3배로 늘어났다.", 1  ),
+            new Skill(Jobs.DEVELOP, "처음 기획과 다르게 된 것 같은데요?", 70, 50, "기획이 계속 수정되면서 개발 일정이 꼬인다.", 1  ),
+            new Skill(Jobs.DEVELOP, "게임이 왜 자꾸 튕기죠??", 90, 50, "예상치 못한 버그 발생으로 출시 일정에 차질이 발생!", 1  ),
+            new Skill(Jobs.DEVELOP, "새로운 기능 추가할 수 있나요?", 120, 50, "마감 직전에 새로운 기능을 추가해달라고 요청이 들어왔다!", 1  ),
+            new Skill(Jobs.DEVELOP, "어???????????????", 300, 100, "다른 개발자가 버그를 발견했다.", 1)
+        };
+        // 프로젝트 몬스터 디자이너용 스킬
+        public static List<Skill> MonsterArtSkills = new List<Skill>()
+        {
+            new Skill(Jobs.ART, "리소스 빠르게 만들어주세요!", 50, 50, "기획팀에서는 리소스 수정, 개발팀에서는 리소스가 필요하다고 한다!", 1),
+            new Skill(Jobs.ART, "이런식으로 디자인 해주세요!", 70, 50, "기획서에 적힌 내용이 너무 추상적이거나 모호해서 디자인 방향이 불분명하다", 1),
+            new Skill(Jobs.ART, "이거 왜 이렇게 촌스러워요?", 90, 50, "유저들이 캐릭터 디자인에 대한 혹평만 가득하다...!!", 1),
+            new Skill(Jobs.ART, "약간만 수정 가능할까요?", 120, 50, "약간의 수정이 끝난 후, 새로운 수정들이 가득하다", 1),
+            new Skill(Jobs.ART, "디자인 툴 강제 종료", 300, 100, "저장을 못해 작업했던 내용이 전부 날아간다.", 1)
+        };
 
         public Skill(Jobs job, string name, float atk, int mp, string description, int range = 1, int skillPoint = 5)
         {
