@@ -21,7 +21,6 @@ namespace TeamTRPG_Project
         {
             gm = gameManager;
         }
-
         public static void DungeonTypes(int input)
         {
             ConsoleUtility.Loading();
@@ -113,10 +112,10 @@ namespace TeamTRPG_Project
                         ConsoleUtility.ColorWrite("담배냄새가 자욱하다...", ConsoleColor.Magenta);
                         break;
                     case 2:
-                        ConsoleUtility.ColorWrite("~~~", ConsoleColor.Magenta);
+                        ConsoleUtility.ColorWrite($"{Player.name}아 커피 좀 타와봐라!", ConsoleColor.Magenta);
                         break;
                     case 3:
-                        ConsoleUtility.ColorWrite("~~~", ConsoleColor.Magenta);
+                        ConsoleUtility.ColorWrite($"일을 그거 밖에 못해? 잘 좀 하자... {Player.name}아", ConsoleColor.Magenta);
                         break;
                     case 4:
                         ConsoleUtility.ColorWrite("~~~", ConsoleColor.Magenta);
@@ -127,13 +126,15 @@ namespace TeamTRPG_Project
                 }
             }
             List<Monster> monsters = new List<Monster>();
+            HashSet<string> monsterNames = new HashSet<string>(); // 중복 체크용 HashSet
             int numberOfMonsters = new Random().Next(1, 4);
-            for (int i = 0; i < numberOfMonsters; i++)
+            while (monsters.Count < numberOfMonsters)
             {
-                Monster monster = Monster.GetRandomMonsterByGroup(GroupID); // 몬스터 그룹 1에서 랜덤 몬스터 불러오기
-                if (monster != null)
+                Monster monster = Monster.GetRandomMonsterByGroup(GroupID); // 랜덤 몬스터 생성
+                if (monster != null && !monsterNames.Contains(monster.Name)) // 중복 체크
                 {
-                    monsters.Add(monster);
+                    monsters.Add(monster); // 몬스터 추가
+                    monsterNames.Add(monster.Name); // 추가된 몬스터 이름 저장
                     Console.WriteLine($"{monster.Name} (이)가 나타났습니다!");
                     ConsoleUtility.ColorWrite(monster.ToString(), ConsoleColor.Cyan);
                 }
