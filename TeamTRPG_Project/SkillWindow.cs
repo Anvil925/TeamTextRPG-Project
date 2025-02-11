@@ -14,6 +14,7 @@ namespace TeamTRPG_Project
 
         public SkillWindow(Character player)
         {
+            this.player = player;
             SkillList = new List<Skill>();
         }
 
@@ -32,6 +33,10 @@ namespace TeamTRPG_Project
             {
                 LearnSkillScreen();
             }
+            else
+            {
+                GameManager.Instance.MainScreen();
+            }
         }
 
         // 스킬 획득 창 출력
@@ -48,12 +53,18 @@ namespace TeamTRPG_Project
             if(input != 0)
             {
                 GetSkill(input);
+                LearnSkillScreen(); //스킬 구매 창 유지
+            } else
+            {
+                SkillWindowScreen(); //스킬 구매 창 나가기
             }
+
         }
 
         private void GetSkill(int index)
         {
             player.AddSkill(SkillList[index - 1]);
+            Thread.Sleep(1000);
         }
 
         // 선택 사항 출력
@@ -96,10 +107,17 @@ namespace TeamTRPG_Project
         // 설정한 스킬 리스트 출력
         private void PrintSkillList(bool isLearnSkillWindow = false)
         {
+            if(SkillList.Count == 0)
+            {
+                Console.WriteLine("인턴은 스킬을 가질 수 업습니다.");
+                Thread.Sleep(1000);
+                GameManager.Instance.MainScreen();
+            }
+
             for (int i = 0; i < SkillList.Count; i++)
             {
                 // 앞에 부분을 꾸며주는 문자
-                string deco = isLearnSkillWindow ? $"- {i + 1}" : "- ";
+                string deco = (isLearnSkillWindow ? $"- {i + 1}" : "- ") + " ";
                 Console.WriteLine(deco + SkillList[i].ShowInfo(true));
             }
             Console.WriteLine();
