@@ -69,13 +69,13 @@ namespace TeamTRPG_Project
 
             gold = 1500;
 
-            job = Job.JobList[3]; //list 3 is Intern
+            job = Job.JobList[0]; //list 3 is Intern
 
             inventory = new List<Item>();
             equipment = new List<Item>();
             skills = new List<Skill>();
 
-            skillPoints = 0;
+            skillPoints = 10000;
         }
 
         public void ShowInfo()
@@ -295,6 +295,7 @@ namespace TeamTRPG_Project
             }
 
             Console.WriteLine("스킬을 획득하였습니다.");
+            skill.IsLearn = true;
             skillPoints -= skill.SkillPoint;
             skills.Add(skill);
             return true;
