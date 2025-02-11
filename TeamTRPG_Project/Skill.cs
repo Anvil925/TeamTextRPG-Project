@@ -98,7 +98,12 @@ namespace TeamTRPG_Project
 
             Attack(monsters);
         }
-
+        public void UseSkillMonster(Character player, List<Monster> monsters)
+        {
+            Console.WriteLine($"{player.name}에게 {Name} 사용! 데미지: {this.ATK}"); // 스킬 사용 메시지 출력
+            Console.WriteLine($"{Description}"); // 스킬 설명 출력
+            player.takeDamage((int)ATK); // 플레이어에게 데미지 적용
+        }
         // MP가 충분한지 체크
         private bool CheckMP(Character player)
         {
