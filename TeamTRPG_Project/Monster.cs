@@ -32,7 +32,7 @@ public class Monster
         else if (GroupID == 7)
             info = $"[{Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}]";
         else
-            info = $"[Unknown Group {GroupID} - {Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}]";
+            info = $"[{GroupID} - {Name} - 멘탈: {HP}, 정치력: {ATK}, 아부력: {DEF}]";
         return info;
     }
     public bool IsDead()
@@ -48,23 +48,24 @@ public class Monster
     }
     public void AttackPlayer(Character player) // 플레이어를 공격하는 메서드
     {
-        Console.WriteLine($"{Name}이(가) {player.name}을(를) 공격합니다!"); // 공격 메시지 출력
-        player.takeDamage(ATK); // 플레이어에게 공격력만큼 피해 입힘
-    }
-    public void UseRandomSkill(Character player)
-    {
-        if (Skills.Count > 0)
-        {
-            Random rand = new Random();
-            Skill skill = Skills[rand.Next(Skills.Count)];
-            float skillDamage = skill.UseSkill(ATK);
-            Console.WriteLine($"{Name}이(가) '{skill.Name}' 스킬을 사용했다! ({skillDamage} 피해)");
-            player.takeDamage(skillDamage);
+        Random rand = new Random();
+        if (Skills.Count > 0 && rand.Next(100) < 30) // 30% 확률로 스킬 사용
+        {   
+            UseRandomSkill(player);
+            Thread.Sleep(2000);
         }
         else
         {
-            Console.WriteLine($"{Name}은(는) 사용할 스킬이 없다.");
+            Console.WriteLine($"{Name}이(가) 기본 공격을 시전했다!");
+            player.takeDamage(ATK);
         }
+    }
+    public void UseRandomSkill(Character player)
+    {
+        Random rand = new Random(); // 랜덤 객체 생성
+        int index = rand.Next(Skills.Count); // 스킬 리스트 중 랜덤으로 선택
+        Skill selectedSkill = Skills[index]; // 선택된 스킬
+        selectedSkill.UseSkillMonster(player, new List<Monster> { this }); // 스킬 사용
     }
 
     public static List<Monster> MonsterList = new List<Monster> //몬스터 리스트
