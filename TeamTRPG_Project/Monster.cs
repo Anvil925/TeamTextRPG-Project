@@ -9,8 +9,9 @@ public class Monster
     public int LV { get; private set; } // 레벨
     public int EXP { get; private set; } //  몬스터 경험치 추가
     public int GroupID { get; private set; } // 그룹 ID
+    public List<Skill> Skills { get; private set; } // 몬스터 스킬 리스트 추가
 
-    public Monster(string name, float hp, float atk, float def, int lv, int exp, int groupID) // 생성자
+    public Monster(string name, float hp, float atk, float def, int lv, int exp, int groupID, List<Skill> skills = null) // 생성자
     {
         Name = name; // 이름 설정
         HP = hp; // 체력 설정
@@ -19,6 +20,7 @@ public class Monster
         LV = lv; // 레벨 설정
         EXP = exp; // 경험치 설정
         GroupID = groupID; // 그룹 ID 설정
+        Skills = skills ?? new List<Skill>(); // 기본적으로 빈 스킬 리스트 설정
     }
     public override string ToString() // 문자열 반환 메서드 재정의
     {
@@ -48,6 +50,21 @@ public class Monster
     {
         Console.WriteLine($"{Name}이(가) {player.name}을(를) 공격합니다!"); // 공격 메시지 출력
         player.takeDamage(ATK); // 플레이어에게 공격력만큼 피해 입힘
+    }
+    public void UseRandomSkill(Character player)
+    {
+        if (Skills.Count > 0)
+        {
+            Random rand = new Random();
+            Skill skill = Skills[rand.Next(Skills.Count)];
+            float skillDamage = skill.UseSkill(ATK);
+            Console.WriteLine($"{Name}이(가) '{skill.Name}' 스킬을 사용했다! ({skillDamage} 피해)");
+            player.takeDamage(skillDamage);
+        }
+        else
+        {
+            Console.WriteLine($"{Name}은(는) 사용할 스킬이 없다.");
+        }
     }
 
     public static List<Monster> MonsterList = new List<Monster> //몬스터 리스트
@@ -104,27 +121,40 @@ public class Monster
         new Monster("독불장군 사장", 1000, 100, 50, 10, 100, 8),  
 
         // 직업 던전 보스 (매우 강한 보스)
-        new Monster("스파르타최종프로젝트", 2000, 120, 60, 15, 200, 9)
+        new Monster("스파르타최종프로젝트1", 2000, 120, 60, 15, 200, 9),
+        new Monster("스파르타최종프로젝트2", 2000, 120, 60, 15, 200, 9),
+        new Monster("스파르타최종프로젝트3", 2000, 120, 60, 15, 200, 9)
     }; //이름 , 체력 , 공격력 , 방어력 , 레벨 , 경험치 , 그룹ID
 
 
 
 
-    public static Monster GetRandomMonsterByGroup(int groupID) // 그룹 ID에 따른 랜덤 몬스터 반환 메서드
+ // 그룹 9번의 몬스터에 스킬 추가
+    public static Monster GetRandomMonsterByGroup(int groupID)
     {
-        Random rand = new Random(); // 랜덤 객체 생성
-        List<Monster> filteredList = MonsterList.FindAll(m => m.GroupID == groupID); // 그룹 ID에 해당하는 몬스터 리스트 필터링
+        Random rand = new Random();
+        List<Monster> filteredList = MonsterList.FindAll(m => m.GroupID == groupID);
 
-        if (filteredList.Count == 0) // 필터링된 몬스터가 없으면
+        if (filteredList.Count == 0)
         {
-            Console.WriteLine("몬스터 없음"); // 메시지 출력
-            return null; // null 반환
+            Console.WriteLine("몬스터 없음");
+            return null;
         }
 
-        int index = rand.Next(filteredList.Count); // 필터링된 몬스터 중 랜덤 인덱스 선택
-        return filteredList[index]; // 선택된 몬스터 반환
-    }
+        int index = rand.Next(filteredList.Count);
+        Monster selectedMonster = filteredList[index];
 
+        // 그룹 9번에 해당하는 몬스터에게 스킬을 부여
+        if (selectedMonster.GroupID == 9)
+        {
+            // 여기서 스킬을 부여
+            selectedMonster.Skills.AddRange(Skill.MonsterPlanSkills); // 예시로 기획자 스킬 추가
+            selectedMonster.Skills.AddRange(Skill.MonsterDevSkills);  // 개발자 스킬 추가
+            selectedMonster.Skills.AddRange(Skill.MonsterArtSkills);  // 디자이너 스킬 추가
+        }
+
+        return selectedMonster;
+    }
 
 
 }
