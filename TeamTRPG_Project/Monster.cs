@@ -44,12 +44,12 @@ public class Monster
         int actualDamage = Math.Max(damage - (int)DEF, 1);
         HP -= actualDamage;
         HP = Math.Max(HP, 0); // HP가 0 이하로 떨어지지 않도록
-        Console.WriteLine($"{Name})(이)가 {actualDamage} 의 피해를 입었습니다!( 남은 체력{HP})");
+        Console.WriteLine($"{Name}(이)가 {actualDamage} 의 피해를 입었습니다!( 남은 체력{HP})");
     }
     public void AttackPlayer(Character player) // 플레이어를 공격하는 메서드
     {
         Random rand = new Random();
-        if (Skills.Count > 0 && rand.Next(100) < 30) // 30% 확률로 스킬 사용
+        if (Skills.Count > 0 && rand.Next(100) < 100) // 30% 확률로 스킬 사용
         {   
             UseRandomSkill(player);
             Thread.Sleep(2000);
@@ -129,22 +129,34 @@ public class Monster
         new Monster("독불장군 사장", 1000, 100, 50, 10, 100, 8),
         new Monster("성과제일주의 사장", 1050, 110, 55, 11, 110, 8),
         new Monster("비용절감 사장", 1100, 120, 60, 12, 120, 8),
-        new Monster("권모술수 사장", 1150, 130, 65, 13, 130, 9),
-        new Monster("냉혈한 사장", 1200, 140, 70, 14, 140, 9),
-        new Monster("기업사냥꾼 사장", 1300, 160, 80, 15, 160, 10),
+        new Monster("권모술수 사장", 1150, 130, 65, 13, 130, 8),
+        new Monster("냉혈한 사장", 1200, 140, 70, 14, 140, 8),
+        new Monster("기업사냥꾼 사장", 1300, 160, 80, 15, 160, 8),
  
 
         // 직업 던전 보스 (매우 강한 보스)
-        new Monster("스파르타최종프로젝트1", 2000, 120, 60, 15, 200, 9),
-        new Monster("스파르타최종프로젝트2", 2000, 120, 60, 15, 200, 9),
-        new Monster("스파르타최종프로젝트3", 2000, 120, 60, 15, 200, 9)
+        new Monster("TEXT RPG PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("UNITY 2D PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("UNITY 3D PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("Action RPG PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("MOBA PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("BATTLE LOYAL PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("REYTHM GAME PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("HYPER FPS PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("STRATEGY PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("SPORTS GAME PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("FIGHTING GAME PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("FIGHTING GAME PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("MMO RPG PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("VIRTUAL RIALLITY PROJECT", 2000, 120, 60, 15, 200, 9),
+        new Monster("????? ????? PROJECT", 9999, 300, 200, 30, 400, 100),
     }; //이름 , 체력 , 공격력 , 방어력 , 레벨 , 경험치 , 그룹ID
 
 
 
 
  // 그룹 9번의 몬스터에 스킬 추가
-    public static Monster GetRandomMonsterByGroup(int groupID)
+    public static Monster GetRandomMonsterByGroup(int groupID, Character player)
     {
         Random rand = new Random();
         List<Monster> filteredList = MonsterList.FindAll(m => m.GroupID == groupID);
@@ -154,21 +166,61 @@ public class Monster
             Console.WriteLine("몬스터 없음");
             return null;
         }
-
+    if (groupID == 9) // 그룹 9번의 몬스터에게 플레이어 직업에 맞는 스킬을 부여
+    {
+        Monster rareMonster = filteredList.FirstOrDefault(m => m.Name == "특정 몬스터 이름");
+        if (rareMonster != null)
+        {
+            int chance = rand.Next(100); 
+            if (chance < 1) // 1% 확률로 특정 몬스터 생성
+            {
+                string playerJob = player.job.Name; // 플레이어 직업 가져오기
+                if (playerJob == "기획") 
+                {
+                    rareMonster.Skills.AddRange(Skill.MonsterPlanSkills); // 기획자 스킬 추가
+                }
+                else if (playerJob == "개발") 
+                {
+                    rareMonster.Skills.AddRange(Skill.MonsterDevSkills);  // 개발자 스킬 추가
+                }
+                else if (playerJob == "아트") 
+                {
+                    rareMonster.Skills.AddRange(Skill.MonsterArtSkills);  // 디자이너 스킬 추가
+                }
+                else 
+                {
+                    rareMonster.Skills.AddRange(Skill.MonsterPlanSkills);
+                    rareMonster.Skills.AddRange(Skill.MonsterDevSkills);
+                    rareMonster.Skills.AddRange(Skill.MonsterArtSkills);
+                }
+                return rareMonster; // 확률에 맞춰 특정 몬스터 반환
+            }
+        }
+    }
         int index = rand.Next(filteredList.Count);
         Monster selectedMonster = filteredList[index];
-
-        // 그룹 9번에 해당하는 몬스터에게 스킬을 부여
-        if (selectedMonster.GroupID == 9)
+    if (selectedMonster.GroupID == 9)
+    {
+        string playerJob = player.job.Name; // 플레이어 직업 가져오기
+        if (playerJob == "기획") 
         {
-            // 여기서 스킬을 부여
-            selectedMonster.Skills.AddRange(Skill.MonsterPlanSkills); // 예시로 기획자 스킬 추가
+            selectedMonster.Skills.AddRange(Skill.MonsterPlanSkills); // 기획자 스킬 추가
+        }
+        else if (playerJob == "개발") 
+        {
             selectedMonster.Skills.AddRange(Skill.MonsterDevSkills);  // 개발자 스킬 추가
+        }
+        else if (playerJob == "아트") 
+        {
             selectedMonster.Skills.AddRange(Skill.MonsterArtSkills);  // 디자이너 스킬 추가
         }
-
+        else 
+        {
+            selectedMonster.Skills.AddRange(Skill.MonsterPlanSkills);
+            selectedMonster.Skills.AddRange(Skill.MonsterDevSkills);
+            selectedMonster.Skills.AddRange(Skill.MonsterArtSkills);
+        }
+    }
         return selectedMonster;
     }
-
-
 }
