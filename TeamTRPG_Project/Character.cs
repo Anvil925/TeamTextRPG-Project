@@ -13,7 +13,7 @@ namespace TeamTRPG_Project
         public int EXP { get; set; }
         public int[] LVGuage { get; set; }
 
-        const int MAXLV = 5;
+        const int MAXLV = 10;
 
         public string name { get; set; }
         public float ATK { get; set; }
@@ -48,7 +48,7 @@ namespace TeamTRPG_Project
         {
             LV = 1;
             EXP = 0;
-            LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100 }; //일단 5렙까지 경험치 필요량
+            LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100, 140, 185, 230, 280, 320 }; //일단 5렙까지 경험치 필요량
             this.name = name;
 
             ATK = 10;
