@@ -39,13 +39,13 @@ namespace TeamTRPG_Project
                     case 0:
                         break;
                     case 1:
-                        StartWork(6, 1);
+                        StartWork(1, 1);
                         break;
                     case 2:
-                        StartWork(7, 1);
+                        StartWork(2, 1);
                         break;
                     case 3:
-                        StartWork(8, 1);
+                        StartWork(3, 1);
                         break;
                 }
             }
@@ -64,19 +64,19 @@ namespace TeamTRPG_Project
                     case 0:
                         break;
                     case 1:
-                        StartWork(1, 2);
-                        break;
-                    case 2:
-                        StartWork(2, 2);
-                        break;
-                    case 3:
-                        StartWork(3, 2);
-                        break;
-                    case 4:
                         StartWork(4, 2);
                         break;
-                    case 5:
+                    case 2:
                         StartWork(5, 2);
+                        break;
+                    case 3:
+                        StartWork(6, 2);
+                        break;
+                    case 4:
+                        StartWork(7, 2);
+                        break;
+                    case 5:
+                        StartWork(8, 2);
                         break;
                 }
             }

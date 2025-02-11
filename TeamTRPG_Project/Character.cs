@@ -67,7 +67,7 @@ namespace TeamTRPG_Project
 
             avoid = 0.1f;
 
-            gold = 1500000;
+            gold = 150000;
 
             job = Job.JobList[3]; //list 3 is Intern
 
