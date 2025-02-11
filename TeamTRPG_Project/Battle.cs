@@ -49,7 +49,7 @@ namespace TeamTRPG_Project
                         player.ShowInfo();
                         break;
                     case 5:
-                        Console.WriteLine("도망쳤습니다!");
+                        Console.WriteLine("도망쳤습니다!"); // 이 부분 현재 오류발생 던전씬으로 가지지만 던전에서 도망가기가 불가능 무한 루프
                         battleEnded = true;
                         Dungeon.DungeonTypes(1); // 던전으로 돌아가기 (메인 씬으로 가는 코드)
                         break;
@@ -98,6 +98,7 @@ namespace TeamTRPG_Project
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"{targetMonster.Name}을(를) 처치했습니다! 🎉");
+                player.GetExp(targetMonster.EXP);
                 Console.ResetColor();
                 Thread.Sleep(2000);
             }
