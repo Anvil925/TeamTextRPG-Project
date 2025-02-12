@@ -152,7 +152,8 @@ public class Monster
         new Monster("MMO RPG PROJECT", 2000, 2000, 120, 60, 15, 200, 9),
         new Monster("VIRTUAL RIALLITY PROJECT", 2000, 2000, 120, 60, 15, 200, 9),
         new Monster("????? ????? PROJECT", 9999, 9999, 300, 200, 30, 400, 100),
-    }; //이름 , 체력 , 공격력 , 방어력 , 레벨 , 경험치 , 그룹ID
+    }; //이름 , 최대 체력 , 현재 체력 , 공격력 , 방어력 , 레벨 , 경험치 , 그룹ID
+    
 
 
     public void InitializeStats()
