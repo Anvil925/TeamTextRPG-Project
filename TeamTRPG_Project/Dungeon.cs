@@ -36,6 +36,7 @@ namespace TeamTRPG_Project
                 switch (input)
                 {
                     case 0:
+                        gm.MainScreen();
                         break;
                     case 1:
                         StartWork(1, 1);
@@ -61,6 +62,7 @@ namespace TeamTRPG_Project
                 switch (input)
                 {
                     case 0:
+                        gm.MainScreen();
                         break;
                     case 1:
                         StartWork(4, 2);
@@ -90,6 +92,7 @@ namespace TeamTRPG_Project
                 switch (input)
                 {
                     case 0:
+                        gm.MainScreen();
                         break;
                     case 1:
                         StartWork(9, 3);

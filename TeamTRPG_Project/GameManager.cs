@@ -491,7 +491,7 @@ namespace TeamTRPG_Project
             {
                 if (item.IsEquip && item.ItemType == select.ItemType && item != select)
                 {
-                    Player.UnEquip(item);
+                    Player.EquipItem(item);
                 }
             }
             Player.EquipItem(select);
