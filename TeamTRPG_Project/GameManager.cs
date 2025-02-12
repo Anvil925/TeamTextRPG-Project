@@ -64,7 +64,7 @@ namespace TeamTRPG_Project
         {
             ConsoleUtility.Loading();
             Console.Clear();
-            ConsoleUtility.ColorWrite("던전 종류", ConsoleColor.Magenta);
+            ConsoleUtility.ColorWrite("무엇을 시작할까??", ConsoleColor.Magenta);
             Console.WriteLine();
             Console.WriteLine("1. 업무시작\n\n2. 승진시험\n\n3. 프로젝트진행\n\n0.나가기");
             int input = ConsoleUtility.GetInput(0, 3);
@@ -105,7 +105,7 @@ namespace TeamTRPG_Project
             ConsoleUtility.Loading();
             Console.Clear();
             Console.WriteLine($"스파르타 회사에 오신 {Player.name} 환영합니다.");
-            Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
+            Console.WriteLine("이곳에서 출근준비를 할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("1. 상태 보기");
             Console.WriteLine("2. 인벤토리");
