@@ -54,7 +54,7 @@ namespace TeamTRPG_Project
             LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100, 140, 185, 230, 280, 320 }; //일단 5렙까지 경험치 필요량
             this.name = name;
 
-            ATK = 100000;
+            ATK = 10000;
             DEF = 0;
             itemATK = 0;
             itemDEF = 0;
@@ -194,6 +194,11 @@ namespace TeamTRPG_Project
             }
             
             Console.WriteLine("EXP {0} -> {1}", prevEXP, EXP);
+        }
+        public void GetGold(int gold)
+        {
+            this.gold += gold;
+            Console.WriteLine("GOLD {0} -> {1}", this.gold - gold, this.gold);
         }
 
         private void LVUp()
