@@ -38,7 +38,6 @@ namespace TeamTRPG_Project
                 {
                     case 1:
                         PlayerAttack(player, monsters);
-                        MonsterAttack(player, monsters);
                         break;
                     case 2:
                         if (player.skills.Count == 0)
@@ -49,30 +48,40 @@ namespace TeamTRPG_Project
                             continue; // while 루프의 처음으로 돌아가 다시 선택하도록 함
                         }
                         UseSkill(player, monsters);
-                        MonsterAttack(player, monsters);
                         break;
                     case 3:
                         Useitem(player, monsters);
-                        break;
+                        continue; // while 루프의 처음으로 돌아가 다시 선택하도록 함
                     case 4:
                         player.ShowInfo();
-                        break;
+                        continue; // while 루프의 처음으로 돌아가 다시 선택하도록 함
                     case 5:
                         Console.WriteLine("도망쳤습니다!"); // 이 부분 현재 오류발생 던전씬으로 가지지만 던전에서 도망가기가 불가능 무한 루프
-                        battleEnded = true;
-                        Dungeon.DungeonTypes(1); // 던전으로 돌아가기 (메인 씬으로 가는 코드)
+                        battleEnded = true; // 전투 종료
                         break;
                 }
-                if (!battleEnded)
+                if (monsters.All(m => m.IsDead())) // 모든 몬스터가 죽었는지 확인
                 {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("전투에서 승리했습니다!"); 
+                    Console.ResetColor();
+                    battleEnded = true; // 전투 종료
                 }
-                battleEnded = monsters.All(m => m.HP <= 0);
+                if (!battleEnded) // 몬스터가 살아있으면 몬스터의 공격
+                {
+                    MonsterAttack(player, monsters); 
+                }
+                if (player.HP <= 0) // 플레이어가 죽었을 때
+                {
+                    battleEnded = true; // 전투 종료
+                    player.HP = player.MAX_HP;
+                    player.MP = player.MAX_MP;
+                    player.gold -= 1000;
+                    // 전투 종료 후 플레이어의 HP, MP를 회복하고 1000G를 소모함
+                }
+                Thread.Sleep(2000);
             }
-            Console.WriteLine("전투가 종료되었습니다!");
-            
-            Thread.Sleep(1000);
         }
-        // 플레이어의 공격 메서드
         private static void PlayerAttack(Character player, List<Monster> monsters)
         {
             Console.Clear();
@@ -114,7 +123,6 @@ namespace TeamTRPG_Project
             }
             Thread.Sleep(2000);
         }
-
         private static void MonsterAttack(Character player, List<Monster> monsters)
         {
             foreach (Monster monster in monsters)
@@ -127,22 +135,18 @@ namespace TeamTRPG_Project
                     Thread.Sleep(1000);
                     Console.WriteLine(); // 빈줄출력
                     monster.AttackPlayer(player);
-                    if (player.HP <= 0)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"{player.name}이(가) 과로로 쓰러졌습니다!!");
-                        Console.WriteLine("응급실에 이송되었습니다.\n 병원비 1000G가 소모되었습니다.");
-                        player.HP = player.MAX_HP;
-                        player.MP = player.MAX_MP;
-                        player.gold -= 1000;
-                        Console.ResetColor();
-                        Thread.Sleep(2000);
-                        Console.WriteLine("다시 화이팅 하세요!");
-                        Thread.Sleep(2000);
-
-                        return;
-                    }
                     Thread.Sleep(2000);
+                if (player.HP <= 0)
+                {
+                     Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"{player.name}이(가) 과로로 쓰러졌습니다!!");
+                    Console.WriteLine("응급실에 이송되었습니다.\n병원비 1000G가 소모되었습니다.");;
+                    Console.ResetColor();
+                    Thread.Sleep(2000);
+                    Console.WriteLine("다시 화이팅 하세요!");
+                    Thread.Sleep(2000);
+                    break;
+                }
                     Console.Clear();
                     for (int i = 0; i < monsters.Count; i++)
                     {
@@ -154,13 +158,8 @@ namespace TeamTRPG_Project
                     }
                     Console.ResetColor();
                 }
-            }
-        
+            }  
         }
-        // 스킬 사용 2.번 스킬을 선택하였을때 사용가능한 스킬 목록을 보여주고 선택하게한다.
-        // 스킬을 사용하면 스킬의 데미지를 계산하여 몬스터에게 데미지를 입힌다.
-        // 배운스킬이 없을경우 스킬을 사용할수 없다고 출력하고 다시 선택하게한다.
-        // 나가기 버튼을 누르면 다시 선택하게한다.
         private static void UseSkill(Character player, List<Monster> monsters)
         {
             Console.Clear();
@@ -180,9 +179,6 @@ namespace TeamTRPG_Project
             skill.Use(player, monsters);
             Thread.Sleep(2000);
         }
-        // 3. 번 아이템 사용을 선택하였을때 사용가능한 아이템 목록을 보여주고 선택하게한다.
-        // 아이템은 포션 종류만 보여주고 사용하면 해당 포션의 효과를 사용한다.
-        // 아이템을 사용하면 해당 아이템 효과를 사용한다.
         private static void Useitem(Character player, List<Monster> monsters)
         {
             Console.Clear();
@@ -209,7 +205,6 @@ namespace TeamTRPG_Project
             Thread.Sleep(2000);
             StartBattle(player, monsters);
         }
-
         static void ShakeText(string text, int intensity, int duration)
         {
             Random rand = new Random();
