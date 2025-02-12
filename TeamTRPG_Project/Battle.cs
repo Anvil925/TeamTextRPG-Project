@@ -111,7 +111,6 @@ namespace TeamTRPG_Project
             float damage = player.CalculateDamage();
             ShakeText("!!!!!", 1, 10);
             Console.WriteLine(); // 빈줄출력
-            Console.WriteLine($"{targetMonster.Name}에게 {damage}의 피해를 입혔습니다!");
             targetMonster.TakeDamage((int)damage);
             if (targetMonster.IsDead())
             {
