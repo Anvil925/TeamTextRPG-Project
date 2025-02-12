@@ -189,7 +189,7 @@ namespace TeamTRPG_Project
 
                     if (confirm.ToUpper() == "Y") //입력을  받아서 대문자로변경 Y이면 판매
                     {
-                        character.UnEquip(selectedItem);
+                        character.EquipItem(selectedItem);
                         character.gold += (int)(selectedItem.Price * 0.85); // 골드 추가
                         //selectedItem.ItemBuy = false; // 
                         selectedItem.IsPurchase = false; // 상점에서 아이템 구매 여부를 다시 false로 주면서 상점을 다시 입장하면 구매완료가 안뜨도록 로직설계
