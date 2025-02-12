@@ -487,13 +487,14 @@ namespace TeamTRPG_Project
         {
             Item select = filteredItems[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
 
-            foreach (var item in Player.inventory)
-            {
-                if (item.IsEquip && item.ItemType == select.ItemType && item != select)
-                {
-                    //Player.UnEquip(item);
-                }
-            }
+            //foreach (var item in Player.inventory)
+            //{
+            //    if (item.IsEquip && item.ItemType == select.ItemType && item != select)
+            //    {
+            //        //Player.RemoveItem(item);
+            //        //Player.UnEquip(item);
+            //    }
+            //}
             Player.EquipItem(select);
             EquipScreen(Value); // 다시 장착 화면으로 이동 (업데이트된 상태)
         }
