@@ -129,7 +129,7 @@ namespace TeamTRPG_Project
                 default:
                     Item select = itemlist.Items[choice - 1][input - 1];
 
-                    if (character.inventory.Contains(select))
+                    if (character.inventory.Contains(select) && select.ItemType != ItemType.POTION)
                         buyScreen(choice, false, true); //아이템이 이미 보유중이라는 메세지 표기
                     else
                         buy(select, choice); //아이템 구매 시도
@@ -143,7 +143,7 @@ namespace TeamTRPG_Project
             if (character.gold >= item.Price)
             {
                 character.gold -= item.Price;
-                item.IsPurchase = true;
+                item.IsPurchase = item.ItemType != ItemType.POTION ? true : false;
                 character.inventory.Add(item);
                 buyScreen(choice);
             }
