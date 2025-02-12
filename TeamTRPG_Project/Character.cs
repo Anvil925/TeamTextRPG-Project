@@ -311,6 +311,7 @@ namespace TeamTRPG_Project
 
             Console.WriteLine("스킬을 획득하였습니다.");
             skill.IsLearn = true;
+            skill.ObjectATK = ATK;
             skillPoints -= skill.SkillPoint;
             skills.Add(skill);
             return true;
