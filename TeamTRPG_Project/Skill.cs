@@ -21,6 +21,8 @@ namespace TeamTRPG_Project
 
         StringBuilder SkillInfo { get; set; }      // 스킬 설명을 위한 StringBuilder
 
+        public float ObjectATK { get; set; }              // 개체의 공격력
+
         public override string ToString()
         {
             return Name;
@@ -101,7 +103,7 @@ namespace TeamTRPG_Project
             if (CheckMP(player))
                 return true;
 
-            Attack(monsters);
+            Attack(player, monsters);
             return false;
         }
         public void UseSkillMonster(Character player, List<Monster> monsters)
@@ -129,7 +131,7 @@ namespace TeamTRPG_Project
             return false;
         }
 
-        public void Attack(List<Monster> monsters)
+        public void Attack(Character player, List<Monster> monsters)
         {
 
             // 몬스터의 리스트를 받아와 랜덤으로 섞어준다.
@@ -142,7 +144,8 @@ namespace TeamTRPG_Project
             // 섞어준 리스트에서 스킬의 범위 만큼 데미지를 적용한다.
             for (int i = 0; i < range; i++)
             {
-                monsters[i].TakeDamage((int)ATK);
+                int damage = (int)ATK + (int)(player.ATK * (ATK * 0.01f));
+                monsters[i].TakeDamage(damage);
             }
         }
 
@@ -154,7 +157,12 @@ namespace TeamTRPG_Project
 
             SkillInfo.Append($"{Name}\t| ");
 
-            SkillInfo.Append($"데미지 : {ATK}\t| 마나 : {MP} MP\t| 범위 : {Range} \t|");
+            // 스킬 창이면 기본데미지 + 계수, 스킬 창이 아니면 데미지 합산
+            string addDamage = isSkillWindow ? 
+                $"{ATK} + " + (ATK * 0.01f).ToString("N2") 
+                : (ATK + (int)(ObjectATK * (ATK * 0.01f))).ToString();
+
+            SkillInfo.Append($"데미지 : {addDamage}\t| 마나 : {MP} MP\t| 범위 : {Range} \t|");
 
             SkillInfo.Append($"{Description}\t| 획득 포인트 : {SkillPoint}P");
 
