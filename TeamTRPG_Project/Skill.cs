@@ -21,6 +21,11 @@ namespace TeamTRPG_Project
 
         StringBuilder SkillInfo { get; set; }      // 스킬 설명을 위한 StringBuilder
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
         // 기획 스킬
         public static List<Skill> PlanSkills = new List<Skill>()
         {
