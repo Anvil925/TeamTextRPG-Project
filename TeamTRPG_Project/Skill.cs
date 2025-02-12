@@ -95,13 +95,14 @@ namespace TeamTRPG_Project
         }
 
         // 스킬을 사용할 때 불러올 함수
-        public void Use(Character player, List<Monster> monsters)
+        public bool Use(Character player, List<Monster> monsters)
         {
 
             if (CheckMP(player))
-                return;
+                return true;
 
             Attack(monsters);
+            return false;
         }
         public void UseSkillMonster(Character player, List<Monster> monsters)
         {
@@ -115,6 +116,7 @@ namespace TeamTRPG_Project
             if (player.MP < MP)
             {
                 Console.WriteLine("스킬을 사용하기 위한 마나가 부족합니다!!");
+                Thread.Sleep(1000);
                 return true;
             }
 

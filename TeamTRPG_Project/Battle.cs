@@ -175,8 +175,11 @@ namespace TeamTRPG_Project
                 skillIndex = ConsoleUtility.GetInput(1, player.skills.Count) - 1; 
             } while (skillIndex < 0 || skillIndex >= player.skills.Count);
             Skill skill = player.skills[skillIndex];
-            Console.WriteLine($"{skill.Name} 스킬을 사용합니다!"); 
-            skill.Use(player, monsters);
+            Console.WriteLine($"{skill.Name} 스킬을 사용합니다!");
+            if(skill.Use(player, monsters))
+            {
+                StartBattle(player, monsters);
+            }
             Thread.Sleep(2000);
         }
         private static void Useitem(Character player, List<Monster> monsters)
