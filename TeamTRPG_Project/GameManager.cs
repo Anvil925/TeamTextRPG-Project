@@ -427,8 +427,11 @@ namespace TeamTRPG_Project
         {
             Item select = filteredItems[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
 
-            if(select is Potion)
+            if (select is Potion)
+            {
                 Player.UsePotion((Potion)select);
+                select.IsPurchase = false;
+            }
 
             UseScreen(); // 다시 장착 화면으로 이동 (업데이트된 상태)
         }
@@ -487,14 +490,15 @@ namespace TeamTRPG_Project
         {
             Item select = filteredItems[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
 
-            //foreach (var item in Player.inventory)
-            //{
-            //    if (item.IsEquip && item.ItemType == select.ItemType && item != select)
-            //    {
-            //        //Player.RemoveItem(item);
-            //        //Player.UnEquip(item);
-            //    }
-            //}
+            /*
+            foreach (var item in Player.inventory)
+            {
+                if (item.IsEquip && item.ItemType == select.ItemType && item != select)
+                {
+                    //Player.UnEquip(item);
+                }
+            }
+            */ // EquipItem 함수에서 장착관리 전부 처리
             Player.EquipItem(select);
             EquipScreen(Value); // 다시 장착 화면으로 이동 (업데이트된 상태)
         }
