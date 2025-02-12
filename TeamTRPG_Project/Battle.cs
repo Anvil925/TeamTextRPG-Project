@@ -129,7 +129,7 @@ namespace TeamTRPG_Project
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"{targetMonster.Name}을(를) 처치했습니다!");
                 player.GetExp(targetMonster.EXP);
-                player.gold += targetMonster.Gold;
+                player.GetGold(targetMonster.Gold);
                 Console.ResetColor();
                 Thread.Sleep(2000);
             }
