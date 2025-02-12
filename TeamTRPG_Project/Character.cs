@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
-    
+
     public class Character
     {
         public int LV { get; set; }
         public int EXP { get; set; }
         public int[] LVGuage { get; set; }
 
-        const int MAXLV = 5;
+        const int MAXLV = 10;
 
         public string name { get; set; }
         public float ATK { get; set; }
@@ -23,7 +23,10 @@ namespace TeamTRPG_Project
         public float itemDEF { get; set; }
 
         public float HP { get; set; }
-        public float MAX_HP { get; set; } 
+        public float MAX_HP { get; set; }
+
+        public int MP { get; set; }
+        public int MAX_MP { get; set; }
 
         public float crit { get; set; }
         public float critDamage { get; set; }
@@ -36,13 +39,18 @@ namespace TeamTRPG_Project
         public List<Item> inventory { get; set; }
         public List<Item> equipment { get; set; } //장착 중 아이템
 
+        public List<Skill> skills {get; set;}
+        public int skillPoints { get; set; }
+        public List<string> ClearedDungeons { get; private set; }  // 클리어한 던전 목록
+
+
         Random rd = new Random();
 
         public Character(string name)
         {
             LV = 1;
             EXP = 0;
-            LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100 }; //일단 5렙까지 경험치 필요량
+            LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100, 140, 185, 230, 280, 320 }; //일단 5렙까지 경험치 필요량
             this.name = name;
 
             ATK = 10;
@@ -53,17 +61,26 @@ namespace TeamTRPG_Project
             HP = 100;
             MAX_HP = 100;
 
+            MP = 100; 
+            MAX_MP = 100;
+
             crit = 0.15f;
             critDamage = 1.6f;
 
             avoid = 0.1f;
 
-            gold = 1500;
+            gold = 150000;
 
             job = Job.JobList[3]; //list 3 is Intern
 
             inventory = new List<Item>();
             equipment = new List<Item>();
+            skills = new List<Skill>();
+
+            skillPoints = 0;
+
+            ClearedDungeons = new List<string>();
+
         }
 
         public void ShowInfo()
@@ -74,6 +91,7 @@ namespace TeamTRPG_Project
             Console.WriteLine("정치력 : {0} {1}", ATK + itemATK, (itemATK > 0) ? $"(+{itemATK})" : "");
             Console.WriteLine("아부력 : {0} {1}", DEF + itemDEF, (itemDEF > 0) ? $"(+{itemDEF})" : "");
             Console.WriteLine("멘 탈 : {0} / {1}", HP, MAX_HP);
+            Console.WriteLine("마 나 : {0} / {1}", MP, MAX_MP);
             Console.WriteLine("주 량 : {0}", crit);
             Console.WriteLine("GOLD : {0}", gold);
 
@@ -81,6 +99,12 @@ namespace TeamTRPG_Project
             Console.WriteLine("장착 아이템");
             foreach (Item item in equipment)
                 Console.WriteLine(item.ShowInfo());
+            
+            Console.WriteLine();
+            Console.WriteLine("배운 스킬");
+            foreach (Skill skill in skills)
+                Console.WriteLine(skill.ShowInfo());
+            
 
         }
 
@@ -144,8 +168,9 @@ namespace TeamTRPG_Project
                 itemDEF += armor.DEF;
         }
 
-        private void UnEquip(Item item)
+        private void UnEquip(Item item) //외부 클래스에서 부르지 말 것 //EquipItem 메소드가 장착/해제 를 전부 담당합니다.
         {
+
             item.IsEquip = false;
 
             equipment.Remove(item);
@@ -176,7 +201,11 @@ namespace TeamTRPG_Project
             ATK += 0.5f;
             DEF += 1.0f;
             HP = MAX_HP; //레벨업시 풀피
+
+            
+            MP = MAX_MP;
             Console.WriteLine("경력이 {0}으로 올랐습니다.", LV);
+            skillPoints += 10;  //레벨업시 스킬포인트
         }
 
         public float takeDamage(float damage)   //공격 받을 때
@@ -203,7 +232,7 @@ namespace TeamTRPG_Project
             return HP;
         }
 
-        public float CalculateDamage() //가하는 데미지 계산
+        public float CalculateDamage() //가하는 데미지 계산 //일반 공격
         {
             float damageError = float.Ceiling((ATK + itemATK) * 0.1f); // 데미지 오차
             float damage = float.Ceiling(ATK + itemATK);
@@ -213,20 +242,33 @@ namespace TeamTRPG_Project
 
             damage = rd.Next((int)(damage - damageError), (int)(damage + damageError + 1));
 
+            RegenerateMana(10); //일반 공격 시 마나 10 회복
+
             return damage;
         }
-        
+
         public float UsePotion(Potion potion)
         {
             float prevHP = HP;
             HP += potion.REC;
-            if(HP > MAX_HP)
+            if (HP > MAX_HP)
                 HP = MAX_HP;
             Console.WriteLine("멘탈 회복 {0:F0} -> {1:F0}", prevHP, HP);
             inventory.Remove(potion);
             return HP;
         }
+
+
+        public void RegenerateMana(int mana) 
+        {
+            float prevMP = MP;
+            MP += mana;
+            if (MP > MAX_MP)
+                MP = MAX_MP;
+            Console.WriteLine("마나 재생 {0:F0} -> {1:F0}", prevMP, MP); //어색하면 제거
+        }          
         
+
         public void SetJob(Job job) //직업은 기초 공방체 up
         {
             this.job = job;
@@ -235,5 +277,72 @@ namespace TeamTRPG_Project
             MAX_HP += job.MAX_HP;
             HP += job.MAX_HP;
         }
+
+        
+        public bool AddSkill(Skill skill)
+        {
+            if (skill.JobType != job.JobType)
+            {
+                Console.WriteLine("배울 수 없는 직업의 스킬입니다!");
+                return false;
+            }
+
+            if(skill.IsLearn)
+            {
+                Console.WriteLine("이미 배운 스킬입니다!");
+                return false;
+            }
+            
+            if(skill.SkillPoint > skillPoints)
+            {
+                Console.WriteLine("스킬 포인트가 부족합니다!");
+                return false;
+            }
+
+            Console.WriteLine("스킬을 획득하였습니다.");
+            skill.IsLearn = true;
+            skillPoints -= skill.SkillPoint;
+            skills.Add(skill);
+            return true;
+        }
+        
+        public void ShowSkills() 
+        {
+            for (int i = 0; i < skills.Count; i++)
+            {
+                Console.WriteLine($"{i} - {skills[i].ShowInfo()}"); 
+            }
+        }
+
+        /*
+        public Skill UseSkill(int index) //입력시 -1 주의 
+        {
+            Skill skill = skills[index];
+            
+            if(skill.MP > MP)
+            {
+                Console.WriteLine("스킬을 사용하는 데 마나가 부족합니다!");
+                return null; //null 반환시 스킬 사용 불가능!
+            }
+
+            MP -= skill.MP;
+            Console.WriteLine($"스킬 {skill.Name}사용!");
+            //Skill 관련 메소드
+            return skill;
+        }
+        */ //skill 클래스에서 구현이 되었음
+        public void ClearDungeon(string dungeonName)
+        {
+            if (!ClearedDungeons.Contains(dungeonName))
+            {
+                ClearedDungeons.Add(dungeonName);
+                Console.WriteLine($"{dungeonName} 던전을 클리어했습니다!");
+            }
+            else
+            {
+                Console.WriteLine($"{dungeonName} 던전은 이미 클리어한 상태입니다.");
+            }
+        }
     }
 }
+
