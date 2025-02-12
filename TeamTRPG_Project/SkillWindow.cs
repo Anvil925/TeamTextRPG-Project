@@ -120,7 +120,7 @@ namespace TeamTRPG_Project
         {
             if (SkillList.Count == 0)
             {
-                Console.WriteLine("인턴은 스킬을 가질 수 없습니다.");
+                Console.WriteLine("인턴은 스킬을 가질 수 업습니다.");
                 Thread.Sleep(1000);
                 GameManager.Instance.MainScreen();
             }

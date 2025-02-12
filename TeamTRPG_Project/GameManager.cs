@@ -495,7 +495,7 @@ namespace TeamTRPG_Project
             {
                 if (item.IsEquip && item.ItemType == select.ItemType && item != select)
                 {
-                    Player.EquipItem(item);
+                    //Player.UnEquip(item);
                 }
             }
             */ // EquipItem 함수에서 장착관리 전부 처리

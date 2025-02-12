@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -34,7 +35,7 @@ namespace TeamTRPG_Project
             Console.WriteLine("상점 목록\n");
             Console.WriteLine("1. 무기\n2. 방어구\n3. 포션\n4. 아이템 판매\n\n0. 나가기\n");
             int choice = ConsoleUtility.GetInput(0, 4);
-            switch(choice)
+            switch (choice)
             {
                 case 0:
                     gm.MainScreen();
@@ -163,9 +164,13 @@ namespace TeamTRPG_Project
             Console.WriteLine($"{character.gold}G");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]");
+
+            //int input = ConsoleUtility(0)
             if (character.inventory.Count == 0)
             {
                 Console.WriteLine("인벤토리 아이템이 없습니다.");
+                Thread.Sleep(1000);
+                return;
 
             }
             else
@@ -175,43 +180,38 @@ namespace TeamTRPG_Project
                 {
                     //아이템 번호 및 이름 효과 설명 , 그리고 판매금액 원래 상점가 보다 15% 할인 판매
 
-                    Console.WriteLine($"  {index} | {(item.IsEquip ? "[E]" : "")} | {item.Name} | {item.ItemType}| {item.Description} | 판매금액 {item.Price * 0.85}");
+                    Console.WriteLine($"  {index}  {(item.IsEquip ? "[E]" : "")} | {item.Name} | {item.ItemType}| {item.Description} | 판매금액 {item.Price * 0.85}");
                     index++;
                 }
-                Console.WriteLine("판매할 아이템을 번호를 입력하세요.");
-                int itemChoice;
-                if (int.TryParse(Console.ReadLine(), out itemChoice) && itemChoice >= 1 && itemChoice <= character.inventory.Count)
+                Console.WriteLine("\n판매할 아이템 번호를 입력하세요. 0.나가기\n");
+                int itemChoice = ConsoleUtility.GetInput(0, character.inventory.Count);
+                
+                switch (itemChoice)
                 {
-                    var selectedItem = character.inventory[itemChoice - 1];
-                    Console.WriteLine($"{selectedItem.Name}을(를) {selectedItem.Price * 0.85} 골드에 판매하시겠습니까? (Y/N)");
+                    case 0: return; break;
+                    default:
+                        var selectedItem = character.inventory[itemChoice - 1];
+                        Console.WriteLine($"{selectedItem.Name}을(를) {selectedItem.Price * 0.85} 골드에 판매하시겠습니까? (Y/N)");
 
-                    string confirm = Console.ReadLine();
+                        string confirm = Console.ReadLine();
 
-                    if (confirm.ToUpper() == "Y") //입력을  받아서 대문자로변경 Y이면 판매
-                    {
-                        if(selectedItem.IsEquip) //장착시에만 장착해제
-                            character.EquipItem(selectedItem);
-
-                        character.gold += (int)(selectedItem.Price * 0.85); // 골드 추가
-                        //selectedItem.ItemBuy = false; // 
-                        selectedItem.IsPurchase = false; // 상점에서 아이템 구매 여부를 다시 false로 주면서 상점을 다시 입장하면 구매완료가 안뜨도록 로직설계
-                        character.inventory.RemoveAt(itemChoice - 1); // 아이템 삭제
-
-
-                        Console.WriteLine($"{selectedItem.Name}을(를) 판매했습니다! 현재 골드: {character.gold}");
-                       
-                    }
-                    else
-                    {
-                        Console.WriteLine("판매를 취소했습니다.");
-                        
-                    }
-
+                        if (confirm.ToUpper() == "Y") //입력을  받아서 대문자로변경 Y이면 판매
+                        {
+                            character.gold += (int)(selectedItem.Price * 0.85); // 골드 추가                        
+                            selectedItem.IsPurchase = false; // 상점에서 아이템 구매 여부를 다시 false로 주면서 상점을 다시 입장하면 구매완료가 안뜨도록 로직설계
+                            character.RemoveItem(selectedItem); // 캐릭터 아이템 삭제
+                            Console.WriteLine($"{selectedItem.Name}을(를) 판매했습니다! 현재 골드: {character.gold}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("판매를 취소했습니다.");
+                        }
+                        Thread.Sleep(1000);
+                        SellingScreen();
+                        break;
                 }
 
             }
-            Thread.Sleep(2000);
-
         }
 
 
