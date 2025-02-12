@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -184,10 +185,14 @@ namespace TeamTRPG_Project
         {
             int prevEXP = EXP;
             EXP += exp;
-            if (LV < MAXLV && EXP > LVGuage[LV]) //최대 레벨이 아니고 경험치 넘었을 때
+            while (true)
             {
-                LVUp();
+                if (LV < MAXLV && EXP > LVGuage[LV]) //최대 레벨이 아니고 경험치 넘었을 때
+                    LVUp();
+                else
+                    break;
             }
+            
             Console.WriteLine("EXP {0} -> {1}", prevEXP, EXP);
         }
 
