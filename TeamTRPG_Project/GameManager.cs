@@ -164,9 +164,7 @@ namespace TeamTRPG_Project
                 Console.WriteLine("강화 할 아이템이 없습니다.");
                 Thread.Sleep(2000);
                 MainScreen();
-            }
-            
-
+            }          
             int i = 1;
             foreach (var item in Player.inventory)
             {                
@@ -187,11 +185,7 @@ namespace TeamTRPG_Project
             {
                 Item decision = Player.inventory[input - 1];
                 ItemUpgrad(decision);
-            }
-            
-
-
-
+            }          
         }
 
 
@@ -489,18 +483,8 @@ namespace TeamTRPG_Project
 
         public void Equip(int input, ShopCase Value, List<Item> filteredItems) //아이템 장착
         {
-            Item select = filteredItems[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
-
-            /*
-            foreach (var item in Player.inventory)
-            {
-                if (item.IsEquip && item.ItemType == select.ItemType && item != select)
-                {
-                    //Player.UnEquip(item);
-                }
-            }
-            */ // EquipItem 함수에서 장착관리 전부 처리
-            Player.EquipItem(select);
+            Item select = filteredItems[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.            
+            Player.EquipItem(select);// EquipItem 함수에서 장착관리 전부 처리
             EquipScreen(Value); // 다시 장착 화면으로 이동 (업데이트된 상태)
         }
     }
