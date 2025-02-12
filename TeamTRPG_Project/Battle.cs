@@ -56,6 +56,15 @@ namespace TeamTRPG_Project
                 }
                 if (!battleEnded)
                 {
+<<<<<<< Updated upstream
+=======
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+
+                    player.GetExp(monsters.Sum(m => m.EXP)); // 경험치 획득
+                    player.gold += monsters.Sum(m => m.Gold); // 골드 획득
+                    Console.ResetColor();
+                    battleEnded = true; // 전투 종료
+>>>>>>> Stashed changes
                 }
                 battleEnded = monsters.All(m => m.HP <= 0);
             }
@@ -97,8 +106,9 @@ namespace TeamTRPG_Project
             if (targetMonster.IsDead())
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"{targetMonster.Name}을(를) 처치했습니다! 🎉");
+                Console.WriteLine($"{targetMonster.Name}을(를) 처치했습니다!");
                 player.GetExp(targetMonster.EXP);
+                player.gold += targetMonster.Gold;
                 Console.ResetColor();
                 Thread.Sleep(2000);
             }
