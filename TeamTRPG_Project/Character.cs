@@ -48,7 +48,7 @@ namespace TeamTRPG_Project
 
         public Character(string name)
         {
-            LV = 1;
+            LV = 3;
             EXP = 0;
             LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100, 140, 185, 230, 280, 320 }; //일단 5렙까지 경험치 필요량
             this.name = name;
@@ -112,7 +112,6 @@ namespace TeamTRPG_Project
         {
             return $"경력.{LV} {name} ({job.Name})\n멘탈 {HP}/{MAX_HP}";
         }
-
         public void ShowInventory()
         {
 

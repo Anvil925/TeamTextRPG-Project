@@ -5,64 +5,92 @@ using System.Text;
 using System.Threading.Tasks;
 namespace TeamTRPG_Project
 {
+    public enum ProgressType
+    {
+        DungeonClear,
+        Level,
+        EquipItem,
+        UpgradeItem
+    }
+
     public class Quest
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
         public bool IsCompleted { get; private set; }
         public int RewardGold { get; private set; }
+        public int RewardExp { get; private set; }
         public string QuestProgress { get; private set; }
         public bool IsAccepted { get; private set; }
+        public ProgressType ProgressType { get; private set; }
 
         public Action<Character> CompletionCondition;
         public Action<Character> OnAccept;
         public Action<Character> OnDecline;
 
-        // 퀘스트 진행 상태를 추적할 변수 추가
         private int requiredProgress;
+        private int currentProgress;
 
         public Quest(string name, string description, Action<Character> completionCondition,
-                     int rewardGold = 0, int requiredProgress = 0,
+                     int rewardGold = 0, int rewardExp = 0, int requiredProgress = 0, ProgressType progressType = ProgressType.DungeonClear,
                      Action<Character> onAccept = null, Action<Character> onDecline = null)
         {
             Name = name;
             Description = description;
             IsCompleted = false;
             RewardGold = rewardGold;
+            RewardExp = rewardExp;
             CompletionCondition = completionCondition;
             OnAccept = onAccept;
             OnDecline = onDecline;
-            IsAccepted = false;  // 초기화
+            IsAccepted = false;
             this.requiredProgress = requiredProgress;
-            UpdateProgress(0); // 초기 진행 상태
+            this.ProgressType = progressType;
+            UpdateProgress(null);
         }
 
-        // 퀘스트 진행 상태 업데이트
-        public void UpdateProgress(int progress)
+        public void UpdateProgress(Character player)
         {
-            // 플레이어의 레벨에 맞춰 퀘스트 진행 상태를 업데이트
-            int currentProgress = progress > requiredProgress ? requiredProgress : progress;
+            if (ProgressType == ProgressType.Level && player != null)
+            {
+                currentProgress = Math.Min(player.LV, requiredProgress);
+            }
+            else
+            {
+                currentProgress = Math.Min(currentProgress, requiredProgress);
+            }
             QuestProgress = $"진행 중: {currentProgress}/{requiredProgress}";
+        }
 
-            // 진행 상태가 완료 조건을 만족하면 퀘스트 완료 처리
+        public void CheckCompletion(Character player, QuestManager questManager)
+        {
+            UpdateProgress(player);
             if (currentProgress >= requiredProgress)
             {
-                CompleteQuest();
+                CompleteQuest(player, questManager);
+            }
+            else
+            {
+                Console.WriteLine("퀘스트 완료 조건이 충족되지 않았습니다.");
+                Thread.Sleep(500);
             }
         }
 
-        // 퀘스트 완료 처리
-        public void CompleteQuest()
+        public void CompleteQuest(Character player, QuestManager questManager)
         {
             if (!IsCompleted)
             {
                 IsCompleted = true;
-                Console.WriteLine($"{Name} 퀘스트 완료!");
-                Console.WriteLine($"보상으로 {RewardGold} GOLD를 받았습니다.");
+                player.gold += RewardGold;
+                player.GetExp(RewardExp);
+                Console.WriteLine($"{Name} 퀘스트 완료! 보상으로 {RewardGold} GOLD를 받았습니다.");
+                questManager.RemoveQuest(this);
+                Thread.Sleep(500);
             }
             else
             {
                 Console.WriteLine($"이미 완료한 퀘스트입니다: {Name}");
+                Thread.Sleep(500);
             }
         }
 
@@ -71,6 +99,7 @@ namespace TeamTRPG_Project
             OnAccept?.Invoke(player);
             IsAccepted = true;
             Console.WriteLine($"{Name} 퀘스트가 수락되었습니다.");
+            Thread.Sleep(500);
         }
 
         public void DeclineQuest(Character player)
@@ -78,6 +107,7 @@ namespace TeamTRPG_Project
             OnDecline?.Invoke(player);
             IsAccepted = false;
             Console.WriteLine($"{Name} 퀘스트가 거절되었습니다.");
+            Thread.Sleep(500);
         }
     }
 
@@ -101,115 +131,103 @@ namespace TeamTRPG_Project
         public QuestManager()
         {
             quests = new List<Quest>
-        {
-            new Quest("흡연실", "승진을 원하는 동료를 이기자!", (player) =>
             {
-                if (player.ClearedDungeons.Contains("흡연실")) // 추후 연결
+                new Quest("[M]흡연실", "승진을 원하는 동료를 이기자!", (player) =>
                 {
-                    Console.WriteLine("출근 완료! 첫 업무 시작!");
-                    player.gold += 500;
-                    player.GetExp(100);
-                    Console.WriteLine("보상으로 500 GOLD와 100 EXP를 받았습니다.");
-                }
-            }, 500, 1), // 흡연실 던전 완료 요구
-
-            new Quest("탕비실", "무능한 간부를 물리치자", (player) =>
-            {
-                if (player.ClearedDungeons.Contains("흡연실")) // 추후 연결
-                {
-                    Console.WriteLine("첫 업무를 성공적으로 끝냈습니다!");
-                    player.gold += 800;
-                    player.GetExp(150);
-                    Console.WriteLine("보상으로 800 GOLD와 150 EXP를 받았습니다.");
-                }
-                else
-                {
-                    Console.WriteLine("아직 업무를 완료할 준비가 되지 않았습니다.");
-                }
-            }, 800, 1), // 탕비실 던전 완료 요구
-
-            new Quest("승진", "빌런 부장님을 물리치자!", (player) =>
-            {
-                if (player.ClearedDungeons.Contains("부장실자리"))
-                {
-                    Console.WriteLine("부장님을 물리쳤습니다!");
-                    player.gold += 1000;
-                    player.GetExp(200);
-                    Console.WriteLine("보상으로 1000 GOLD와 200 EXP를 받았습니다.");
-                }
-                else
-                {
-                    Console.WriteLine("아직 부장님께 다가갈 수 없습니다!");
-                }
-            }, 1000, 1), // 부장실자리 던전 완료 요구
-
-            new Quest("회사에서의 승진", "레벨 3이 되어 승진을 준비하자!", (player) =>
-            {
-                // 퀘스트 진행 상황을 플레이어의 레벨로 업데이트
-                foreach (var quest in quests)
-                {
-                    if (quest.Name == "회사에서의 승진")
+                    if (player.ClearedDungeons.Contains("흡연실"))
                     {
-                        quest.UpdateProgress(player.LV);
+                        player.gold += 1500;
+                        player.GetExp(100);
                     }
-                }
+                }, 500,100, 1, ProgressType.DungeonClear),
 
-                if (player.LV >= 3)
+                new Quest("[M]탕비실", "본인의 업무를 떠넘기는 간부를 물리치자!", (player) =>
                 {
-                    Console.WriteLine("승진 조건을 충족했습니다!");
-                    player.gold += 1500;
-                    player.GetExp(300);
-                    Console.WriteLine("보상으로 1500 GOLD와 300 EXP를 받았습니다.");
-                }
-                else
+                    if (player.ClearedDungeons.Contains("탕비실"))
+                    {
+                        player.gold += 5000;
+                        player.GetExp(100);
+                    }
+                }, 500,100, 1, ProgressType.DungeonClear),
+                new Quest("[M]팀장실", "대화가 통하지 않는 팀장을 처리하자!", (player) =>
                 {
-                    Console.WriteLine("아직 승진할 준비가 되지 않았습니다.");
-                }
-            }, 1500, 3) // 레벨 3 요구
+                    if (player.ClearedDungeons.Contains("팀장실"))
+                    {
+                        player.gold += 10000;
+                        player.GetExp(100);
+                    }
+                }, 500, 100, 1, ProgressType.DungeonClear),
+                new Quest("[M]차장실", "꼰대 차장을 물리치자!", (player) =>
+                {
+                    if (player.ClearedDungeons.Contains("흡연실"))
+                    {
+                        player.gold += 20000;
+                        player.GetExp(100);
+                    }
+                }, 500, 100, 1, ProgressType.DungeonClear),
+                new Quest("[M]사장실", "인권을 박살내는 사장을 물리치자!", (player) =>
+                {
+                    if (player.ClearedDungeons.Contains("사장실"))
+                    {
+                        player.gold += 50000;
+                        player.GetExp(100);
+                    }
+                }, 500,100, 1, ProgressType.DungeonClear),
+
+                new Quest("[S]승진", "레벨을 올려 승진을 준비하자!", (player) =>
+                {
+                    if (player.LV >= 3)
+                    {
+                        player.gold += 3500;
+                        player.GetExp(35);
+                    }
+                }, 1500,35, 3, ProgressType.Level)
         };
+        }
+
+        public void RemoveQuest(Quest quest)
+        {
+            quests.Remove(quest);
         }
 
         public void ShowQuests(Character player)
         {
+            ConsoleUtility.Loading();
             while (true)
             {
                 Console.Clear();
                 ConsoleUtility.ColorWrite("Quest!!\n", ConsoleColor.Magenta);
                 for (int i = 0; i < quests.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {quests[i].Name} {(quests[i].IsAccepted ? "(진행중)" : "")} ");
+                    quests[i].UpdateProgress(player);
+                    Console.WriteLine($"{i + 1}. {quests[i].Name} {(quests[i].IsAccepted ? "(진행중)" : "")}");
                 }
                 Console.WriteLine("\n0. 나가기");
-                Console.WriteLine("\n원하시는 퀘스트를 선택해주세요.");
-                Console.Write(">> ");
-                int choice = ConsoleUtility.GetInput(0, quests.Count); // 0을 선택시 메인 화면으로 돌아감
+                Console.Write("\n원하시는 퀘스트를 선택해주세요.\n>> ");
+                int choice = ConsoleUtility.GetInput(0, quests.Count);
                 if (choice == 0)
                 {
                     GameManager.Instance.MainScreen();
-                    break; // ShowQuests 종료
+                    break;
                 }
 
                 Quest selectedQuest = quests[choice - 1];
                 Console.Clear();
                 ConsoleUtility.ColorWrite($"\n{selectedQuest.Name}\n", ConsoleColor.Cyan);
                 Console.WriteLine($"{selectedQuest.Description}\n");
-
                 Console.WriteLine($"{selectedQuest.QuestProgress}");
-
-                // 보상 표시
                 Console.WriteLine($"\n보상: {selectedQuest.RewardGold} GOLD");
 
-                // 수락 또는 거절 옵션
                 Console.WriteLine("\n1. 수락");
                 Console.WriteLine("2. 거절");
-                int action = ConsoleUtility.GetInput(1, 2);
+                Console.WriteLine("3. 완료");
+                int action = ConsoleUtility.GetInput(1, 3);
 
                 if (action == 1)
                 {
                     if (!selectedQuest.IsAccepted)
                     {
                         selectedQuest.AcceptQuest(player);
-                        Console.WriteLine($"{selectedQuest.Name} 퀘스트가 수락되었습니다.");
                     }
                     else
                     {
@@ -221,12 +239,15 @@ namespace TeamTRPG_Project
                     if (selectedQuest.IsAccepted)
                     {
                         selectedQuest.DeclineQuest(player);
-                        Console.WriteLine($"{selectedQuest.Name} 퀘스트가 거절되었습니다.");
                     }
                     else
                     {
                         Console.WriteLine($"{selectedQuest.Name} 퀘스트는 아직 수락되지 않았습니다.");
                     }
+                }
+                else if (action == 3)
+                {
+                    selectedQuest.CheckCompletion(player, this);
                 }
             }
         }
