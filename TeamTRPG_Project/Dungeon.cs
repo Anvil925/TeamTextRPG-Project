@@ -187,7 +187,8 @@ namespace TeamTRPG_Project
                 {
                     case 1:
                         Battle.StartBattle(Player, monsters);
-                        break;
+                        gm.MainScreen();
+                        return;
                     case 2:
                         Player.ShowInfo();
                         break;
