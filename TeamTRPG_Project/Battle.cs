@@ -204,9 +204,17 @@ namespace TeamTRPG_Project
                 return;
             }
             Item item = player.inventory[itemIndex];
-            Console.WriteLine($"{item.Name} 아이템을 사용합니다!");
-            player.UsePotion((Potion)item);
-            Thread.Sleep(2000);
+            if(item is Potion potion)
+            {
+                Console.WriteLine($"{item.Name} 아이템을 사용합니다!");
+                player.UsePotion((Potion)item);
+                Thread.Sleep(2000);
+            }
+            else
+            {
+                Console.WriteLine($"장착 아이템은 사용할 수 없습니다.");
+                Thread.Sleep(2000);
+            }
             StartBattle(player, monsters);
         }
 

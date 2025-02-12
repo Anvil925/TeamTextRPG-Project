@@ -77,7 +77,7 @@ namespace TeamTRPG_Project
             equipment = new List<Item>();
             skills = new List<Skill>();
 
-            skillPoints = 0;
+            skillPoints = 10;
 
             ClearedDungeons = new List<string>();
 
