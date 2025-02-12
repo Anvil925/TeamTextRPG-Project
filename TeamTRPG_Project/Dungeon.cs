@@ -36,6 +36,7 @@ namespace TeamTRPG_Project
                 switch (input)
                 {
                     case 0:
+                        gm.MainScreen();
                         break;
                     case 1:
                         StartWork(1, 1);
@@ -61,6 +62,7 @@ namespace TeamTRPG_Project
                 switch (input)
                 {
                     case 0:
+                        gm.MainScreen();
                         break;
                     case 1:
                         StartWork(4, 2);
@@ -90,6 +92,7 @@ namespace TeamTRPG_Project
                 switch (input)
                 {
                     case 0:
+                        gm.MainScreen();
                         break;
                     case 1:
                         StartWork(9, 3);
@@ -157,9 +160,14 @@ namespace TeamTRPG_Project
             List<Monster> monsters = new List<Monster>();
             HashSet<string> monsterNames = new HashSet<string>(); // 중복 체크용 HashSet
             int numberOfMonsters = new Random().Next(1, 4);
+            // 그룹ID가 9인 경우는 몬스터 수를 1로 고정
+            if (GroupID == 9)
+            {
+                numberOfMonsters = 1;
+            }
             while (monsters.Count < numberOfMonsters)
             {
-                Monster monster = Monster.GetRandomMonsterByGroup(GroupID); // 랜덤 몬스터 생성
+                Monster monster = Monster.GetRandomMonsterByGroup(GroupID, Player); // 몬스터 생성
                 if (monster != null && !monsterNames.Contains(monster.Name)) // 중복 체크
                 {
                     monsters.Add(monster); // 몬스터 추가

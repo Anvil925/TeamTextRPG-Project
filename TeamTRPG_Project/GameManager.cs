@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using TeamTRPG_Project;
 
 namespace TeamTRPG_Project
 {
@@ -17,6 +18,7 @@ namespace TeamTRPG_Project
         public SelectJob selectJob { get; private set; }
         public List<Item> ItemList { get; private set; }
         public SkillWindow skillWindow { get; private set; }
+
 
         public static GameManager Instance
         {
@@ -32,7 +34,6 @@ namespace TeamTRPG_Project
         }
 
         public Shop shop;
-
         Item item;
         private GameManager()
         {
@@ -41,6 +42,7 @@ namespace TeamTRPG_Project
             Dungeon.SetGameManager(this); // Dungeon에 GameManager 정보 전달
             selectJob = new SelectJob(Player); // SelectJob 객체 생성
             ItemList = new List<Item>();
+
         }
         public void SetPlayerName(string name)
         {
@@ -64,6 +66,19 @@ namespace TeamTRPG_Project
             Console.WriteLine();
             Console.WriteLine("1. 업무시작\n\n2. 승진시험\n\n3. 프로젝트진행\n\n0.나가기");
             int input = ConsoleUtility.GetInput(0, 3);
+            Dictionary<int, HashSet<string>> requiredJobs = new Dictionary<int, HashSet<string>> // 직업별 입장 가능 던전
+            {
+                {3, new HashSet<string> { "개발", "기획", "디자이너" }} 
+            };
+            string playerJob = Player.job.Name; // 플레이어 직업
+            if (requiredJobs.ContainsKey(input) && !requiredJobs[input].Contains(playerJob)) // 해당 던전에 직업이 맞지 않으면
+            {
+                ConsoleUtility.ColorWrite($"⚠️ {string.Join(", ", requiredJobs[input])} 직업만 입장할 수 있습니다!", ConsoleColor.Red); // 입장 불가 메시지 출력
+                Thread.Sleep(1000);
+                DungeonScene(); //
+                return;
+            }
+
             switch (input)
             {
                 case 0:
@@ -96,9 +111,10 @@ namespace TeamTRPG_Project
             Console.WriteLine("5. 전직하기");
             Console.WriteLine("6. 강화하기");
             Console.WriteLine("7. 스킬획득");
+            Console.WriteLine("8. 퀘스트");
             Console.WriteLine();
 
-            int input = ConsoleUtility.GetInput(0, 7);
+            int input = ConsoleUtility.GetInput(0, 8);
 
             switch (input)
             {
@@ -126,10 +142,13 @@ namespace TeamTRPG_Project
                 case 7:
                     skillWindow.SkillWindowScreen();
                     break;
-
+                case 8:
+                    QuestManager.Instance.ShowQuests(Player);
+                    break;
             }
         }
 
+       
         public void ItemUpgradScreen()
         {
             Console.Clear();
@@ -339,7 +358,12 @@ namespace TeamTRPG_Project
 
             }
             Console.WriteLine();
-            Console.WriteLine("1. 장착 관리");
+
+
+            if (Value != ShopCase.포션)
+                Console.WriteLine("1. 장착 관리");
+            else
+                Console.WriteLine("1. 아이템 사용");
             Console.WriteLine("0. 나가기");
             Console.WriteLine();
 
@@ -350,9 +374,66 @@ namespace TeamTRPG_Project
                     MainScreen();
                     break;
                 case 1:
-                    EquipScreen(Value);
+                    if (Value != ShopCase.포션) EquipScreen(Value);
+                    else UseScreen();
                     break;
             }
+        }
+
+        // 아이템 사용 화면
+        private void UseScreen()
+        {
+            Console.Clear();
+
+            ConsoleUtility.ColorWrite($"인벤토리 - 포션 사용 [포션]", ConsoleColor.Magenta);
+
+            Console.WriteLine("포션 아이템을 사용할 수 있습니다.");
+            Console.WriteLine();
+            Console.WriteLine("[아이템 목록]");
+
+            List<Item> filteredItems = Player.inventory
+                   .Where(item => item.ItemType == ItemType.POTION)
+                   .ToList();
+
+            if (filteredItems.Count == 0)
+            {
+                Console.WriteLine("해당 유형의 아이템이 없습니다.");
+                Console.WriteLine("\n0. 나가기\n");
+                ConsoleUtility.GetInput(0, 0);
+                MainScreen();
+                return;
+            }
+
+            // 필터링된 아이템에 1부터 번호 매기기
+            for (int i = 0; i < filteredItems.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {filteredItems[i].ShowInfo()}");
+            }
+
+            Console.WriteLine("\n0. 나가기\n");
+            int input = ConsoleUtility.GetInput(0, filteredItems.Count);
+
+            if (input == 0)
+            {
+                MainScreen();
+            }
+            else
+            {
+                Use(input, filteredItems);
+            }
+        }
+
+        private void Use(int input, List<Item> filteredItems)
+        {
+            Item select = filteredItems[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
+
+            if (select is Potion)
+            {
+                Player.UsePotion((Potion)select);
+                select.IsPurchase = false;
+            }
+
+            UseScreen(); // 다시 장착 화면으로 이동 (업데이트된 상태)
         }
 
         public void EquipScreen(ShopCase Value) //장착 화면
@@ -409,13 +490,15 @@ namespace TeamTRPG_Project
         {
             Item select = filteredItems[input - 1]; // -1을 해주는 이유는 위에 표기시 i+1로 진행했기 때문입니다.
 
+            /*
             foreach (var item in Player.inventory)
             {
                 if (item.IsEquip && item.ItemType == select.ItemType && item != select)
                 {
-                    Player.UnEquip(item);
+                    //Player.UnEquip(item);
                 }
             }
+            */ // EquipItem 함수에서 장착관리 전부 처리
             Player.EquipItem(select);
             EquipScreen(Value); // 다시 장착 화면으로 이동 (업데이트된 상태)
         }

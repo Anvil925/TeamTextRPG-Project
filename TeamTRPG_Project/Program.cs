@@ -25,8 +25,8 @@
                 Console.Write("=>");
                 Name = Console.ReadLine();
                 Console.WriteLine($"입력하신 이름은 {Name}입니다.\n1.저장 \n2.아니오");
-                int save = int.Parse(Console.ReadLine());
-                if (save == 1)
+                string save = Console.ReadLine();
+                if (save == "1")
                 {
                     break;
                 }
