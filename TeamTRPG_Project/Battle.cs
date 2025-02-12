@@ -46,7 +46,7 @@ namespace TeamTRPG_Project
                         {
                             Console.WriteLine("배운 스킬이 없습니다! 다시 선택하세요.");
                             Thread.Sleep(1000);
-                            StartBattle(player, monsters,groupID);
+                            StartBattle(player, monsters, groupID);
                             continue; // while 루프의 처음으로 돌아가 다시 선택하도록 함
                         }
                         UseSkill(player, monsters);
@@ -65,13 +65,13 @@ namespace TeamTRPG_Project
                 if (monsters.All(m => m.IsDead())) // 모든 몬스터가 죽었는지 확인
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    ShowClearScreen(groupID,player);
+                    ShowClearScreen(groupID, player);
                     Console.ResetColor();
                     battleEnded = true; // 전투 종료
                 }
                 if (!battleEnded) // 몬스터가 살아있으면 몬스터의 공격
                 {
-                    MonsterAttack(player, monsters); 
+                    MonsterAttack(player, monsters);
                 }
                 if (player.HP <= 0) // 플레이어가 죽었을 때
                 {
@@ -83,7 +83,7 @@ namespace TeamTRPG_Project
                 }
                 Thread.Sleep(2000);
             }
-        }
+
             if (monsters.All(m => m.HP <= 0))
             {
                 battleEnded = true;
@@ -97,7 +97,7 @@ namespace TeamTRPG_Project
         }
 
 
-   
+
 
 
         // 플레이어의 공격 메서드
@@ -160,17 +160,17 @@ namespace TeamTRPG_Project
                         return;
                     }
                     Thread.Sleep(2000);
-                if (player.HP <= 0)
-                {
-                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"{player.name}이(가) 과로로 쓰러졌습니다!!");
-                    Console.WriteLine("응급실에 이송되었습니다.\n병원비 1000G가 소모되었습니다.");;
-                    Console.ResetColor();
-                    Thread.Sleep(2000);
-                    Console.WriteLine("다시 화이팅 하세요!");
-                    Thread.Sleep(2000);
-                    break;
-                }
+                    if (player.HP <= 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"{player.name}이(가) 과로로 쓰러졌습니다!!");
+                        Console.WriteLine("응급실에 이송되었습니다.\n병원비 1000G가 소모되었습니다."); ;
+                        Console.ResetColor();
+                        Thread.Sleep(2000);
+                        Console.WriteLine("다시 화이팅 하세요!");
+                        Thread.Sleep(2000);
+                        break;
+                    }
                     Console.Clear();
                     for (int i = 0; i < monsters.Count; i++)
                     {
@@ -183,7 +183,7 @@ namespace TeamTRPG_Project
                     Console.ResetColor();
                 }
 
-            }  
+            }
 
         }
 
@@ -249,12 +249,6 @@ namespace TeamTRPG_Project
                 Console.Clear();
             }
         }
-        public void HandleDungeonClear(int groupID, Character player)
-        {
-            // 던전 클리어 처리
-            ShowClearScreen(groupID, player); // 던전 ID와 player 객체를 전달
-        }
-
         private static void ShowClearScreen(int groupID, Character player)
         {
             string dungeonName = Dungeon.GetDungeonName(groupID); // Dungeon.GetDungeonName으로 던전 이름 가져오기
@@ -262,13 +256,9 @@ namespace TeamTRPG_Project
             Console.Clear();
             ConsoleUtility.ColorWrite($"던전 클리어! - {dungeonName}", ConsoleColor.Green); // 던전 이름을 표시
 
-            // 보상 처리 (예시: 경험치 및 아이템 보상)
-            int expReward = 100; // 임시 보상값
-            int goldReward = 50; // 임시 보상값
+            Dungeon.GrantDungeonReward(groupID, player);
 
             player.ClearedDungeons.Add(dungeonName); // 던전 이름 추가
-
-            Console.WriteLine($"{expReward} 경험치와 {goldReward} 골드를 획득했습니다.");
 
             // 결과 창에서 나가기
             Console.WriteLine("\n1. 돌아가기");

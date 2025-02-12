@@ -218,7 +218,7 @@ namespace TeamTRPG_Project
 
             }
         }
-        private static void GrantDungeonReward(int GroupID, Character Player)
+        public static void GrantDungeonReward(int GroupID, Character Player)
         {
             // 던전별 보상 설정
             int expReward = 0;
@@ -227,18 +227,41 @@ namespace TeamTRPG_Project
             switch (GroupID)
             {
                 case 1: // 던전 1 보상
-                    expReward = 100;
-                    goldReward = 50;
+                    expReward = 10;
+                    goldReward = 500;
                     break;
                 case 2: // 던전 2 보상
-                    expReward = 150;
-                    goldReward = 80;
+                    expReward = 25;
+                    goldReward = 1500;
                     break;
                 case 3: // 던전 3 보상
-                    expReward = 200;
-                    goldReward = 120;
+                    expReward = 55;
+                    goldReward = 2500;
                     break;
-                    // 추가적인 던전 보상 추가 가능
+                case 4: // 탕비실 던전 보상
+                    expReward = 50;
+                    goldReward = 2500;
+                    break;
+                case 5: // 던전 3 보상
+                    expReward = 80;
+                    goldReward = 3500;
+                    break;
+                case 6: // 던전 3 보상
+                    expReward = 125;
+                    goldReward = 5000;
+                    break;
+                case 7: // 던전 3 보상
+                    expReward = 180;
+                    goldReward = 7500;
+                    break;
+                case 8: // 던전 3 보상
+                    expReward = 225;
+                    goldReward = 12500;
+                    break;
+                case 9: // 던전 3 보상
+                    expReward = 325;
+                    goldReward = 20000;
+                    break;
             }
 
             // 경험치 및 골드 보상 지급
