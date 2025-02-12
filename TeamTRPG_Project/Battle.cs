@@ -8,7 +8,6 @@ namespace TeamTRPG_Project
 {
     public class Battle
     {
-
         public static void StartBattle(Character player, List<Monster> monsters)
         {
             Console.Clear();
@@ -42,8 +41,18 @@ namespace TeamTRPG_Project
                         MonsterAttack(player, monsters);
                         break;
                     case 2:
+                        if (player.skills.Count == 0)
+                        {
+                            Console.WriteLine("배운 스킬이 없습니다! 다시 선택하세요.");
+                            Thread.Sleep(1000);
+                            StartBattle(player, monsters);
+                            continue; // while 루프의 처음으로 돌아가 다시 선택하도록 함
+                        }
+                        UseSkill(player, monsters);
+                        MonsterAttack(player, monsters);
                         break;
                     case 3:
+                        Useitem(player, monsters);
                         break;
                     case 4:
                         player.ShowInfo();
@@ -60,6 +69,7 @@ namespace TeamTRPG_Project
                 battleEnded = monsters.All(m => m.HP <= 0);
             }
             Console.WriteLine("전투가 종료되었습니다!");
+            
             Thread.Sleep(1000);
         }
         // 플레이어의 공격 메서드
@@ -117,7 +127,21 @@ namespace TeamTRPG_Project
                     Thread.Sleep(1000);
                     Console.WriteLine(); // 빈줄출력
                     monster.AttackPlayer(player);
-                    
+                    if (player.HP <= 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"{player.name}이(가) 과로로 쓰러졌습니다!!");
+                        Console.WriteLine("응급실에 이송되었습니다.\n 병원비 1000G가 소모되었습니다.");
+                        player.HP = player.MAX_HP;
+                        player.MP = player.MAX_MP;
+                        player.gold -= 1000;
+                        Console.ResetColor();
+                        Thread.Sleep(2000);
+                        Console.WriteLine("다시 화이팅 하세요!");
+                        Thread.Sleep(2000);
+
+                        return;
+                    }
                     Thread.Sleep(2000);
                     Console.Clear();
                     for (int i = 0; i < monsters.Count; i++)
@@ -135,61 +159,56 @@ namespace TeamTRPG_Project
         }
         // 스킬 사용 2.번 스킬을 선택하였을때 사용가능한 스킬 목록을 보여주고 선택하게한다.
         // 스킬을 사용하면 스킬의 데미지를 계산하여 몬스터에게 데미지를 입힌다.
-        // private static void UseSkill(Character player, List<Monster> monsters)
-        // {
-        //     Console.Clear();
-        //     Console.WriteLine("사용할 스킬을 선택하세요:");
-        //     for (int i = 0; i < player.Skills.Count; i++) // 플레이어의 스킬 목록 출력
-        //     {
-        //         Console.WriteLine($"{i + 1}. {player.Skills[i]}"); // 스킬 목록 출력
-        //     }
-        //     int skillIndex; // 사용할 스킬 인덱스
-        //     do 
-        //     {
-        //         Console.Write("사용할 스킬 번호를 입력하세요: ");
-        //         skillIndex = ConsoleUtility.GetInput(1, player.Skills.Count) - 1; 
-        //     } while (skillIndex < 0 || skillIndex >= player.Skills.Count);
-        //     Skill skill = player.Skills[skillIndex];
-        //     Console.WriteLine($"{skill.Name} 스킬을 사용합니다!");
-        //     float damage = player.CalculateSkillDamage(skill);
-        //     ShakeText("!!!!!", 1, 10);
-        //     Console.WriteLine(); // 빈줄출력
-        //     Console.WriteLine($"{skill.Name} 스킬로 {damage}의 피해를 입혔습니다!");
-        //     foreach (Monster monster in monsters)
-        //     {
-        //         monster.TakeDamage((int)damage);
-        //         if (monster.IsDead())
-        //         {
-        //             Console.ForegroundColor = ConsoleColor.Yellow;
-        //             Console.WriteLine($"{monster.Name}을(를) 처치했습니다! 🎉");
-        //             Console.ResetColor();
-        //             Thread.Sleep(2000);
-        //         }
-        //     }
-        //     Thread.Sleep(2000);
-        // }
+        // 배운스킬이 없을경우 스킬을 사용할수 없다고 출력하고 다시 선택하게한다.
+        // 나가기 버튼을 누르면 다시 선택하게한다.
+        private static void UseSkill(Character player, List<Monster> monsters)
+        {
+            Console.Clear();
+            Console.WriteLine("사용할 스킬을 선택하세요:");
+            for (int i = 0; i < player.skills.Count; i++) // 플레이어의 스킬 목록 출력
+            {
+                Console.WriteLine($"{i + 1}. {player.skills[i]}"); // 스킬 목록 출력
+            }
+            int skillIndex; // 사용할 스킬 인덱스
+            do 
+            {
+                Console.Write("사용할 스킬 번호를 입력하세요: ");
+                skillIndex = ConsoleUtility.GetInput(1, player.skills.Count) - 1; 
+            } while (skillIndex < 0 || skillIndex >= player.skills.Count);
+            Skill skill = player.skills[skillIndex];
+            Console.WriteLine($"{skill.Name} 스킬을 사용합니다!"); 
+            skill.Use(player, monsters);
+            Thread.Sleep(2000);
+        }
         // 3. 번 아이템 사용을 선택하였을때 사용가능한 아이템 목록을 보여주고 선택하게한다.
+        // 아이템은 포션 종류만 보여주고 사용하면 해당 포션의 효과를 사용한다.
         // 아이템을 사용하면 해당 아이템 효과를 사용한다.
-        // private static void UseItem(Character player, List<Monster> monsters)
-        // {
-        //     Console.Clear();
-        //     Console.WriteLine("사용할 아이템을 선택하세요:");
-        //     for (int i = 0; i < player.Items.Count; i++) // 플레이어의 아이템 목록 출력
-        //     {
-        //         Console.WriteLine($"{i + 1}. {player.Items[i]}"); // 아이템 목록 출력
-        //     }
-        //     int itemIndex; // 사용할 아이템 인덱스
-        //     do 
-        //     {
-        //         Console.Write("사용할 아이템 번호를 입력하세요: ");
-        //         itemIndex = ConsoleUtility.GetInput(1, player.Items.Count) - 1; 
-        //     } while (itemIndex < 0 || itemIndex >= player.Items.Count);
-        //     Item item = player.Items[itemIndex];
-        //     Console.WriteLine($"{item.Name} 아이템을 사용합니다!");
-        //     item.Use(player);
-        //     player.Items.Remove(item);
-        //     Thread.Sleep(2000);
-        // }
+        private static void Useitem(Character player, List<Monster> monsters)
+        {
+            Console.Clear();
+            Console.WriteLine("사용할 아이템을 선택하세요:");
+            for (int i = 0; i < player.inventory.Count; i++) // 플레이어의 아이템 목록 출력
+            {
+                Console.WriteLine($"{i + 1}. {player.inventory[i]}"); // 아이템 목록 출력
+            }
+            int itemIndex; // 사용할 아이템 인덱스
+            Console.WriteLine("0. 나가기");
+            do
+            {
+                Console.Write("사용할 아이템 번호를 입력하세요: ");
+                itemIndex = ConsoleUtility.GetInput(0, player.inventory.Count) - 1; 
+            } while (itemIndex < -1 || itemIndex >= player.inventory.Count);
+            if (itemIndex == -1)
+            {   
+                StartBattle(player, monsters);
+                return;
+            }
+            Item item = player.inventory[itemIndex];
+            Console.WriteLine($"{item.Name} 아이템을 사용합니다!");
+            player.UsePotion((Potion)item);
+            Thread.Sleep(2000);
+            StartBattle(player, monsters);
+        }
 
         static void ShakeText(string text, int intensity, int duration)
         {
