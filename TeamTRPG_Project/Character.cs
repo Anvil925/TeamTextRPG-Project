@@ -210,6 +210,11 @@ namespace TeamTRPG_Project
         public float takeDamage(float damage)   //공격 받을 때
         {
             float prev_HP = HP;
+
+            damage -= DEF;
+            if (damage < 1f)
+                damage = 1f;
+
             if (rd.NextDouble() > avoid) //회피 실패
             {
                 HP -= damage;
@@ -223,10 +228,6 @@ namespace TeamTRPG_Project
             {
                 Console.WriteLine("회피 성공!");
             }
-
-            /*
-             * 방어력 공식이 있으면 추가 될 수 있음
-             */
 
             return HP;
         }
