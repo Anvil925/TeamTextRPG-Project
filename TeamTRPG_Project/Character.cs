@@ -42,7 +42,7 @@ namespace TeamTRPG_Project
 
         public List<Skill> skills {get; set;}
         public int skillPoints { get; set; }
-        public List<string> ClearedDungeons { get; private set; }  // 클리어한 던전 목록
+        public List<string> ClearedDungeons { get; private set; }// 클리어한 던전 목록
 
 
         Random rd = new Random();
@@ -54,12 +54,12 @@ namespace TeamTRPG_Project
             LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100, 140, 185, 230, 280, 320 }; //일단 5렙까지 경험치 필요량
             this.name = name;
 
-            ATK = 10;
-            DEF = 5;
+            ATK = 1000;
+            DEF = 0;
             itemATK = 0;
             itemDEF = 0;
 
-            HP = 100;
+            HP = 1;
             MAX_HP = 100;
 
             MP = 100; 
@@ -336,18 +336,7 @@ namespace TeamTRPG_Project
             return skill;
         }
         */ //skill 클래스에서 구현이 되었음
-        public void ClearDungeon(string dungeonName)
-        {
-            if (!ClearedDungeons.Contains(dungeonName))
-            {
-                ClearedDungeons.Add(dungeonName);
-                Console.WriteLine($"{dungeonName} 던전을 클리어했습니다!");
-            }
-            else
-            {
-                Console.WriteLine($"{dungeonName} 던전은 이미 클리어한 상태입니다.");
-            }
-        }
+       
     }
 }
 

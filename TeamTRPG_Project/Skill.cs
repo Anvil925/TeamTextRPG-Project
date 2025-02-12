@@ -154,7 +154,7 @@ namespace TeamTRPG_Project
 
             SkillInfo.Append($"{Name}\t| ");
 
-            SkillInfo.Append($"데미지 : {ATK}\t| 마나 : {MP} MP\t| ");
+            SkillInfo.Append($"데미지 : {ATK}\t| 마나 : {MP} MP\t| 범위 : {Range} \t|");
 
             SkillInfo.Append($"{Description}\t| 획득 포인트 : {SkillPoint}P");
 

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TeamTRPG_Project
 {
     public class Battle
     {
-        public static void StartBattle(Character player, List<Monster> monsters)
+        public static void StartBattle(Character player, List<Monster> monsters, int groupID)
         {
             Console.Clear();
             Console.WriteLine("전투 시작!");
@@ -21,7 +23,7 @@ namespace TeamTRPG_Project
                     Console.ForegroundColor = ConsoleColor.Red; // 죽은 몬스터는 빨간색
                 else
                     Console.ForegroundColor = ConsoleColor.Cyan; // 살아있는 몬스터는 기본 색상
-                Console.WriteLine(monsters[i].ToString());   
+                Console.WriteLine(monsters[i].ToString());
             }
             Console.ResetColor();
             bool battleEnded = false;
@@ -44,14 +46,14 @@ namespace TeamTRPG_Project
                         {
                             Console.WriteLine("배운 스킬이 없습니다! 다시 선택하세요.");
                             Thread.Sleep(1000);
-                            StartBattle(player, monsters);
+                            StartBattle(player, monsters,groupID);
                             continue; // while 루프의 처음으로 돌아가 다시 선택하도록 함
                         }
                         UseSkill(player, monsters);
                         break;
                     case 3:
-                        Useitem(player, monsters);
-                        continue; // while 루프의 처음으로 돌아가 다시 선택하도록 함
+                        Useitem(player, monsters, groupID);
+                        break;
                     case 4:
                         player.ShowInfo();
                         continue; // while 루프의 처음으로 돌아가 다시 선택하도록 함
@@ -63,7 +65,7 @@ namespace TeamTRPG_Project
                 if (monsters.All(m => m.IsDead())) // 모든 몬스터가 죽었는지 확인
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("전투에서 승리했습니다!"); 
+                    ShowClearScreen(groupID,player);
                     Console.ResetColor();
                     battleEnded = true; // 전투 종료
                 }
@@ -82,6 +84,23 @@ namespace TeamTRPG_Project
                 Thread.Sleep(2000);
             }
         }
+            if (monsters.All(m => m.HP <= 0))
+            {
+                battleEnded = true;
+                ShowClearScreen(groupID, player); // 던전 클리어 처리
+            }
+            // 플레이어가 죽으면 실패 처리
+            else if (player.HP <= 0)
+            {
+                battleEnded = true;
+            }
+        }
+
+
+   
+
+
+        // 플레이어의 공격 메서드
         private static void PlayerAttack(Character player, List<Monster> monsters)
         {
             Console.Clear();
@@ -99,7 +118,7 @@ namespace TeamTRPG_Project
             do
             {
                 Console.Write("공격할 몬스터 번호를 입력하세요: ");
-                targetIndex = ConsoleUtility.GetInput(1, monsters.Count) - 1; 
+                targetIndex = ConsoleUtility.GetInput(1, monsters.Count) - 1;
                 if (monsters[targetIndex].IsDead())
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -111,7 +130,6 @@ namespace TeamTRPG_Project
             float damage = player.CalculateDamage();
             ShakeText("!!!!!", 1, 10);
             Console.WriteLine(); // 빈줄출력
-            Console.WriteLine($"{targetMonster.Name}에게 {damage}의 피해를 입혔습니다!");
             targetMonster.TakeDamage((int)damage);
             if (targetMonster.IsDead())
             {
@@ -135,6 +153,12 @@ namespace TeamTRPG_Project
                     Thread.Sleep(1000);
                     Console.WriteLine(); // 빈줄출력
                     monster.AttackPlayer(player);
+                    if (player.HP <= 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        ShowFailureScreen(player); // 실패 처리
+                        return;
+                    }
                     Thread.Sleep(2000);
                 if (player.HP <= 0)
                 {
@@ -158,8 +182,11 @@ namespace TeamTRPG_Project
                     }
                     Console.ResetColor();
                 }
+
             }  
+
         }
+
         private static void UseSkill(Character player, List<Monster> monsters)
         {
             Console.Clear();
@@ -169,20 +196,20 @@ namespace TeamTRPG_Project
                 Console.WriteLine($"{i + 1}. {player.skills[i]}"); // 스킬 목록 출력
             }
             int skillIndex; // 사용할 스킬 인덱스
-            do 
+            do
             {
                 Console.Write("사용할 스킬 번호를 입력하세요: ");
-                skillIndex = ConsoleUtility.GetInput(1, player.skills.Count) - 1; 
+                skillIndex = ConsoleUtility.GetInput(1, player.skills.Count) - 1;
             } while (skillIndex < 0 || skillIndex >= player.skills.Count);
             Skill skill = player.skills[skillIndex];
             Console.WriteLine($"{skill.Name} 스킬을 사용합니다!");
-            if(skill.Use(player, monsters))
-            {
-                StartBattle(player, monsters);
-            }
+            skill.Use(player, monsters);
             Thread.Sleep(2000);
         }
-        private static void Useitem(Character player, List<Monster> monsters)
+        // 3. 번 아이템 사용을 선택하였을때 사용가능한 아이템 목록을 보여주고 선택하게한다.
+        // 아이템은 포션 종류만 보여주고 사용하면 해당 포션의 효과를 사용한다.
+        // 아이템을 사용하면 해당 아이템 효과를 사용한다.
+        private static void Useitem(Character player, List<Monster> monsters, int groupID)
         {
             Console.Clear();
             Console.WriteLine("사용할 아이템을 선택하세요:");
@@ -195,26 +222,18 @@ namespace TeamTRPG_Project
             do
             {
                 Console.Write("사용할 아이템 번호를 입력하세요: ");
-                itemIndex = ConsoleUtility.GetInput(0, player.inventory.Count) - 1; 
+                itemIndex = ConsoleUtility.GetInput(0, player.inventory.Count) - 1;
             } while (itemIndex < -1 || itemIndex >= player.inventory.Count);
             if (itemIndex == -1)
-            {   
-                StartBattle(player, monsters);
+            {
+                StartBattle(player, monsters, groupID);
                 return;
             }
             Item item = player.inventory[itemIndex];
-            if(item is Potion potion)
-            {
-                Console.WriteLine($"{item.Name} 아이템을 사용합니다!");
-                player.UsePotion((Potion)item);
-                Thread.Sleep(2000);
-            }
-            else
-            {
-                Console.WriteLine($"장착 아이템은 사용할 수 없습니다.");
-                Thread.Sleep(2000);
-            }
-            StartBattle(player, monsters);
+            Console.WriteLine($"{item.Name} 아이템을 사용합니다!");
+            player.UsePotion((Potion)item);
+            Thread.Sleep(2000);
+            StartBattle(player, monsters, groupID);
         }
         static void ShakeText(string text, int intensity, int duration)
         {
@@ -228,6 +247,53 @@ namespace TeamTRPG_Project
                 Console.Write(text);
                 Thread.Sleep(50); // 0.05초 대기
                 Console.Clear();
+            }
+        }
+        public void HandleDungeonClear(int groupID, Character player)
+        {
+            // 던전 클리어 처리
+            ShowClearScreen(groupID, player); // 던전 ID와 player 객체를 전달
+        }
+
+        private static void ShowClearScreen(int groupID, Character player)
+        {
+            string dungeonName = Dungeon.GetDungeonName(groupID); // Dungeon.GetDungeonName으로 던전 이름 가져오기
+
+            Console.Clear();
+            ConsoleUtility.ColorWrite($"던전 클리어! - {dungeonName}", ConsoleColor.Green); // 던전 이름을 표시
+
+            // 보상 처리 (예시: 경험치 및 아이템 보상)
+            int expReward = 100; // 임시 보상값
+            int goldReward = 50; // 임시 보상값
+
+            player.ClearedDungeons.Add(dungeonName); // 던전 이름 추가
+
+            Console.WriteLine($"{expReward} 경험치와 {goldReward} 골드를 획득했습니다.");
+
+            // 결과 창에서 나가기
+            Console.WriteLine("\n1. 돌아가기");
+            int input = ConsoleUtility.GetInput(1, 1);
+            if (input == 1)
+            {
+                GameManager.Instance.MainScreen(); // 메인 화면으로 돌아가기
+            }
+        }
+
+        private static void ShowFailureScreen(Character player)
+        {
+
+            Console.Clear();
+            Console.WriteLine($"{player.name}이(가) 과로로 쓰러졌습니다!!");
+            Console.WriteLine("응급실에 이송되었습니다.\n 병원비 1000G가 소모되었습니다.");
+            player.HP = player.MAX_HP;
+            player.MP = player.MAX_MP;
+            player.gold -= 1000;
+            Console.ResetColor();
+            Thread.Sleep(2000); Console.WriteLine("\n1. 돌아가기\n");
+            int input = ConsoleUtility.GetInput(1, 1);
+            if (input == 1)
+            {
+                GameManager.Instance.MainScreen(); // 메인 화면으로 돌아가기
             }
         }
     }
