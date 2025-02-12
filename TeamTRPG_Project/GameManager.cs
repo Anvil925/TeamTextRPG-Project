@@ -62,6 +62,7 @@ namespace TeamTRPG_Project
 
         public void DungeonScene()
         {
+            ConsoleUtility.Loading();
             Console.Clear();
             ConsoleUtility.ColorWrite("던전 종류", ConsoleColor.Magenta);
             Console.WriteLine();
@@ -101,6 +102,7 @@ namespace TeamTRPG_Project
         }
         public void MainScreen()
         {
+            ConsoleUtility.Loading();
             Console.Clear();
             Console.WriteLine($"스파르타 회사에 오신 {Player.name} 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
@@ -152,6 +154,7 @@ namespace TeamTRPG_Project
        
         public void ItemUpgradScreen()
         {
+            ConsoleUtility.Loading();
             Console.Clear();
             ConsoleUtility.ColorWrite("아이템을 더 강력하게 강화합니다", ConsoleColor.Magenta);
             Console.WriteLine();
@@ -313,7 +316,6 @@ namespace TeamTRPG_Project
         public void StatusScreen() //상태창 화면
         {
             ConsoleUtility.Loading();
-
             Console.Clear();
             ConsoleUtility.ColorWrite("상태 보기", ConsoleColor.Magenta);
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
