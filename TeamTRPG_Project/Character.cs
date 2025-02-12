@@ -253,6 +253,7 @@ namespace TeamTRPG_Project
             if (HP > MAX_HP)
                 HP = MAX_HP;
             Console.WriteLine("멘탈 회복 {0:F0} -> {1:F0}", prevHP, HP);
+            potion.IsPurchase = false;
             inventory.Remove(potion);
             return HP;
         }
