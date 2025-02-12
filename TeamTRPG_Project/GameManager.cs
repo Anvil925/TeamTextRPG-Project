@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using TeamTRPG_Project;
+using static TeamTRPG_Project.Quest;
 
 namespace TeamTRPG_Project
 {
