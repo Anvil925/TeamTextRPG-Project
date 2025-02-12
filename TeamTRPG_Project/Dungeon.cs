@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static TeamTRPG_Project.Quest;
 
 namespace TeamTRPG_Project
 {
@@ -36,6 +38,7 @@ namespace TeamTRPG_Project
                 switch (input)
                 {
                     case 0:
+                        gm.MainScreen();
                         break;
                     case 1:
                         StartWork(1, 1);
@@ -61,6 +64,7 @@ namespace TeamTRPG_Project
                 switch (input)
                 {
                     case 0:
+                        gm.MainScreen();
                         break;
                     case 1:
                         StartWork(4, 2);
@@ -90,12 +94,13 @@ namespace TeamTRPG_Project
                 switch (input)
                 {
                     case 0:
+                        gm.MainScreen();
                         break;
                     case 1:
                         StartWork(9, 3);
                         break;
                     case 2:
-                        Player.ShowInfo();                        
+                        Player.ShowInfo();
                         break;
                 }
             }
@@ -183,7 +188,7 @@ namespace TeamTRPG_Project
                 switch (input)
                 {
                     case 1:
-                        Battle.StartBattle(Player, monsters);
+                        Battle.StartBattle(Player, monsters, GroupID);
                         break;
                     case 2:
                         Player.ShowInfo();
@@ -201,7 +206,88 @@ namespace TeamTRPG_Project
                         }
                         break;
                 }
-            } while (count != 0 && Player.HP > 0); 
+            } while (count != 0 && Player.HP > 0);
+
+            // 던전 클리어 후 보상 지급
+            if (count == 0)
+            {
+                // 던전 클리어 퀘스트 진행 상태 업데이트
+                QuestManager.Instance.DungeonCleared(Player, GroupID);
+                GrantDungeonReward(GroupID, Player);
+
+
+            }
+        }
+        public static void GrantDungeonReward(int GroupID, Character Player)
+        {
+            // 던전별 보상 설정
+            int expReward = 0;
+            int goldReward = 0;
+
+            switch (GroupID)
+            {
+                case 1: // 던전 1 보상
+                    expReward = 10;
+                    goldReward = 500;
+                    break;
+                case 2: // 던전 2 보상
+                    expReward = 25;
+                    goldReward = 1500;
+                    break;
+                case 3: // 던전 3 보상
+                    expReward = 55;
+                    goldReward = 2500;
+                    break;
+                case 4: // 탕비실 던전 보상
+                    expReward = 50;
+                    goldReward = 2500;
+                    break;
+                case 5: // 던전 3 보상
+                    expReward = 80;
+                    goldReward = 3500;
+                    break;
+                case 6: // 던전 3 보상
+                    expReward = 125;
+                    goldReward = 5000;
+                    break;
+                case 7: // 던전 3 보상
+                    expReward = 180;
+                    goldReward = 7500;
+                    break;
+                case 8: // 던전 3 보상
+                    expReward = 225;
+                    goldReward = 12500;
+                    break;
+                case 9: // 던전 3 보상
+                    expReward = 325;
+                    goldReward = 20000;
+                    break;
+            }
+
+            // 경험치 및 골드 보상 지급
+            Player.GetExp(expReward);
+            //Player.AddGold(goldReward);
+            
+            Console.WriteLine($"{Player.name}은 {expReward} 경험치와 {goldReward} 골드를 획득했습니다.");
+        }
+
+        public static string GetDungeonName(int GroupID)
+        {
+            switch (GroupID)
+            {
+                case 4:
+                    return "흡연실";
+                case 5:
+                    return "탕비실";
+                case 6:
+                    return "팀장실";
+                case 7:
+                    return "차장실";
+                case 8:
+                    return "사장실";
+                default:
+                    return "알 수 없는 던전";
+            }
         }
     }
 }

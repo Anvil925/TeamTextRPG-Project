@@ -31,6 +31,11 @@ namespace TeamTRPG_Project
 
         public int ItemLV { get; set; }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
         public Item(int Itemlv , string name, string description, int price)
         {
             Name = name;

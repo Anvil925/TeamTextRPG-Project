@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,24 +42,24 @@ namespace TeamTRPG_Project
 
         public List<Skill> skills {get; set;}
         public int skillPoints { get; set; }
-        public List<string> ClearedDungeons { get; private set; }  // 클리어한 던전 목록
+        public List<string> ClearedDungeons { get; private set; }// 클리어한 던전 목록
 
 
         Random rd = new Random();
 
         public Character(string name)
         {
-            LV = 1;
+            LV = 3;
             EXP = 0;
             LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100, 140, 185, 230, 280, 320 }; //일단 5렙까지 경험치 필요량
             this.name = name;
 
-            ATK = 10;
-            DEF = 5;
+            ATK = 100000;
+            DEF = 0;
             itemATK = 0;
             itemDEF = 0;
 
-            HP = 100;
+            HP = 1;
             MAX_HP = 100;
 
             MP = 100; 
@@ -77,7 +78,7 @@ namespace TeamTRPG_Project
             equipment = new List<Item>();
             skills = new List<Skill>();
 
-            skillPoints = 0;
+            skillPoints = 10;
 
             ClearedDungeons = new List<string>();
 
@@ -112,7 +113,6 @@ namespace TeamTRPG_Project
         {
             return $"경력.{LV} {name} ({job.Name})\n멘탈 {HP}/{MAX_HP}";
         }
-
         public void ShowInventory()
         {
 
@@ -168,7 +168,7 @@ namespace TeamTRPG_Project
                 itemDEF += armor.DEF;
         }
 
-        public void UnEquip(Item item)
+        private void UnEquip(Item item) //외부 클래스에서 부르지 말 것 //EquipItem 메소드가 장착/해제 를 전부 담당합니다.
         {
 
             item.IsEquip = false;
@@ -185,10 +185,14 @@ namespace TeamTRPG_Project
         {
             int prevEXP = EXP;
             EXP += exp;
-            if (LV < MAXLV && EXP > LVGuage[LV]) //최대 레벨이 아니고 경험치 넘었을 때
+            while (true)
             {
-                LVUp();
+                if (LV < MAXLV && EXP > LVGuage[LV]) //최대 레벨이 아니고 경험치 넘었을 때
+                    LVUp();
+                else
+                    break;
             }
+            
             Console.WriteLine("EXP {0} -> {1}", prevEXP, EXP);
         }
 
@@ -211,6 +215,11 @@ namespace TeamTRPG_Project
         public float takeDamage(float damage)   //공격 받을 때
         {
             float prev_HP = HP;
+
+            damage -= DEF;
+            if (damage < 1f)
+                damage = 1f;
+
             if (rd.NextDouble() > avoid) //회피 실패
             {
                 HP -= damage;
@@ -224,10 +233,6 @@ namespace TeamTRPG_Project
             {
                 Console.WriteLine("회피 성공!");
             }
-
-            /*
-             * 방어력 공식이 있으면 추가 될 수 있음
-             */
 
             return HP;
         }
@@ -331,18 +336,7 @@ namespace TeamTRPG_Project
             return skill;
         }
         */ //skill 클래스에서 구현이 되었음
-        public void ClearDungeon(string dungeonName)
-        {
-            if (!ClearedDungeons.Contains(dungeonName))
-            {
-                ClearedDungeons.Add(dungeonName);
-                Console.WriteLine($"{dungeonName} 던전을 클리어했습니다!");
-            }
-            else
-            {
-                Console.WriteLine($"{dungeonName} 던전은 이미 클리어한 상태입니다.");
-            }
-        }
+       
     }
 }
 
