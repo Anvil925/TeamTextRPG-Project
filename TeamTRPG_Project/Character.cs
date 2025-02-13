@@ -56,6 +56,7 @@ namespace TeamTRPG_Project
 
             ATK = 15;
             DEF = 5;
+
             itemATK = 0;
             itemDEF = 0;
 
@@ -193,6 +194,11 @@ namespace TeamTRPG_Project
             
             Console.WriteLine("EXP {0} -> {1}", prevEXP, EXP);
         }
+        public void GetGold(int gold)
+        {
+            this.gold += gold;
+            Console.WriteLine("GOLD {0} -> {1}", this.gold - gold, this.gold);
+        }
 
         private void LVUp()
         {
@@ -304,6 +310,7 @@ namespace TeamTRPG_Project
 
             Console.WriteLine("스킬을 획득하였습니다.");
             skill.IsLearn = true;
+            skill.ObjectATK = ATK;
             skillPoints -= skill.SkillPoint;
             skills.Add(skill);
             return true;

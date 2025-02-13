@@ -14,8 +14,6 @@ namespace TeamTRPG_Project
         {
             Console.Clear();
             Console.WriteLine("전투 시작!");
-
-            // 몬스터 목록 출력
             Console.WriteLine("몬스터 목록:");
             for (int i = 0; i < monsters.Count; i++)
             {
@@ -95,11 +93,6 @@ namespace TeamTRPG_Project
                 battleEnded = true;
             }
         }
-
-
-
-
-
         // 플레이어의 공격 메서드
         private static void PlayerAttack(Character player, List<Monster> monsters)
         {
@@ -134,8 +127,9 @@ namespace TeamTRPG_Project
             if (targetMonster.IsDead())
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"{targetMonster.Name}을(를) 처치했습니다! 🎉");
+                Console.WriteLine($"{targetMonster.Name}을(를) 처치했습니다!");
                 player.GetExp(targetMonster.EXP);
+                player.GetGold(targetMonster.Gold);
                 Console.ResetColor();
                 Thread.Sleep(2000);
             }
@@ -160,17 +154,6 @@ namespace TeamTRPG_Project
                         return;
                     }
                     Thread.Sleep(2000);
-                    if (player.HP <= 0)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine($"{player.name}이(가) 과로로 쓰러졌습니다!!");
-                        Console.WriteLine("응급실에 이송되었습니다.\n병원비 1000G가 소모되었습니다."); ;
-                        Console.ResetColor();
-                        Thread.Sleep(2000);
-                        Console.WriteLine("다시 화이팅 하세요!");
-                        Thread.Sleep(2000);
-                        break;
-                    }
                     Console.Clear();
                     for (int i = 0; i < monsters.Count; i++)
                     {
@@ -182,11 +165,8 @@ namespace TeamTRPG_Project
                     }
                     Console.ResetColor();
                 }
-
             }
-
         }
-
         private static void UseSkill(Character player, List<Monster> monsters)
         {
             Console.Clear();
@@ -206,9 +186,6 @@ namespace TeamTRPG_Project
             skill.Use(player, monsters);
             Thread.Sleep(2000);
         }
-        // 3. 번 아이템 사용을 선택하였을때 사용가능한 아이템 목록을 보여주고 선택하게한다.
-        // 아이템은 포션 종류만 보여주고 사용하면 해당 포션의 효과를 사용한다.
-        // 아이템을 사용하면 해당 아이템 효과를 사용한다.
         private static void Useitem(Character player, List<Monster> monsters, int groupID)
         {
             Console.Clear();
@@ -268,7 +245,6 @@ namespace TeamTRPG_Project
                 GameManager.Instance.MainScreen(); // 메인 화면으로 돌아가기
             }
         }
-
         private static void ShowFailureScreen(Character player)
         {
 
