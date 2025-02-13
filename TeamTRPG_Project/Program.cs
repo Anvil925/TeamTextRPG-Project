@@ -1,5 +1,6 @@
 ﻿namespace TeamTRPG_Project
 {
+    using NAudio.Wave;
     using System.Threading;
     internal class Program
     {
@@ -10,7 +11,9 @@
             for (int i = 0; i < Story.Length; i++)
             {
                 Console.Write(Story[i]);
-                Thread.Sleep(30);
+                //Thread.Sleep(30);
+                if (i % 4 == 0)
+                    Console.Beep(500, 50);
             }
             Thread.Sleep(2000);
         }
@@ -87,12 +90,25 @@
                     continue;
                 }
             }
-            GameManager.Instance.SetPlayerName(Name);
-            Shop shop = new Shop(GameManager.Instance);
-            GameManager.Instance.SetShop(shop);
 
-            GameManager.Instance.MainScreen();
+            //솔루션 -> 패키지 관리자 -> NAduio 설치 
+            //mp3 파일을 bin/Debug/net9.0 에 추가할 것 (실행파일이 있는 위치)
+            using (AudioFileReader audioFile = new AudioFileReader("DungeonBGM.mp3"))
+            using (var outputDevice = new WaveOutEvent())
+            {
+                audioFile.Volume = 0.1f;
+                outputDevice.Init(audioFile);
+
+                outputDevice.Play();
+
+                GameManager.Instance.SetPlayerName(Name);
+                Shop shop = new Shop(GameManager.Instance);
+                GameManager.Instance.SetShop(shop);
+
+                GameManager.Instance.MainScreen();
+                outputDevice.Stop();
+            }
+
         }
-
     }
 }
