@@ -275,6 +275,12 @@ namespace TeamTRPG_Project
         {
             switch (GroupID)
             {
+                case 1: 
+                    return "오점뭐";
+                case 2:
+                    return "파일 미궁";
+                case 3:
+                    return "서버실";
                 case 4:
                     return "흡연실";
                 case 5:

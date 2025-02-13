@@ -49,13 +49,13 @@ namespace TeamTRPG_Project
 
         public Character(string name)
         {
-            LV = 3;
+            LV = 1;
             EXP = 0;
             LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100, 140, 185, 230, 280, 320 }; //일단 5렙까지 경험치 필요량
             this.name = name;
 
-            ATK = 100000;
-            DEF = 0;
+            ATK = 15;
+            DEF = 5;
             itemATK = 0;
             itemDEF = 0;
 
@@ -70,7 +70,7 @@ namespace TeamTRPG_Project
 
             avoid = 0.1f;
 
-            gold = 150000;
+            gold = 3000;
 
             job = Job.JobList[3]; //list 3 is Intern
 
@@ -105,8 +105,6 @@ namespace TeamTRPG_Project
             Console.WriteLine("배운 스킬");
             foreach (Skill skill in skills)
                 Console.WriteLine(skill.ShowInfo());
-            
-
         }
 
         public override string ToString()
@@ -208,7 +206,7 @@ namespace TeamTRPG_Project
 
             
             MP = MAX_MP;
-            Console.WriteLine("경력이 {0}으로 올랐습니다.", LV);
+            Console.WriteLine("경력이 {0}년차가 되었습니다.", LV);
             skillPoints += 10;  //레벨업시 스킬포인트
         }
 
