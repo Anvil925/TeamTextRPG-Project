@@ -35,14 +35,20 @@ namespace TeamTRPG_Project
         public static void Loading()
         {
             Console.Clear();
-            Console.Write("Loading");
-            string str = ".";
-
-            for (int i = 0; i < 10; i++)
+            string[] Loading = new string[]
             {
-                Thread.Sleep(75); //시간을 지연시킴
-                Console.Write(str);
+                " ____  ____  ____  ____  ____  ____  ____  ____  ____  ____",
+                "||L ||||O ||||A ||||D ||||I ||||N ||||G ||||. ||||. ||||. ||",
+                "||__||||__||||__||||__||||__||||__||||__||||__||||__||||__||",
+                "|/__\\||/__\\||/__\\||/__\\||/__\\||/__\\||/__\\||/__\\||/__\\||/__\\|"
+
+            };
+            foreach (var Load in Loading)
+            {
+                Console.WriteLine(Load);
+                Thread.Sleep(200); // 0.2초 대기
             }
+            Thread.Sleep(1000);
         }
 
         public static void Upgrading()

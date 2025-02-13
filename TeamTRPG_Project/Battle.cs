@@ -121,6 +121,7 @@ namespace TeamTRPG_Project
             } while (monsters[targetIndex].IsDead()); // 죽은 몬스터면 다시 입력받음
             Monster targetMonster = monsters[targetIndex]; // 선택한 몬스터
             float damage = player.CalculateDamage();
+            PlayerAttackEffect();
             ShakeText("!!!!!", 1, 10);
             Console.WriteLine(); // 빈줄출력
             targetMonster.TakeDamage((int)damage);
@@ -143,6 +144,7 @@ namespace TeamTRPG_Project
                 {
                     Console.WriteLine($"{monster.Name}(이)가 공격을 준비 합니다!");
                     Thread.Sleep(2000);
+                    MonsterAttackEffect();
                     ShakeText("!!!!!", 1, 10);
                     Thread.Sleep(1000);
                     Console.WriteLine(); // 빈줄출력
@@ -226,6 +228,29 @@ namespace TeamTRPG_Project
                 Console.Clear();
             }
         }
+        public static void MonsterAttackEffect()
+        {
+            // 배경색 변경 (잠깐 번쩍이는 효과)
+            Console.BackgroundColor = ConsoleColor.Red;  // 공격받을 때 빨간색
+            Console.Clear(); // 화면 갱신
+            Thread.Sleep(100);  // 0.1초 대기
+
+            // 원래 배경색으로 복원
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Clear(); // 화면 갱신
+        }
+
+        public static void PlayerAttackEffect()
+        {
+            // 배경색 변경 (잠깐 번쩍이는 효과)
+            Console.BackgroundColor = ConsoleColor.White;  // 공격받을 때 빨간색
+            Console.Clear(); // 화면 갱신
+            Thread.Sleep(100);  // 0.1초 대기
+
+            // 원래 배경색으로 복원
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Clear(); // 화면 갱신
+        }
         private static void ShowClearScreen(int groupID, Character player)
         {
             string dungeonName = Dungeon.GetDungeonName(groupID); // Dungeon.GetDungeonName으로 던전 이름 가져오기
@@ -247,7 +272,6 @@ namespace TeamTRPG_Project
         }
         private static void ShowFailureScreen(Character player)
         {
-
             Console.Clear();
             Console.WriteLine($"{player.name}이(가) 과로로 쓰러졌습니다!!");
             Console.WriteLine("응급실에 이송되었습니다.\n 병원비 1000G가 소모되었습니다.");
