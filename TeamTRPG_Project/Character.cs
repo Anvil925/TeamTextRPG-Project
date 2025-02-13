@@ -54,7 +54,7 @@ namespace TeamTRPG_Project
             LVGuage = new int[MAXLV] { 0, 10, 35, 65, 100, 140, 185, 230, 280, 320 }; //일단 5렙까지 경험치 필요량
             this.name = name;
 
-            ATK = 15;
+            ATK = 150;
             DEF = 5;
 
             itemATK = 0;

@@ -209,8 +209,17 @@ namespace TeamTRPG_Project
                 return;
             }
             Item item = player.inventory[itemIndex];
-            Console.WriteLine($"{item.Name} 아이템을 사용합니다!");
-            player.UsePotion((Potion)item);
+            
+            if(item is Potion potion)
+            {
+                player.UsePotion((Potion)item);
+                Console.WriteLine($"{item.Name} 아이템을 사용합니다!");
+            }
+            else
+            {
+                Console.WriteLine("장착 아이템은 사용 할 수 없습니다.");                
+            }
+                
             Thread.Sleep(2000);
             StartBattle(player, monsters, groupID);
         }
@@ -233,7 +242,7 @@ namespace TeamTRPG_Project
             // 배경색 변경 (잠깐 번쩍이는 효과)
             Console.BackgroundColor = ConsoleColor.Red;  // 공격받을 때 빨간색
             Console.Clear(); // 화면 갱신
-            Thread.Sleep(100);  // 0.1초 대기
+            Thread.Sleep(200);  // 0.1초 대기
 
             // 원래 배경색으로 복원
             Console.BackgroundColor = ConsoleColor.Black;
@@ -245,7 +254,7 @@ namespace TeamTRPG_Project
             // 배경색 변경 (잠깐 번쩍이는 효과)
             Console.BackgroundColor = ConsoleColor.White;  // 공격받을 때 빨간색
             Console.Clear(); // 화면 갱신
-            Thread.Sleep(100);  // 0.1초 대기
+            Thread.Sleep(200);  // 0.1초 대기
 
             // 원래 배경색으로 복원
             Console.BackgroundColor = ConsoleColor.Black;

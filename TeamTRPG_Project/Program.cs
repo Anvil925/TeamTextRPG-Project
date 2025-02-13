@@ -66,7 +66,7 @@
         }
 
         static void Main(string[] args)
-        {
+        {            
             StartArt();
             StartStory();
             string Name;
